@@ -1,4 +1,4 @@
-This is the datta and code for "Bilingual children's comprehension of code-switching at an uninformative adjective"
+This is the data and code for "Bilingual children's comprehension of code-switching at an uninformative adjective"
 
 Please direct questions about the data and code to Lena V. Kremin (lena.kremin@mail.concordia.ca)
 
