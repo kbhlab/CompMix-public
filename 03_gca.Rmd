@@ -1,0 +1,251 @@
+---
+title: "03_gca"
+author: "Lena V. Kremin"
+output: html_notebook
+---
+
+This notebook contains the growth curve analysis of CompMix-36 combining Montreal and Princeton data. Must be run after 02_looking-time_analysis
+
+# Prep script
+
+##load packages
+
+```{r}
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(gazer)
+library(here)
+```
+
+## load data
+
+``` {r}
+# load data
+
+## Keepers
+msl_keepers <- read_csv("data_frames/msl_keepers.csv") 
+
+## eye tracking data - time course
+
+gca_df <- read_csv("data_frames/gaze_trial_time_gca.csv", col_types = cols(study_id = col_character()))
+
+
+```
+
+# Growth Curve Analysis
+
+## create ordered polynomials
+
+```{r}
+##### followed instructions/tutorial from https://dmirman.github.io/GCA/TargetFix_example.html
+
+### create df for gca
+
+# filter for only target looks
+gca_df <- gca_df %>% 
+  filter(AOI == "target_look")
+
+# create 2nd order orthogonal polynomial
+gca <- code_poly(gca_df, predictor = "Time", poly.order = 2, orthogonal = TRUE) %>% 
+  mutate(study_id = as.factor(study_id),
+         trial_type = as.factor(trial_type),
+         testing_location = as.factor(testing_location),
+         study_lang_dom = as.factor(study_lang_dom))
+
+contrasts(gca$trial_type) <- contr.helmert(2)/2
+contrasts(gca$testing_location) <- contr.helmert(2)/2
+contrasts(gca$study_lang_dom) <- contr.helmert(2)/2
+
+write_csv(gca, "data_frames/growth_curve_analysis.csv")
+save(gca, file = here("data_frames/growth_curve_analysis.Rda"))
+
+
+```
+
+## fit models
+
+``` {r}
+
+## fit base model - linear and quadratic time only
+model_base <- lmer(Prop ~ (poly1+poly2) + (poly1+poly2  || study_id), 
+               data=gca, REML=F)
+summary(model_base)
+
+
+## add effect of trial type
+model_type <- lmer(Prop ~ (poly1+poly2) + trial_type + (poly1+poly2  || study_id), 
+               data=gca, REML=F)
+summary(model_type)
+
+anova(model_base, model_type)
+# sig improvement
+
+
+## add effect of trial type on slope
+model_type_slope <- lmer(Prop ~ (poly1+poly2) + trial_type + trial_type:poly1 + (poly1+poly2  || study_id), 
+               data=gca, REML=F)
+summary(model_type_slope)
+
+anova(model_type, model_type_slope)
+# doesn't significantly improve model, so remove trial_type:slope
+
+
+# ## add testing location (ME & interaction)
+model_type_location <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+summary(model_type_location)
+
+anova(model_type, model_type_location)
+# loc sig improves model
+
+
+# ## add testing location for slope
+model_type_location_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+summary(model_type_location_slope)
+
+anova(model_type_location, model_type_location_slope)
+#  sig improves model
+
+# ## add testing location for quadratic
+model_type_location_quadratic <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+summary(model_type_location_quadratic)
+
+anova(model_type_location_slope, model_type_location_quadratic)
+#  sig improves model
+
+
+
+
+# add trial type as random slope
+model_type_location_ran_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + ((poly1+poly2) + trial_type || study_id), 
+               data=gca, REML=F)
+summary(model_type_location_ran_slope)
+# model fails to converge
+
+##### select model_type_location_quadratic as final model #####
+
+
+
+## This model tells us that effect of trial type on intercept is not statistically significant (replicates results of t-tests).  
+## intercept - value when all predictors are 0
+## linear term - y increases over time
+## quadratic term - curve grows then drops
+## trial_type - no ME, single language not lowered compared to mixed
+## location - no ME, overall kids do equally as well across locations
+## trial_type : location - kids in princeton do worse on single language trials
+## linear : location - princeton kids have reduced slope, orientation to target not as quick
+## quadratic : location - stronger peak?
+```
+
+## plot model
+
+``` {r}
+## set up a data frame to predict values for: one row per participant/cond label pair
+newdata <- gca %>% 
+  select(study_id, trial_type, Time, testing_location, Prop, poly1, poly2)
+
+newdata <- newdata %>% 
+  ## get the predicted value for each case
+  mutate(pred = predict(model_type_location_quadratic, newdata=newdata))
+
+
+
+# viz showing model predicted time courses for individual participants 
+ggplot(newdata, aes(x = Time, y = pred, color = testing_location, linetype = trial_type)) +
+    geom_smooth() +
+  facet_wrap(~ study_id, ncol = 5)
+
+ggsave("figures/growth_curve_analysis_predictions.png", width = 8.4, height = 6.9, dpi = 500)
+
+
+
+
+
+ggplot(newdata, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange", size = .75) + 
+  stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.75) +
+  expand_limits(y=c(0.5, 1)) +
+  scale_color_manual(labels = c("Code-Switched", "Single Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Canada", "Princeton" = "United States")))  +
+    theme(legend.text = element_text(size = 12),
+          legend.title = element_text(size = 14),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 14),
+          axis.title.y = element_text(margin = margin(r = 14)),
+          strip.text.x = element_text(size = 12))
+
+
+ggsave("figures/growth_curve_analysis_bucld.png", width = 11, height = 6.9, dpi = 500)
+
+
+
+```
+
+## Exploratory 
+
+### GCA w dom
+
+```{r}
+# explore how lang dom may be affecting things
+dom_type <- lmer(Prop ~ (poly1+poly2) + trial_type * study_lang_dom + (poly1+poly2  || study_id), 
+               data=gca, REML=F)
+summary(dom_type)
+
+anova(model_type, dom_type)
+# does not stat improve model
+
+
+model_dom <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + study_lang_dom + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+summary(model_dom)
+
+anova(model_dom, model_type_location_quadratic)
+
+
+# look how model fits with only dom
+gca_dom_only <- gca %>% 
+  filter(study_lang_dom == "dom")
+
+final_dom_only <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + (poly1+poly2  || study_id),
+               data=gca_dom_only, REML=F)
+summary(final_dom_only)
+# same pattern
+
+# look for interaction
+final_dom_int <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + study_lang_dom:trial_type + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+summary(final_dom_int)
+#does not add anything as ME or interaction
+```
+
+
+## number of trials per time bin
+
+```{r}
+time_n <- gca_df %>% 
+  filter(Prop != "NaN") %>% 
+  group_by(Time, trial_type, testing_location) %>% 
+  summarize(n_trials = n(),
+            n_subjs = length(unique(study_id))) %>% 
+  mutate(z_trials = n_trials/n_subjs)
+
+time_n_avg <- time_n %>% 
+  ungroup() %>% 
+  group_by(testing_location, trial_type) %>% 
+  summarize(avg_trials = mean(z_trials))
+
+ggplot(time_n, aes(x = Time, y = z_trials, color = trial_type))+
+  geom_point() +
+  facet_grid(. ~ testing_location) +
+  geom_hline(data = time_n_avg, aes(yintercept = avg_trials, color = trial_type))
+```
+

@@ -1,0 +1,356 @@
+---
+title: "Pupillometry"
+author: "Lena V. Kremin"
+date: "7/28/2021"
+output: html_document
+---
+
+This script analyzes the pupillometry data from Montreal for CompMix. Must be run after 01_load
+
+# load packages & read in data
+
+```{r}
+library(tidyverse)
+library(here)
+library(PupillometryR)
+
+# eye-tracking data
+mtl_data_cleaned <- read_csv(here("data_frames/mtl_data_cleaned.csv"), col_types = cols(edu_years = col_integer())) 
+
+# loaded to get trials that were analyzed in LT analysis
+response_window_clean <- read_csv(here("data_frames/response_window_clean.csv")) %>% 
+  filter(testing_location == "Montreal")
+
+# for analysis of CS at article
+art_onset <- read_csv(here("2016_CompMix_Design/article_onset.csv")) %>% 
+  filter(testing_location == "Montreal")
+
+```
+
+
+
+#### prep pupil data
+
+```{r}
+# adding time from adj
+
+adj_data_pupil <- mtl_data_cleaned %>% 
+  left_join(art_onset, by = c("target", "study_language", "trial_type")) %>% 
+  # zero on article onset
+  mutate(time_from_adj = time_from_zero - article_onset) %>% 
+  # filter for data between 200 ms before article onset (for baseline) and noun analysis window
+  filter(time_from_adj >= -200 & time_from_zero <= 5000) %>% 
+  # remove trials with missing data to match the criteria for the gaze analysis (at least 750ms looking time during analysis window)
+  filter(trial_unique %in% response_window_clean$trial_unique)
+
+# identify any trials where the child has NO pupil data at all 
+has_pupil <- adj_data_pupil %>% 
+  mutate(mean_pupil = (pupil_left + pupil_right) / 2) %>% 
+  group_by(study_id, trial_number)
+
+## during analysis window
+has_pupil_analysis <- has_pupil %>% 
+  filter(time_from_adj >= 0)  %>% 
+  filter(any(!is.na(mean_pupil)))
+
+## during baseline
+has_pupil_baseline <- has_pupil %>% 
+  filter(time_from_adj < 0)  %>% 
+  filter(any(!is.na(mean_pupil)))
+
+# remove those trials from dataset, otherwise code will produce error
+mtl_data_pupil <- adj_data_pupil %>% 
+  filter(trial_unique %in% has_pupil_analysis$trial_unique & trial_unique %in% has_pupil_baseline$trial_unique)
+
+
+# get trial numbers used for each participant
+pupil_trial <- mtl_data_pupil %>% 
+  group_by(study_id) %>% 
+  summarize(trial_number = unique(trial_number))
+
+# get number of trials per subj
+pupil_trial_n <- mtl_data_pupil %>% 
+  group_by(study_id, trial_type) %>% 
+  summarize(trial_n = length(unique(trial_number)))
+
+write_csv(pupil_trial_n, "data_frames/mtl_pupil_trial_n.csv")
+```
+
+#### pupil pre-processing 
+```{r}
+# make pupilometry data
+data_pupil <- make_pupillometryr_data(data = mtl_data_pupil,
+                                      subject = study_id,
+                                      trial = trial_number,
+                                      time = time_from_zero,
+                                      condition = trial_type,
+                                      other = study_lang_dom)
+
+# regress data to smooth using data from one pupil to get the other
+pupil_regress <- regress_data(data = data_pupil,
+                           pupil1 = pupil_left,
+                           pupil2 = pupil_right)
+
+# get mean pupil sizes
+pupil_mean <- calculate_mean_pupil_size(data = pupil_regress,
+                                        pupil1 = pupil_left,
+                                        pupil2 = pupil_right)
+
+# step to filter data
+pupil_filtered <- filter_data(data = pupil_mean,
+                                pupil = mean_pupil,
+                                filter = 'hanning',
+                                degree = 11) # package recommends 11
+
+
+# create baseline - 200ms before adj, because not working with package (think bc of NAs)
+
+baseline_mean <- pupil_filtered %>% 
+  # filter for only relevant window (2800-3000ms)
+  filter(time_from_adj < 0) %>%
+  # get mean pupil size during window for each trial
+  group_by(trial_unique) %>% 
+  summarize(mean_pupil_baseline = mean(mean_pupil, na.rm = TRUE))
+
+baseline_filtered <- pupil_filtered %>% 
+  # join mean pupil size to full data
+  left_join(baseline_mean, by = "trial_unique") %>% 
+  # subtract mean pupil size from pupil size at each pt of measurement
+  mutate(pupil_baseline = mean_pupil - mean_pupil_baseline) 
+```
+
+### Switch to adjective
+```{r}
+
+# switch time measure in baseline_filtered from time_from_zero to time_from_adj
+adj_baseline_filtered <- make_pupillometryr_data(data = baseline_filtered,
+                                      subject = study_id,
+                                      trial = trial_number,
+                                      time = time_from_adj,
+                                      condition = trial_type,
+                                      other = study_lang_dom)
+
+# select data for extended window for data viz
+adj_baseline_filtered_viz <- subset_data(data = adj_baseline_filtered, start = 0, stop = 2500, rezero = FALSE, remove = TRUE)
+
+# re-subset data to only analysis window 
+adj_baseline_filtered <- subset_data(data = adj_baseline_filtered, start = 0, stop = 2000, rezero = FALSE, remove = TRUE)
+
+
+
+# get rid of baseline data 
+adj_baseline_filtered_trunc <- adj_baseline_filtered %>% 
+  filter(time_from_zero < 3000)
+
+
+
+#plot(adj_baseline_filtered, pupil = pupil_baseline, group = 'condition')
+
+# pupil size per condition for each participant over time window until NOUN
+adj_pupil_type_filtered <- create_window_data(data = adj_baseline_filtered_trunc,
+                                          pupil = pupil_baseline)
+
+
+# pupil size per condition for each participant over 200ms time windows
+adj_pupil_windows_filtered <- create_time_windows(data = adj_baseline_filtered_trunc,
+                                              pupil = pupil_baseline,
+                                              breaks = c(0, 200, 400, 600)) 
+
+# write csv for dfs
+write_csv(adj_baseline_filtered, "data_frames/mtl_adj_baseline_filtered.csv")
+write_csv(adj_baseline_filtered_trunc, "data_frames/mtl_adj_baseline_filtered_trunc.csv")
+write_csv(adj_pupil_type_filtered, "data_frames/mtl_adj_pupil_type_filtered.csv")
+write_csv(adj_pupil_windows_filtered, "data_frames/mtl_adj_pupil_windows_filtered.csv")
+write_csv(adj_baseline_filtered_viz, "data_frames/mtl_pupil_adj_data_viz.csv")
+
+
+##### analyze conditions as a whole
+
+## boxplot 
+plot(adj_pupil_type_filtered, pupil = pupil_baseline, windows = F, geom = 'boxplot') 
+
+## t test
+t.test(pupil_baseline ~ trial_type, paired = T, data = adj_pupil_type_filtered)
+
+
+## line graph
+
+## individual participants
+# ggplot(baseline_filtered, aes(x = time_from_zero, y = pupil_baseline, color = trial_type, linetype = study_lang_dom)) +
+#   geom_smooth() +
+#   facet_wrap(vars(study_id), ncol = 5)
+
+# collapsed across participants
+adj_baseline_filtered_viz %>% 
+  ggplot(aes(x = time_from_adj, y = pupil_baseline, color = trial_type)) +
+  geom_smooth(se = F) +
+  scale_color_manual(values = c("#1f78b4", "#33a02c"), name = "Trial Type") +
+  labs(y = "Mean Pupil Dilation", x = "Time from Article Onset") +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 18),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 18),
+        axis.title.y = element_text(margin = margin(r = 18)))
+#+  annotate("rect", xmin = -300, xmax = 100, ymin = -Inf, ymax = Inf, fill = "#ca0020", alpha = .1)
+
+ggsave("figures/MTL_adj_pupil_filtered.png", width = 8.4, height = 6.9)
+
+
+
+
+##### analyze conditions by 200ms windows
+
+
+## lm/ANOVA
+adj_pupil_lm <- lm(pupil_baseline ~ Window * trial_type, data = adj_pupil_windows_filtered)
+
+summary(adj_pupil_lm)
+
+
+## paired t-test for each window
+
+# create empty data frame for windows and their p-values
+adj_window_p_values_filtered <- data.frame(matrix(ncol=2,nrow=0, dimnames=list(NULL, c("window_number", "p_value")))) %>% 
+  mutate(window_number = as.character(window_number),
+         p_value = as.numeric(p_value))
+
+# function to run paired t-test for one Window at a time
+# input x is a character (e.g. "1")
+adj_window_t_test_filtered <- function (x) {
+  
+  t_test <- adj_t_test %>% 
+    filter(Window == x) %>% 
+    t.test(pupil_baseline ~ trial_type, paired = TRUE, data = .)
+  
+  p_value <- t_test$p.value
+  
+  adj_window_p_values_filtered <<- adj_window_p_values_filtered %>% 
+    add_row(window_number = x, p_value = p_value)
+  
+}
+
+# new df without S28, window 3 where there is missing data
+adj_t_test <- adj_pupil_windows_filtered %>% 
+  filter(study_id != "S28" | (study_id == "S28" & (Window == "1" | Window == "2")))
+
+# run paired t-test function over each window
+adj_window_t_test_filtered("1")
+adj_window_t_test_filtered("2") 
+adj_window_t_test_filtered("3")
+
+write_csv(adj_window_p_values_filtered, "data_frames/adj_window_p_values_filtered.csv")
+```
+
+
+### Switch to noun
+
+```{r}
+baseline_filtered_viz <- subset_data(data = baseline_filtered, start = 2500, stop = 4998, rezero = FALSE, remove = TRUE)
+
+# re-subset data to only analysis window - 4998 b/c want to include 2000ms after noun onset, but this is the highest value within that timeframe
+baseline_filtered <- subset_data(data = baseline_filtered, start = 3000, stop = 4998, rezero = FALSE, remove = TRUE)
+
+
+
+#plot(baseline_filtered, pupil = pupil_baseline, group = 'condition')
+
+# pupil size per condition for each participant over whole time window
+pupil_type_filtered <- create_window_data(data = baseline_filtered,
+                                        pupil = pupil_baseline)
+
+
+# pupil size per condition for each participant over 200ms time windows
+pupil_windows_filtered <- create_time_windows(data = baseline_filtered,
+                                         pupil = pupil_baseline,
+                                         breaks = c(3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800)) %>% 
+  mutate(Window = replace_na(Window, 10))
+
+# write csv for dfs
+write_csv(baseline_filtered, "data_frames/mtl_baseline_filtered.csv")
+write_csv(pupil_type_filtered, "data_frames/mtl_pupil_type_filtered.csv")
+write_csv(pupil_windows_filtered, "data_frames/mtl_pupil_windows_filtered.csv")
+write_csv(baseline_filtered_viz, "data_frames/mtl_pupil_noun_data_viz.csv")
+
+
+##### analyze conditions as a whole
+
+## boxplot 
+plot(pupil_type_filtered, pupil = pupil_baseline, windows = F, geom = 'boxplot') 
+
+## t test
+t.test(pupil_baseline ~ trial_type, paired = T, data = pupil_type_filtered)
+
+
+## line graph
+
+# individual participants
+ggplot(baseline_filtered, aes(x = time_from_zero, y = pupil_baseline, color = trial_type, linetype = study_lang_dom)) +
+  geom_smooth() +
+  facet_wrap(vars(study_id), ncol = 5)
+
+# collapsed across participants
+baseline_filtered_viz %>% 
+  mutate(time_from_noun = time_from_zero - 3000) %>% 
+ggplot(aes(x = time_from_noun, y = pupil_baseline, color = trial_type)) +
+  geom_vline(xintercept = 400, color = "#ca0020") +
+  geom_smooth(se = F) +
+  scale_color_manual(values = c("#1f78b4", "#33a02c"), name = "Trial Type") +
+  labs(y = "Mean Pupil Dilation", x = "Time from Noun Onset") +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 18),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 18),
+        axis.title.y = element_text(margin = margin(r = 18)))
+      #+  annotate("rect", xmin = -300, xmax = 100, ymin = -Inf, ymax = Inf, fill = "#ca0020", alpha = .1)
+
+ggsave("figures/MTL_pupil_filtered.png", width = 8.4, height = 6.9)
+  
+
+
+
+##### analyze conditions by 200ms windows
+
+
+## lm/ANOVA
+pupil_lm <- lm(pupil_baseline ~ Window * trial_type, data = pupil_windows_filtered)
+
+summary(pupil_lm)
+
+
+## paired t-test for each window
+
+# create empty data frame for windows and their p-values
+window_p_values_filtered <- data.frame(matrix(ncol=2,nrow=0, dimnames=list(NULL, c("window_number", "p_value")))) %>% 
+  mutate(window_number = as.character(window_number),
+         p_value = as.numeric(p_value))
+
+# function to run paired t-test for one Window at a time
+# input x is a character (e.g. "1")
+window_t_test_filtered <- function (x) {
+
+  t_test <- pupil_windows_filtered %>% 
+    filter(Window == x) %>% 
+    t.test(pupil_baseline ~ trial_type, paired = TRUE, data = .)
+  
+  p_value <- t_test$p.value
+  
+  window_p_values_filtered <<- window_p_values_filtered %>% 
+    add_row(window_number = x, p_value = p_value)
+
+}
+
+# run paired t-test function over each window
+window_t_test_filtered("1")
+window_t_test_filtered("2") 
+window_t_test_filtered("3") 
+window_t_test_filtered("4")
+window_t_test_filtered("5") 
+window_t_test_filtered("6")
+window_t_test_filtered("7")
+window_t_test_filtered("8")
+window_t_test_filtered("9")
+window_t_test_filtered("10")
+
+
+write_csv(window_p_values_filtered, "data_frames/window_p_values_filtered.csv")
+```

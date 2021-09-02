@@ -1,0 +1,461 @@
+---
+title             : "Supplementary Materials for Bilingual children's comprehension of code-switching at an uninformative adjective"
+shorttitle        : "Children's code-switching comprehension"
+
+author: 
+  - name          : "Lena V. Kremin"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "7141 Sherbrooke St. West, PY-033, Montréal, QC, H4B 1R6"
+    email         : "lena.kremin@mail.concordia.com"
+  - name          : "Amel Jardak"
+    affiliation   : "1"
+  - name          : "Casey Lew-Williams"
+    affiliation   : "2"
+  - name          : "Krista Byers-Heinlein"
+    affiliation   : "1"
+
+affiliation:
+  - id            : "1"
+    institution   : "Concordia University"
+  - id            : "2"
+    institution   : "Princeton University"
+
+
+  
+keywords          : "keywords"
+wordcount         : "X"
+
+bibliography      : "CompMix.bib"
+
+floatsintext      : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : yes
+mask              : no
+draft             : no
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_word
+---
+
+```{r setup, echo = FALSE, include = FALSE}
+
+# set code chunk options
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE, include = FALSE, dpi=300, fig.width=7)
+
+# clean workspace
+rm(list = ls(all=T))
+
+#load packages
+library("papaja")
+library(tidyverse)
+library(magrittr)
+library(lme4)
+library(lmerTest)
+library(here)
+library(gazer)
+library(patchwork)
+
+#load data - GCA
+
+load(here("data_frames/growth_curve_analysis.Rda"))
+
+# load data - pupillometry
+
+mtl_pupil_trial_n<- read_csv(here("data_frames/mtl_pupil_trial_n.csv"))
+mtl_baseline_noun <- read_csv(here("data_frames/mtl_baseline_filtered.csv"))
+mtl_pupil_type_noun <- read_csv(here("data_frames/mtl_pupil_type_filtered.csv"))
+mtl_pupil_windows_noun <- read_csv(here("data_frames/mtl_pupil_windows_filtered.csv"))
+mtl_window_p_values_noun <- read_csv(here("data_frames/window_p_values_filtered.csv")) %>%
+  rename(Window = window_number)
+mtl_noun_viz <- read_csv(here("data_frames/mtl_pupil_noun_data_viz.csv"))
+mtl_baseline_adj <- read_csv(here("data_frames/mtl_adj_baseline_filtered.csv"))
+mtl_pupil_type_adj <- read_csv(here("data_frames/mtl_adj_pupil_type_filtered.csv"))
+mtl_pupil_windows_adj <- read_csv(here("data_frames/mtl_adj_pupil_windows_filtered.csv"))
+mtl_window_p_values_adj <- read_csv(here("data_frames/adj_window_p_values_filtered.csv")) %>%
+  rename(Window = window_number)
+mtl_adj_viz <- read_csv(here("data_frames/mtl_pupil_adj_data_viz.csv"))
+
+mtl_gaze_trial_n<- read_csv(here("data_frames/gaze_trial_n.csv")) %>% 
+  filter(testing_location == "Montreal")
+
+art_onset <- read_csv(here("2016_CompMix_Design/article_onset.csv")) %>%
+  mutate(diff = 3000 - article_onset) %>%
+  # only need info for MTL stim
+  filter(testing_location == "Montreal")
+
+```
+
+## Growth Curve Analysis
+
+As described in the main text, we conducted a growth curve analysis using the time window of 400 -- 2000ms after the noun onset, with looking time data binned in 100ms blocks. The final model was built and selected through an iterative process [See Table \@ref(tab:model-iterations) for terms in each model\; @mirman2017]. First, we constructed a baseline model which contained only linear and quadratic time terms as fixed effects and random slopes on the random effect of participant (See Table \@ref(tab:base)). For Model 1, we added the fixed effect of trial type, which was coded using a simple contrast coding scheme. The results of Model 1 are presented in Table \@ref(tab:trial). Compared to baseline, the addition of trial type significantly improved the model (see Table \@ref(tab:trial-anova)), thus this variable was retained for subsequent models. For Model 2, we next added the interaction between trial type and the linear time term (See Table \@ref(tab:trial-time)). Compared to Model 1, the addition of this interaction did not statistically significantly improve the model (see Table \@ref(tab:trial-time-anova)) and was removed for subsequent models. For Model 3, we added testing location as a fixed effect, which was coded using a simple contrast coding scheme, and its interaction with trial type (See Table \@ref(tab:trial-location)). Compared to Model 1, the addition of testing location significantly improved the model (see Table \@ref(tab:trial-location-anova)) and was retained for subsequent models. For Model 4, we added the interaction between testing location and the linear time term (See Table \@ref(tab:trial-location-time)). Compared to Model 3, the addition of the interaction statistically significantly improved the model (see  Table \@ref(tab:trial-location-time-anova)) and was retained for subsequent models. For Model 5, we then added the interaction between testing location and the quadratic time term (See Table \@ref(tab:trial-location-time-quad)). Compared to Model 4, the addition of the interaction statistically significantly improved the model (see  Table \@ref(tab:trial-location-time-quad-anova)) and was retained for subsequent models. Next, in Model 6, we added language dominance (See Table \@ref(tab:dom)). Compared to Model 5, the addition did not statistically significantly improve the model (see Table \@ref(tab:dom-anova)) and was thus removed for subsequent models. Last, in order to achieve maximal random effect structure [@sonderegger2021], we added trial type as a random slope to Model 5, but this led to a convergence error, so the results of that model are not reported here. Therefore, we selected Model 5 as our final model.
+
+```{r model-iterations, include = TRUE, results = "asis"}
+
+model_iterations <- read_csv(here("2016_CompMix_Design/model_iterations.csv"))
+
+apa_table(model_iterations, caption = "Fixed and random effects in each model in the iterative process", note = "Details of Model 7 are not reported in the supplementary materials due to a convergence error")
+
+```
+
+
+```{r model-base}
+base <- lmer(Prop ~ (poly1+poly2) + (poly1+poly2  || study_id), 
+               data=gca, REML=F)
+
+
+# extract data for APA table
+gca_table <- apa_print(base)$table %>% 
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(base) %>% 
+  as.data.frame()
+
+base_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+base_indent <- list(c(2,3,4,6))
+```
+
+```{r base, include = TRUE, results = "asis"}
+apa_table(base_print, stub_indents = base_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Baseline Model", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + ([time (linear) + time (quadratic)] || participant)*")
+```
+
+```{r model-trial}
+trial <- lmer(Prop ~ (poly1+poly2) + trial_type + (poly1+poly2  || study_id), 
+               data=gca, REML=F)
+
+
+# extract data for APA table
+gca_table <- apa_print(trial)$table %>% 
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)",
+    term == "Trial type1" ~ "Trial type"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(trial) %>% 
+  as.data.frame()
+
+trial_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+trial_indent <- list(c(2,3,4,5,7))
+```
+
+```{r trial, include = TRUE, results = "asis"}
+apa_table(trial_print, stub_indents = trial_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Model 1, addition of trial type as fixed factor", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type + ([time (linear) + time (quadratic)] || participant)*")
+```
+
+```{r trial-anova, include = TRUE, results = "asis"}
+
+trial_anova <- anova(trial, base) %>% 
+  rownames_to_column(var = "Model") %>% 
+  mutate(Model = case_when(Model == "base" ~ "Base model",
+                           Model == "trial" ~ "Model 1")) %>% 
+  rename("Number of paremeters" = npar,
+         "Log-likelihood" = logLik,
+         "Deviance" = deviance,
+         "*X*^2" = Chisq,
+         "*df*" = Df,
+         "*p*" = `Pr(>Chisq)`)
+
+apa_table(trial_anova, caption = "ANOVA comparison of Model 1 to the baseline model")
+
+```
+
+```{r model-trial-time}
+
+trial_time <- lmer(Prop ~ (poly1+poly2) + trial_type + trial_type:poly1 + ((poly1+poly2) || study_id), 
+               data=gca, REML=F)
+
+
+# extract data for APA table
+gca_table <- apa_print(trial_time)$table %>% 
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)",
+    term == "Trial type1" ~ "Trial type",
+    TRUE ~ "Trial type x Time (Linear)"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(trial_time) %>% 
+  as.data.frame()
+
+trial_time_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+trial_time_indent <- list(c(2,3,4,5,6,8))
+```
+
+```{r trial-time, include = TRUE, results = "asis"}
+apa_table(trial_time_print, stub_indents = trial_time_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Model 2, addition of interaction between trial type and time (linear)", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type + trial type:time (linear) + ([time (linear) + time (quadratic)] || participant)*")
+```
+
+```{r trial-time-anova, include = TRUE, results = "asis"}
+
+trial_time_anova <- anova(trial_time, trial) %>% 
+  rownames_to_column(var = "Model") %>% 
+  mutate(Model = case_when(Model == "trial_time" ~ "Model 2",
+                           Model == "trial" ~ "Model 1")) %>% 
+  rename("Number of paremeters" = npar,
+         "Log-likelihood" = logLik,
+         "Deviance" = deviance,
+         "*X*^2" = Chisq,
+         "*df*" = Df,
+         "*p*" = `Pr(>Chisq)`)
+
+apa_table(trial_time_anova, caption = "ANOVA comparison of Model 2 to Model 1")
+
+```
+
+```{r model-trial-location}
+
+trial_location <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+
+
+# extract data for APA table
+gca_table <- apa_print(trial_location)$table %>%
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)",
+    term == "Trial type1" ~ "Trial type",
+    term == "Testing location1" ~ "Testing location",
+    term == "Trial type1 $\\times$ Testing location1" ~ "Trial type x Testing location"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(trial_location) %>%
+  as.data.frame()
+
+trial_location_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+trial_location_indent <- list(c(2,3,4,5,6,7,9))
+```
+
+```{r trial-location, include = TRUE, results = "asis"}
+apa_table(trial_location_print, stub_indents = trial_location_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Model 3, addition of testing location as a fixed effect and in an interaction with trial type", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type + testing location + trial type x testing location + ([time (linear) + time (quadratic)] || participant)*")
+
+```
+
+```{r trial-location-anova, include = TRUE, results = "asis"}
+
+trial_location_anova <- anova(trial_location, trial) %>% 
+  rownames_to_column(var = "Model") %>% 
+  mutate(Model = case_when(Model == "trial" ~ "Model 2",
+                           Model == "trial_location" ~ "Model 3")) %>% 
+  rename("Number of paremeters" = npar,
+         "Log-likelihood" = logLik,
+         "Deviance" = deviance,
+         "*X*^2" = Chisq,
+         "*df*" = Df,
+         "*p*" = `Pr(>Chisq)`)
+
+apa_table(trial_location_anova, caption = "ANOVA comparison of Model 3 to Model 2")
+
+```
+
+```{r model-trial-location-time}
+trial_location_time <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+
+
+# extract data for APA table
+gca_table <- apa_print(trial_location_time)$table %>%
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)",
+    term == "Trial type1" ~ "Trial type",
+    term == "Testing location1" ~ "Testing location",
+    term == "Trial type1 $\\times$ Testing location1" ~ "Trial type x Testing location",
+    term == "Poly1 $\\times$ Testing location1" ~ "Testing location x Time (Linear)"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(trial_location_time) %>%
+  as.data.frame()
+
+trial_location_time_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+trial_location_time_indent <- list(c(2,3,4,5,6,7,8,10))
+```
+
+```{r trial-location-time, include = TRUE, results = "asis"}
+apa_table(trial_location_time_print, stub_indents = trial_location_time_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Model 4, addition of an interaction between testing location and the linear time term", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type + testing location + trial type x testing location + testing location x time (linear) + ([time (linear) + time (quadratic)] || participant)*")
+```
+
+```{r trial-location-time-anova, include = TRUE, results = "asis"}
+trial_location_time_anova <- anova(trial_location_time, trial_location) %>% 
+  rownames_to_column(var = "Model") %>% 
+  mutate(Model = case_when(Model == "trial_location" ~ "Model 3",
+                           Model == "trial_location_time" ~ "Model 4")) %>% 
+  rename("Number of paremeters" = npar,
+         "Log-likelihood" = logLik,
+         "Deviance" = deviance,
+         "*X*^2" = Chisq,
+         "*df*" = Df,
+         "*p*" = `Pr(>Chisq)`)
+
+apa_table(trial_location_time_anova, caption = "ANOVA comparison of Model 4 to Model 3")
+```
+
+```{r model-trial-location-time-quad}
+trial_location_time_quad <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+
+
+# extract data for APA table
+gca_table <- apa_print(trial_location_time_quad)$table %>%
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)",
+    term == "Trial type1" ~ "Trial type",
+    term == "Testing location1" ~ "Testing location",
+    term == "Trial type1 $\\times$ Testing location1" ~ "Trial type x Testing location",
+    term == "Poly1 $\\times$ Testing location1" ~ "Testing location x Time (Linear)",
+    TRUE ~ "Testing location x Time (Quadratic)"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(trial_location_time_quad) %>%
+  as.data.frame()
+
+trial_location_time_quad_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+trial_location_time_quad_indent <- list(c(2,3,4,5,6,7,8,9,11))
+```
+
+```{r trial-location-time-quad, include = TRUE, results = "asis"}
+apa_table(trial_location_time_quad_print, stub_indents = trial_location_time_quad_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Model 5, addition of an interaction between testing location and the quadratic time term", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type + testing location + trial type x testing location + testing location x time (linear) + testing location:time (quadratic) + ([time (linear) + time (quadratic)] || participant)*")
+```
+
+```{r trial-location-time-quad-anova, include = TRUE, results = "asis"}
+trial_location_time_quad_anova <- anova(trial_location_time_quad, trial_location_time) %>% 
+  rownames_to_column(var = "Model") %>% 
+  mutate(Model = case_when(Model == "trial_location_time" ~ "Model 4",
+                           Model == "trial_location_time_quad" ~ "Model 5")) %>% 
+  rename("Number of paremeters" = npar,
+         "Log-likelihood" = logLik,
+         "Deviance" = deviance,
+         "*X*^2" = Chisq,
+         "*df*" = Df,
+         "*p*" = `Pr(>Chisq)`)
+
+apa_table(trial_location_time_quad_anova, caption = "ANOVA comparison of Model 5 to Model 4")
+```
+
+
+```{r model-dom}
+dom <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + study_lang_dom + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+
+
+# extract data for APA table
+gca_table <- apa_print(dom)$table %>%
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)",
+    term == "Trial type1" ~ "Trial type",
+    term == "Testing location1" ~ "Testing location",
+    term == "Study lang dom1" ~ "Language dominance",
+    term == "Trial type1 $\\times$ Testing location1" ~ "Trial type x Testing location",
+    term == "Poly1 $\\times$ Testing location1" ~ "Testing location x Time (Linear)",
+    TRUE ~ "Testing location x Time (Quadratic)"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(dom) %>%
+  as.data.frame()
+
+dom_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+dom_indent <- list(c(2,3,4,5,6,7,8,9,10,12))
+```
+
+```{r dom, include = TRUE, results = "asis"}
+apa_table(dom_print, stub_indents = trial_location_time_quad_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Model 5, addition of language dominance ", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type + testing location + trial type x testing location + language dominance + testing location x time (linear) + testing location:time (quadratic) + ([time (linear) + time (quadratic)] || participant)*")
+```
+
+```{r dom-anova, include = TRUE, results = "asis"}
+dom_anova <- anova(trial_location_time_quad, dom) %>% 
+  rownames_to_column(var = "Model") %>% 
+  mutate(Model = case_when(Model == "trial_location_time_quad" ~ "Model 5",
+                           Model == "dom" ~ "Model 6"
+                           )) %>% 
+  rename("Number of paremeters" = npar,
+         "Log-likelihood" = logLik,
+         "Deviance" = deviance,
+         "*X*^2" = Chisq,
+         "*df*" = Df,
+         "*p*" = `Pr(>Chisq)`)
+
+apa_table(dom_anova, caption = "ANOVA comparison of Model 6 to Model 5")
+```
+
+
+## Pupillometry
+
+```{r}
+pupil_trial_n <- mtl_pupil_trial_n %>% 
+  group_by(trial_type) %>% 
+  summarize(total_n = sum(trial_n))
+
+mtl_t_pupil_noun <- t.test(pupil_baseline ~ trial_type, paired = T, data = mtl_pupil_type_noun)
+mtl_t_pupil_adj <- t.test(pupil_baseline ~ trial_type, paired = T, data = mtl_pupil_type_adj)
+
+```
+
+For the sample collected in Montreal, we were able to examine whether hearing a code-switched sentence elicits a processing cost via pupillometry, as the Tobii T60-XL eyetracker automatically records pupil size. Following the guidelines from @jackson_sirois2009, the data were pre-processed using the PupillometryR package [@forbes2020] in order to facilitate the analysis. The pre-processing began with regressing one pupil against the other. Because pupils often change size at a similar rate [@jackson_sirois2009], this step allows data from one pupil to approximate the other when there is missing data. Then, the mean pupil size across both eyes was calculated in order to have a single pupil measure for each time sample. Data were then filtered with a moving hanning filter. The hanning filter calculates the pupil size through a weighted moving average to remove extreme values but keep the relevant effects [@kosie2019]. Next, the data were baseline corrected by subtracting the average size of the pupil during the last 200ms of the carrier phrase before the first code-switch (e.g., 200ms before "*le bon*"  in the sentence "Can you see *le bon* [fr. the good] duck?"). Baselining allows the change in pupil dilation within a window to be analyzed, as opposed to analyzing the raw pupil size which can drift over time. Trials were excluded from the pupillometry analyses if they were not analyzed in the looking time analysis (i.e., the child looked less than 750ms of the analysis window) or if they had no data during the baselining period or analysis windows. A total of `r pupil_trial_n %>% filter(trial_type == "Single") %>% pull(total_n)` single-language trials and `r pupil_trial_n %>% filter(trial_type == "Mixed") %>% pull(total_n)` code-switched trials were included in the following analyses (`r round((pupil_trial_n %>% filter(trial_type == "Single") %>% pull(total_n)) / (mtl_gaze_trial_n %>% filter(trial_type == "Single") %>% summarize(sum = sum(value)) %>% pull(sum))*100, digits = 0)`% and `r round((pupil_trial_n %>% filter(trial_type == "Mixed") %>% pull(total_n)) / (mtl_gaze_trial_n %>% filter(trial_type == "Mixed") %>% summarize(sum = sum(value)) %>% pull(sum))*100, digits = 0)`% of single-language and code-switched trials included in the looking time analysis, respectively).
+
+In order to isolate the effect of the code-switch from the carrier phrase to the article (e.g., Can you find *le bon* [fr. the good] ...) and from the adjective to the noun (e.g., ... *le bon* [fr. the good] duck?), we conducted separate analyses timelocking the data at the location of each code-switch. First, we examined pupil dilation for single-language and code-switched trials for 2000ms from the onset of the article. Across this time window, pupil dilation was similar between the two trial types, `r apa_print(mtl_t_pupil_adj)$statistic`, `r apa_print(mtl_t_pupil_adj)$estimate`, indicating no differences in processing effort for the code-switched trials immediately after the first switch. Next, we examined pupil dilation for single- and code-switched trials for 2000ms after the onset of the noun in the stimulus. Across this time window, pupil dilation was similar between the two trial types, `r apa_print(mtl_t_pupil_noun)$statistic`, `r apa_print(mtl_t_pupil_noun)$estimate`, suggesting no difference in processing effort for the code-switched trials when the language switched again at the noun (See Figure \@ref(fig:pupil)b). 
+
+Because articles began at different times across trials relative to the onset of the noun due to natural variation in speaking rate and length of the adjective (e.g., beautiful vs. old; *M* = `r round(mean(art_onset$diff), digits = 0)`ms, *Range*: `r min(art_onset$diff)` -- `r max(art_onset$diff)`ms), we extended the time window visualized in Figure \@ref(fig:pupil)a to match the analysis window of the switch to the noun, which lasted until approximately 500ms after the analysis window for the first switch. Similarly, in Figure \@ref(fig:pupil)b, we extended the window visualized to 500ms before the noun onset to approximately match the analysis window of the switch to the article. 
+
+
+
+```{r pupil, echo = FALSE, include = TRUE, fig.cap = "Mean change in pupil dilation by trial type from (a) article onset and (b) noun onset. We encourage the reader to interpret this figure with caution as the onsets of the nouns (in a) and onsets of articles (in b) do not all occur at the same time on this visualization."}
+
+adj <- mtl_adj_viz %>% 
+  ggplot(aes(x = time_from_adj, y = pupil_baseline, color = trial_type)) +
+  geom_smooth(se = F) +
+  scale_color_manual(values = c("#1f78b4", "#33a02c"), name = "Trial Type") +
+  labs(y = "Mean Pupil Dilation", x = "Time from Article Onset") +
+  theme(legend.position = "none",
+        axis.text = element_text(size = 11),
+        axis.title = element_text(size = 14),
+        axis.title.y = element_text(margin = margin(r = 14)))
+
+
+noun <- mtl_noun_viz %>% 
+  mutate(time_from_noun = time_from_zero - 3000) %>% 
+  ggplot(aes(x = time_from_noun, y = pupil_baseline, color = trial_type)) +
+    #geom_vline(xintercept = 400, color = "#ca0020") +
+    geom_smooth(se = F) +
+    scale_color_manual(labels= c("Code-Switched", "Single-Language"), values = c("#1f78b4", "#33a02c"), name = "Trial Type") +
+    labs(x = "Time from Noun Onset") +
+    theme(legend.text = element_text(size = 12),
+          legend.title = element_text(size = 14),
+          axis.text = element_text(size = 11),
+          axis.title = element_text(size = 14),
+          axis.title.y = element_blank())
+
+adj + noun + plot_annotation(tag_levels = 'a')
+```
+
+\newpage
+
+# References

@@ -1,0 +1,130 @@
+---
+title: "CompMix Figures"
+author: "Lena V. Kremin"
+date: "3/29/2021"
+output: html_document
+---
+
+Collection of code for figures used for CompMix - either in manuscript or posters. Must be run after 03_gca
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(here)
+library(lme4)
+```
+
+```{r load-data}
+
+#combined
+
+combo_target <- read_csv(here("data_frames/combo_target.csv")) %>% 
+  mutate(trial_type = as.factor(trial_type),
+         location = as.factor(location))
+combo_time <- read_csv(here("data_frames/combo_time.csv"))
+
+
+  
+# growth curve
+gca <- read_csv(here("data_frames/growth_curve_analysis.csv")) %>% 
+  mutate(trial_type = as.factor(trial_type))
+
+contrasts(gca$trial_type) <- contr.sum(2)/2
+```
+
+```{r trial-total}
+
+# descriptives by trial type
+
+combo_target_des <- combo_target %>% 
+  group_by(trial_type) %>% 
+  summarize(mean = mean(Prop), min = min(Prop), max = max(Prop), sd = sd(Prop))
+
+## standard visualization
+ggplot(combo_target, aes(x = trial_type, y = Prop, color = location)) +
+  geom_point() +
+  geom_line(aes(group = study_id)) +
+  scale_color_manual(values = c("#b2abd2", "#fdb863"), name = "Location") +
+  stat_summary(fun.y = "mean", color = "black", size = 4, geom = "point", alpha = .9) +
+  geom_segment(aes(x = 1, y = combo_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
+                                    xend = 2, yend = combo_target_des %>% filter(trial_type == "Single") %>% pull(mean))
+                   , color = "black", size = 1) +
+  labs(x = "Trial Type", y = "Proportion Looking to Target") +
+  scale_x_discrete(labels= c("Code-Switched", "Single Language")) +
+  ylim(0, 1) +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.title.y = element_text(margin = margin(r = 14)))
+
+
+## no color difference for location
+ggplot(combo_target, aes(x = trial_type, y = Prop)) +
+  geom_point(alpha = 0.3) +
+  geom_line(aes(group = study_id), alpha= 0.3) +
+  stat_summary(fun.y = "mean", color = "red", size = 4, geom = "point", alpha = .9) +
+  geom_segment(aes(x = 1, y = combo_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
+                                    xend = 2, yend = combo_target_des %>% filter(trial_type == "Single") %>% pull(mean))
+                   , color = "red", size = 1) +
+  labs(x = "Trial Type", y = "Proportion Looking to Target") +
+  scale_x_discrete(labels= c("Code-Switched", "Single Language")) +
+  ylim(0, 1) +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.title.y = element_text(margin = margin(r = 14)))
+
+ggsave(here("figures/line_no-location.png"))
+
+```
+
+
+
+```{r growth-curve}
+
+# model 
+gca.m <- lmer(Prop ~ (poly1+poly2) + trial_type + trial_type:poly1 + ((poly1+poly2) || study_id), 
+               data=gca, REML=F)
+
+## standard visualization
+ggplot(gca, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(fun.y = "mean", size = 4, geom = "point") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", aes(width = 0)) + 
+  stat_summary(aes(y=fitted(gca.m)), fun=mean, geom="line", size = .75) +
+  expand_limits(y=c(0.5, 1)) +
+    scale_color_manual(values = c("#1f78b4", "#33a02c"), labels = c("Code-Switched", "Single-Language"), name = "Trial Type") +
+    labs(x = "Time from Noun Onset (ms)", y = "Proportion Looking to Target")  +
+    theme(legend.text = element_text(size = 12),
+          legend.title = element_text(size = 14),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 14),
+          axis.title.y = element_text(margin = margin(r = 14)))
+
+ggsave(here("figures/growth_curve_analysis_abstracts.png"))
+
+
+
+### Psychoshorts - translucent background, white text
+ggplot(gca, aes(Time, Prop, color=trial_type)) + 
+  stat_summary(fun.data=mean_se, geom="pointrange") + 
+  stat_summary(aes(y=fitted(m.3.1)), fun=mean, geom="line") +
+  expand_limits(y=c(0.5, 1)) +
+    scale_color_manual(labels = c("Code-Switched", "Single Language"), values = c("#ea4276", "#47c7d1"), name = "Trial Type") +
+    labs(x = "Time from Noun Onset", y = "Proportion Looking to Target")  +
+    theme(legend.text = element_text(size = 16, color = "white"),
+          legend.title = element_text(size = 20, color = "white"),
+          axis.text = element_text(size = 16, color = "white"),
+          axis.title = element_text(size = 20, color = "white"),
+          axis.title.y = element_text(margin = margin(r = 20)),
+          plot.background = element_rect(fill = "transparent", color = NA),
+          legend.background = element_rect(fill = "transparent", color = NA))
+
+ggsave("figures/growth_curve_analysis_psychoshorts.png", width = 8.4, height = 6.9, dpi = 500, bg = "transparent")
+
+
+
+```
+

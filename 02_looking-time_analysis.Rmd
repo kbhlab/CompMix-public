@@ -1,0 +1,305 @@
+---
+title: "02_looking-time_analysis"
+author: "Lena V. Kremin"
+date: "7/26/2021"
+output: html_document
+---
+
+This script takes the loaded data from 01_load, preps it as eye-tracking data, and analyzes looking time via window analyses. The script also preps the data for the growth curve analysis in 03_gca
+
+# load packages
+
+```{r}
+library(tidyverse)
+library(eyetrackingR)
+library(here)
+library(psych)
+```
+
+# read in and combine data
+
+```{r}
+
+## selected columns needed for analyses 
+
+selected_cols <- c("study_id", "trackloss", "time_from_zero", "trial_type", "trial_number", "trial_number_type", "trial_unique", "target_look", "distractor_look", "target",  "edu_years", "vocab_total","study_lang_dom")
+
+# Montreal data
+
+mtl_data_cleaned <- read_csv("data_frames/mtl_data_cleaned.csv", col_types = cols(edu_years = col_integer())) %>% 
+  select(all_of(selected_cols)) %>% 
+  mutate(testing_location = "Montreal",
+         #recenter time from zero to match Princeton
+         time_from_zero = time_from_zero - 3000)
+
+mtl_msl_keepers <- read_csv("data_frames/mtl_msl_keepers.csv") %>% 
+  rename(prof_o = prof_fr, aoa_o = aoa_fr) %>% 
+  select(study_id, gender, age_years, study_language, prof_eng, prof_o, aoa_en, aoa_o, child_dom_lang, study_lang_dom, vocab_dom, vocab_non_dom, vocab_total, edu_years, testing_location)
+
+mtl_msl_non_keepers<- read_csv("data_frames/mtl_msl_non_keepers.csv")
+
+
+
+# Princeton data
+pct_data_cleaned <- read_csv("data_frames/pct_data_cleaned.csv",
+                             col_types = cols(
+                                        .default = col_character(),
+                                        study_id = col_double(),
+                                        months = col_double(),
+                                        sex = col_character(),
+                                        trial_number = col_double(),
+                                        prescreen_notes = col_character(),
+                                        c_image = col_logical(),
+                                        first_shift_gap = col_double(),
+                                        rt = col_double(),
+                                        crit_on_set = col_double(),
+                                        crit_off_set = col_double(),
+                                        look = col_double(),
+                                        trial_number = col_double(),
+                                        trackloss = col_logical(),
+                                        target_look = col_double(),
+                                        distractor_look = col_double()))%>% 
+  select(all_of(selected_cols)) %>% 
+  mutate(testing_location = "Princeton")
+
+pct_msl_keepers <- read_csv("data_frames/pct_msl_keepers.csv") %>% 
+  rename(prof_o = comp_s, prof_eng = comp_e, aoa_en = age_exp_e, aoa_o = age_exp_s) %>% 
+  select(study_id, gender, age_years, study_language, prof_eng, prof_o, aoa_en, aoa_o, child_dom_lang, study_lang_dom, vocab_dom, vocab_non_dom, vocab_total, edu_years, testing_location)
+
+pct_msl_non_keepers <- read_csv("data_frames/pct_msl_non_keepers.csv") %>% 
+  rename(exclusion = reason)
+
+
+# Combine data
+
+combo_cleaned <- rbind(mtl_data_cleaned, pct_data_cleaned)
+
+combo_msl_keepers <- rbind(mtl_msl_keepers, pct_msl_keepers)
+
+combo_msl_non_keepers <- pct_msl_non_keepers %>% 
+  full_join(mtl_msl_non_keepers, by = "exclusion") %>% 
+  replace_na(list(exclusion_n= 0, reason_n = 0)) %>% 
+  mutate(exclusion_n = exclusion_n + reason_n) %>% 
+  select(-reason_n)
+
+#can write this one bc it doesn't change in rest of script - others do
+write_csv(combo_msl_non_keepers, "data_frames/msl_non_keepers.csv")
+
+
+```
+# Analyses collapsed across entire window
+
+## prep data for LT analysis with eyetrackingR package
+
+```{r}
+# make eye-tracking data
+data_gaze <- make_eyetrackingr_data(combo_cleaned,
+                               participant_column = "study_id",
+                               trackloss_column = "trackloss",
+                               time_column = "time_from_zero",
+                               trial_column = "trial_number",
+                               aoi_columns = c("target_look", "distractor_look"),
+                               treat_non_aoi_looks_as_missing = TRUE,
+                               item_columns = "target")
+
+## set time window
+
+response_window <- subset_by_window(data_gaze, 
+                                    # target word began at 0ms in df structure
+                                    # begin window 400ms after (even though 360ms in Swingley, 2012, we want equal time bins for GCA later)
+                                    window_start_time = 400, 
+                                    # end window 2000 ms after target word
+                                    window_end_time = 2000, 
+                                    rezero = FALSE)
+
+## remove trials with > 46.9% of trackloss, which is a min of 750ms of looking out of 1600ms window
+
+response_window_clean <- clean_by_trackloss(data = response_window,
+                                            trial_prop_thresh = .469) 
+
+# get number of trials per subj
+gaze_trial_n <- response_window_clean %>% 
+  group_by(study_id, trial_type, testing_location) %>% 
+  summarize(trial_n = length(unique(trial_number))) %>% 
+  ## filter for participants with at least 2 trials per condition
+  pivot_wider(id_cols = c("study_id", "trial_type", "testing_location"), names_from = trial_type, values_from = trial_n) %>% 
+  filter(Single >= 2 & Mixed >= 2) %>% 
+  pivot_longer(cols = c("Single", "Mixed"), names_to = "trial_type")
+
+write_csv(gaze_trial_n, "data_frames/gaze_trial_n.csv")
+
+## filter clean data for only those who meet trial # criteria
+
+response_window_clean <- response_window_clean %>% 
+  filter(study_id %in% gaze_trial_n$study_id)
+
+write_csv(response_window_clean, here("data_frames/response_window_clean.csv"))
+
+```
+
+### update MSL
+
+``` {r}
+## filter MSL for only those who meet trial # criteria
+
+
+combo_msl_keepers <- combo_msl_keepers %>% 
+  filter(study_id %in% gaze_trial_n$study_id)
+
+write_csv(combo_msl_keepers, "data_frames/msl_keepers.csv")
+
+```
+
+
+
+## By trial type
+
+```{r}
+# base comparison of mixed v single language sentences
+
+## aggregate across the response window for all trials by subject and trial type
+gaze_trial_type <- make_time_window_data(response_window_clean, 
+                                             aois = c("target_look", "distractor_look"),
+                                             predictor_columns = c("trial_type", "study_lang_dom", "trial_number_type", "testing_location"),
+                                             summarize_by = "study_id")
+
+write_csv(gaze_trial_type, "data_frames/gaze_trial_type.csv")
+
+## filter for only looks to target
+
+gaze_target <- gaze_trial_type %>% 
+  filter(AOI == "target_look")
+
+### summarize for each participant
+gaze_target_sum <- gaze_target %>% 
+  group_by(study_id, trial_type, study_lang_dom, testing_location) %>% 
+  summarize(Prop = mean(Prop))
+
+write_csv(gaze_target, "data_frames/gaze_target.csv")
+write_csv(gaze_target_sum, "data_frames/gaze_target_sum.csv")
+
+
+## t-tests comparing target looking to 0.5 (chance)
+
+### single
+gaze_single <- gaze_target_sum %>% 
+  filter(trial_type == "Single")
+
+t.test(gaze_single$Prop, mu = 0.5)
+
+### mixed
+gaze_mixed <- gaze_target_sum %>% 
+  filter(trial_type == "Mixed")
+
+t.test(gaze_mixed$Prop, mu = 0.5)
+```
+
+## By trial type x language dominance
+
+```{r}
+
+## comparison target looking based on trial type and language dominance
+summary(aov(Prop ~ trial_type * study_lang_dom, data = filter(gaze_target_sum)))
+```
+
+## Reliability
+
+```{r}
+# first make data wide - one row/participant, one column/trial. Trial columns by trial number by type (e.g., mixed_1 is first mixed trial even if was 3rd exp trial)
+
+# overall reliability - do kids who do well on one type do well on the other
+reliability_overall <- gaze_target %>% 
+  select(study_id, trial_type, trial_number_type, Prop) %>% 
+  pivot_wider(id_cols = study_id, names_from = c("trial_type", "trial_number_type"), values_from = "Prop") %>% 
+  #remove study_id so only have relevant props for ICC function
+  select(-study_id)
+
+write_csv(reliability_overall, here("data_frames/reliability.csv"))
+
+overall <- ICC(reliability_overall, missing = FALSE, lmer = TRUE)
+#ICC3k = 0.50, 95% CI = [0.26, 0.70]
+#ICC3k for Princeton = 0.40, 95% CI = [-.15,.76]
+#ICC3k for Montreal = .57, 95% CI = [.29, .78]
+
+# reliability per trial type
+
+reliability_single <- reliability_overall %>% 
+  select(starts_with("Single"))
+
+ICC(reliability_single, missing = FALSE, lmer = TRUE)
+#ICC3k = 0.19, 95% CI = [-0.24, 0.51]
+
+reliability_mixed <- reliability_overall %>% 
+  select(starts_with("Mixed"))
+
+ICC(reliability_mixed, missing = FALSE, lmer = TRUE)
+#ICC3k = 0.39, 95% CI = [0.07, 0.64]
+
+# reliability based on difference
+# difference defined as difference between single vs mixed trial with same target
+
+
+
+```
+
+
+# figures
+
+## line graph for individual participants
+```{r}
+
+mean_by_trial <- gaze_target_sum %>% 
+  group_by(trial_type) %>% 
+  summarize(mean = mean(Prop))
+
+ggplot(gaze_target_sum, aes(x = trial_type, y = Prop, color = testing_location)) +
+  geom_point() +
+  geom_line(aes(group = study_id)) +
+  scale_color_manual(values = c("#b2abd2", "#fdb863"), name = "Location") +
+  stat_summary(fun.y = "mean", color = "black", size = 4, geom = "point", alpha = .9) +
+  geom_segment(aes(x = 1, y = mean_by_trial[[1, 2]], xend = 2, yend = mean_by_trial[[2,2]]), color = "black", size = 1) +
+  labs(x = "Trial Type", y = "Proportion Looking to Target") +
+  #scale_x_discrete(labels= c("Code-Switched", "Single Language")) +
+  ylim(0, 1) +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 18),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 18),
+        axis.title.y = element_text(margin = margin(r = 18)))
+
+# # no geographical location
+# 
+# ggplot(gaze_target, aes(x = trial_type, y = Prop)) +
+#   geom_hline(yintercept = 0.5, alpha = 0.5, color = "blue", linetype = "dashed") +
+#   geom_point(size = 2, alpha = 0.3) +
+#   geom_line(aes(group = study_id), alpha = 0.3) +
+#   stat_summary(fun.y = "mean", color = "red", size = 4, geom = "point", alpha = .9) +
+#   geom_segment(aes(x = 1, y = mean_by_trial[[1, 2]], xend = 2, yend = mean_by_trial[[2,2]]), color = "red", size = 1) +
+#   labs(x = "Trial Type", y = "Proportion Looking to Target") +
+#   scale_x_discrete(labels= c("Code-Switched", "Single Language")) +
+#   ylim(0, 1) +
+#   theme(legend.text = element_text(size = 16, color = "white"),
+#         legend.title = element_text(size = 20, color = "white"),
+#         axis.text = element_text(size = 16, color = "white"),
+#         axis.title = element_text(size = 20, color = "white"),
+#         axis.title.y = element_text(margin = margin(r = 18)),
+#         plot.background = element_rect(fill = "transparent", color = NA))
+
+# ggsave("figures/MTL-PCT_line-psychoshorts.png", width = 8.4, height = 6.9, dpi = 500, bg = "transparent")
+```
+
+# Prep data for GCA
+
+```{r}
+## df for gca with analysis windeo from 360ms
+gaze_trial_time_gca <- make_time_sequence_data(response_window_clean,
+                                           time_bin_size = 100,
+                                           aois = c("target_look", "distractor_look"),
+                                           predictor_columns = c("trial_type", "study_lang_dom", "testing_location", "trial_number"),
+                                           summarize_by = "study_id") %>% 
+  #add Time from zero column
+  mutate(time_from_zero = Time - 3000)
+
+write_csv(gaze_trial_time_gca, "data_frames/gaze_trial_time_gca.csv")
+```
+

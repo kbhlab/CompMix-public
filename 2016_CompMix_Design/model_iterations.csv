@@ -1,0 +1,9 @@
+Model,Fixed effects,Random effects
+Base model,Linear time + quadratic time,linear and quadratic time as random slope for participants
+Model 1,Linear time + quadratic time + trial type,linear and quadratic time as random slope for participants
+Model 2,Linear time + quadratic time + trial type + trial type x linear time,linear and quadratic time as random slope for participants
+Model 3,Linear time + quadratic time + trial type + testing location + testing location x trial type,linear and quadratic time as random slope for participants
+Model 4,Linear time + quadratic time + trial type + testing location + testing location x trial type + testing location x linear time term,linear and quadratic time as random slope for participants
+Model 5 (Final model),Linear time + quadratic time + trial type + testing location + testing location x trial type + testing location x linear time term + testing location x quadratic time term,linear and quadratic time as random slope for participants
+Model 6,Linear time + quadratic time + trial type + testing location + testing location x trial type + testing location x linear time term + testing location x quadratic time term + language dominance,linear and quadratic time as random slope for participants
+Model 7,Linear time + quadratic time + trial type + testing location + testing location x trial type + testing location x linear time term + testing location x quadratic time term,linear and quadratic time and trial type as random slope for participants
