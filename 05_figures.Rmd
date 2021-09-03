@@ -19,16 +19,17 @@ library(lme4)
 
 #combined
 
-combo_target <- read_csv(here("data_frames/combo_target.csv")) %>% 
+gaze_target <- read_csv(here("data_frames/gaze_target_sum.csv")) %>% 
   mutate(trial_type = as.factor(trial_type),
-         location = as.factor(location))
-combo_time <- read_csv(here("data_frames/combo_time.csv"))
+         location = as.factor(testing_location))
+combo_time <- read_csv(here("data_frames/gaze_time.csv"))
 
 
   
 # growth curve
-gca <- read_csv(here("data_frames/growth_curve_analysis.csv")) %>% 
-  mutate(trial_type = as.factor(trial_type))
+gca <- read_csv("data_frames/growth_curve_analysis.csv", col_types = cols(study_id = col_character())) %>% 
+  mutate(trial_type = as.factor(trial_type),
+         testing_location = as.factor(testing_location))
 
 contrasts(gca$trial_type) <- contr.sum(2)/2
 ```
@@ -37,18 +38,18 @@ contrasts(gca$trial_type) <- contr.sum(2)/2
 
 # descriptives by trial type
 
-combo_target_des <- combo_target %>% 
+gaze_target_des <- gaze_target %>% 
   group_by(trial_type) %>% 
   summarize(mean = mean(Prop), min = min(Prop), max = max(Prop), sd = sd(Prop))
 
 ## standard visualization
-ggplot(combo_target, aes(x = trial_type, y = Prop, color = location)) +
+ggplot(gaze_target, aes(x = trial_type, y = Prop, color = location)) +
   geom_point() +
   geom_line(aes(group = study_id)) +
   scale_color_manual(values = c("#b2abd2", "#fdb863"), name = "Location") +
   stat_summary(fun.y = "mean", color = "black", size = 4, geom = "point", alpha = .9) +
-  geom_segment(aes(x = 1, y = combo_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
-                                    xend = 2, yend = combo_target_des %>% filter(trial_type == "Single") %>% pull(mean))
+  geom_segment(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
+                                    xend = 2, yend = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean))
                    , color = "black", size = 1) +
   labs(x = "Trial Type", y = "Proportion Looking to Target") +
   scale_x_discrete(labels= c("Code-Switched", "Single Language")) +
@@ -61,12 +62,12 @@ ggplot(combo_target, aes(x = trial_type, y = Prop, color = location)) +
 
 
 ## no color difference for location
-ggplot(combo_target, aes(x = trial_type, y = Prop)) +
+ggplot(gaze_target, aes(x = trial_type, y = Prop)) +
   geom_point(alpha = 0.3) +
   geom_line(aes(group = study_id), alpha= 0.3) +
   stat_summary(fun.y = "mean", color = "red", size = 4, geom = "point", alpha = .9) +
-  geom_segment(aes(x = 1, y = combo_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
-                                    xend = 2, yend = combo_target_des %>% filter(trial_type == "Single") %>% pull(mean))
+  geom_segment(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
+                                    xend = 2, yend = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean))
                    , color = "red", size = 1) +
   labs(x = "Trial Type", y = "Proportion Looking to Target") +
   scale_x_discrete(labels= c("Code-Switched", "Single Language")) +
@@ -79,6 +80,28 @@ ggplot(combo_target, aes(x = trial_type, y = Prop)) +
 
 ggsave(here("figures/line_no-location.png"))
 
+# anonymized
+ggplot(gaze_target, aes(x = trial_type, y = Prop, color = testing_location)) +
+  geom_point() +
+  geom_line(aes(group = study_id)) +
+  scale_color_manual(values = c("#b2abd2", "#fdb863"), name = "Testing Location", labels = c("Location 1", "Location 2")) +
+  # stat_summary(fun.y = "mean", color = "black", size = 4, geom = "point", alpha = .9, na.rm = TRUE) +
+  geom_point(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean)), color = "black", size = 4) +
+    geom_point(aes(x = 2, y = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean)), color = "black", size = 4) +
+  geom_segment(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
+                                    xend = 2, yend = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean))
+                   , color = "black", size = 1) +
+  labs(x = "Trial Type", y = "Proportion Looking to Target") +
+  scale_x_discrete(labels= c("Code-Switched", "Single-Language")) +
+  ylim(0, 1) +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.title.y = element_text(margin = margin(r = 14)))
+
+ggsave(here("figures/line_anon.png"), dpi=300)
+
 ```
 
 
@@ -86,24 +109,44 @@ ggsave(here("figures/line_no-location.png"))
 ```{r growth-curve}
 
 # model 
-gca.m <- lmer(Prop ~ (poly1+poly2) + trial_type + trial_type:poly1 + ((poly1+poly2) || study_id), 
-               data=gca, REML=F)
+gca.m <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + (poly1+poly2  || study_id), data=gca, REML=F)
 
 ## standard visualization
-ggplot(gca, aes(x = Time, y = Prop, color = trial_type)) + 
-  stat_summary(fun.y = "mean", size = 4, geom = "point") +
-  stat_summary(fun.data = "mean_se", geom = "errorbar", aes(width = 0)) + 
-  stat_summary(aes(y=fitted(gca.m)), fun=mean, geom="line", size = .75) +
+gca %>% 
+  filter(Prop != "NaN") %>% 
+ggplot(aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange") + 
+  stat_summary(aes(y=fitted(gca.m)), fun=mean, geom="line") +
   expand_limits(y=c(0.5, 1)) +
-    scale_color_manual(values = c("#1f78b4", "#33a02c"), labels = c("Code-Switched", "Single-Language"), name = "Trial Type") +
-    labs(x = "Time from Noun Onset (ms)", y = "Proportion Looking to Target")  +
-    theme(legend.text = element_text(size = 12),
-          legend.title = element_text(size = 14),
-          axis.text = element_text(size = 12),
-          axis.title = element_text(size = 14),
-          axis.title.y = element_text(margin = margin(r = 14)))
+  scale_color_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Montreal", "Princeton" = "New Jersey")))  
 
 ggsave(here("figures/growth_curve_analysis_abstracts.png"))
+
+
+## anonymized
+gca %>% 
+  filter(Prop != "NaN") %>% 
+ggplot(aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange") + 
+  stat_summary(aes(y=fitted(gca.m)), fun=mean, geom="line") +
+  expand_limits(y=c(0.5, 1)) +
+  scale_color_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Location 1", "Princeton" = "Location 2")))  
+
+ggsave(here("figures/growth_curve_analysis_anon.png"), dpi = 300)
 
 
 
