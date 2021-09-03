@@ -4,27 +4,27 @@ shorttitle        : "Children's code-switching comprehension"
 
 author: 
   - name          : "Lena V. Kremin"
-    affiliation   : "1"
+    affiliation   : "a"
     corresponding : yes    # Define only one corresponding author
     address       : "7141 Sherbrooke St. West, PY-033, Montréal, QC, H4B 1R6"
     email         : "lena.kremin@mail.concordia.com"
   - name          : "Amel Jardak"
-    affiliation   : "1"
+    affiliation   : "a"
   - name          : "Casey Lew-Williams"
-    affiliation   : "2"
+    affiliation   : "b"
   - name          : "Krista Byers-Heinlein"
-    affiliation   : "1"
+    affiliation   : "a"
 
 affiliation:
-  - id            : "1"
+  - id            : "a"
     institution   : "Concordia University"
-  - id            : "2"
+  - id            : "b"
     institution   : "Princeton University"
 
 
   
-keywords          : "keywords"
-wordcount         : "X"
+keywords          : ""
+wordcount         : ""
 
 bibliography      : "CompMix.bib"
 
@@ -383,7 +383,7 @@ gca_ranef <- VarCorr(dom) %>%
 
 dom_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
 
-dom_indent <- list(c(2,3,4,5,6,7,8,9,10,12))
+dom_indent <- list(c(2,3,4,5,6,7,8,9,10,11,13))
 ```
 
 ```{r dom, include = TRUE, results = "asis"}
