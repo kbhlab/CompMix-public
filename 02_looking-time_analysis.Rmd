@@ -112,6 +112,25 @@ response_window <- subset_by_window(data_gaze,
                                     window_end_time = 2000, 
                                     rezero = FALSE)
 
+trackloss_mtl <- response_window %>% 
+  filter(testing_location == "Montreal") %>% 
+  trackloss_analysis() %>% 
+  group_by(study_id, TracklossForParticipant) %>% 
+  summarize(n = n()) %>% 
+  mutate(testing_location = "Montreal")
+
+trackloss_pct <- response_window %>% 
+  filter(testing_location == "Princeton") %>% 
+  trackloss_analysis() %>% 
+  group_by(study_id, TracklossForParticipant) %>% 
+  summarize(n = n())%>% 
+  mutate(testing_location = "Princeton")
+
+trackloss <- rbind(trackloss_mtl, trackloss_pct) %>%
+  select(-n)
+
+write_csv(trackloss, here("data_frames/trackloss.csv"))
+
 ## remove trials with > 46.9% of trackloss, which is a min of 750ms of looking out of 1600ms window
 
 response_window_clean <- clean_by_trackloss(data = response_window,
@@ -160,7 +179,7 @@ write_csv(combo_msl_keepers, "data_frames/msl_keepers.csv")
 ## aggregate across the response window for all trials by subject and trial type
 gaze_trial_type <- make_time_window_data(response_window_clean, 
                                              aois = c("target_look", "distractor_look"),
-                                             predictor_columns = c("trial_type", "study_lang_dom", "trial_number_type", "testing_location"),
+                                             predictor_columns = c("trial_type", "study_lang_dom", "trial_number_type", "testing_location", "edu_years", "vocab_total"),
                                              summarize_by = "study_id")
 
 write_csv(gaze_trial_type, "data_frames/gaze_trial_type.csv")
@@ -172,7 +191,7 @@ gaze_target <- gaze_trial_type %>%
 
 ### summarize for each participant
 gaze_target_sum <- gaze_target %>% 
-  group_by(study_id, trial_type, study_lang_dom, testing_location) %>% 
+  group_by(study_id, trial_type, study_lang_dom, edu_years, vocab_total, testing_location) %>% 
   summarize(Prop = mean(Prop))
 
 write_csv(gaze_target, "data_frames/gaze_target.csv")
@@ -199,7 +218,7 @@ t.test(gaze_mixed$Prop, mu = 0.5)
 ```{r}
 
 ## comparison target looking based on trial type and language dominance
-summary(aov(Prop ~ trial_type * study_lang_dom, data = filter(gaze_target_sum)))
+summary(aov(Prop ~ trial_type * study_lang_dom, data = gaze_target_sum))
 ```
 
 ## Reliability
@@ -295,7 +314,7 @@ ggplot(gaze_target_sum, aes(x = trial_type, y = Prop, color = testing_location))
 gaze_trial_time_gca <- make_time_sequence_data(response_window_clean,
                                            time_bin_size = 100,
                                            aois = c("target_look", "distractor_look"),
-                                           predictor_columns = c("trial_type", "study_lang_dom", "testing_location", "trial_number"),
+                                           predictor_columns = c("trial_type", "study_lang_dom", "testing_location", "trial_number", "edu_years", "vocab_total"),
                                            summarize_by = "study_id") %>% 
   #add Time from zero column
   mutate(time_from_zero = Time - 3000)

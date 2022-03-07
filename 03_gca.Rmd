@@ -31,6 +31,13 @@ msl_keepers <- read_csv("data_frames/msl_keepers.csv")
 gca_df <- read_csv("data_frames/gaze_trial_time_gca.csv", col_types = cols(study_id = col_character()))
 
 
+## gaze target df
+
+gaze_target <- read_csv(here("data_frames/gaze_target_sum.csv")) %>% 
+  mutate(trial_type = as.factor(trial_type),
+         location = as.factor(testing_location))
+
+
 ```
 
 # Growth Curve Analysis
@@ -65,6 +72,7 @@ save(gca, file = here("data_frames/growth_curve_analysis.Rda"))
 
 ## fit models
 
+### base model
 ``` {r}
 
 ## fit base model - linear and quadratic time only
@@ -89,8 +97,10 @@ summary(model_type_slope)
 
 anova(model_type, model_type_slope)
 # doesn't significantly improve model, so remove trial_type:slope
+```
 
-
+### location model
+``` {r}
 # ## add testing location (ME & interaction)
 model_type_location <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + (poly1+poly2  || study_id),
                data=gca, REML=F)
@@ -140,7 +150,109 @@ summary(model_type_location_ran_slope)
 ## quadratic : location - stronger peak?
 ```
 
+### SES model
+``` {r}
+## add SES (ME & interaction)
+model_type_ses <- lmer(Prop ~ (poly1+poly2) + trial_type * edu_years + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(model_type_ses)
+
+anova(model_type, model_type_ses)
+
+## add SES as slope - FINAL SES MODEL
+model_type_ses_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * edu_years + edu_years:poly1 + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(model_type_ses_slope)
+
+anova(model_type_ses, model_type_ses_slope)
+
+## add SES as quadratic
+model_type_ses_quad <- lmer(Prop ~ (poly1+poly2) + trial_type * edu_years + edu_years:poly1 + edu_years:poly2 + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(model_type_ses_quad)
+
+anova(model_type_ses_slope, model_type_ses_quad)
+# almost but not quite significantly improves model
+
+## as trial type as random slope
+model_type_ses_ran_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * edu_years + edu_years:poly1 + ((poly1+poly2) + trial_type  || study_id), data=gca, REML=F)
+summary(model_type_ses_ran_slope)
+#fails to converge
+
+#trying to understand ses x trial type interaction 
+gaze_target_wide <- gaze_target %>% 
+  pivot_wider(id_cols = c("study_id", "edu_years"), names_from = "trial_type", values_from = "Prop") %>% 
+  mutate(diff = Single - Mixed )
+
+
+ggplot(filter(gaze_target, edu_years > 10), aes(x = edu_years, y = Prop, color = testing_location)) +
+  geom_point() + 
+  geom_smooth(method = 'lm') +
+  facet_grid(. ~ trial_type)
+
+```
+### vocab model
+
+```{r}
+# redo model_type to match S's with vocab score (S13 missing)
+model_type_mod <- lmer(Prop ~ (poly1+poly2) + trial_type + (poly1+poly2  || study_id), data= filter(gca, study_id != "S13"), REML=F)
+summary(model_type_mod)
+
+
+## add vocab (ME & interaction) - final vocab model
+## all it says is that performance improves with higher vocab, no interaction w trial type
+model_type_vocab <- lmer(Prop ~ (poly1+poly2) + trial_type * vocab_total + (poly1+poly2  || study_id), data=filter(gca, study_id != "S13"), REML=F)
+summary(model_type_vocab)
+
+anova(model_type_mod, model_type_vocab)
+
+## vocab as slope - fails to converge
+model_type_vocab_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * vocab_total + vocab_total:poly1 + (poly1+poly2  || study_id), data=filter(gca, study_id != "S13"), REML=F)
+summary(model_type_vocab_slope)
+```
+
+### dominance model
+
+```{r}
+## add dominance (ME & interaction) - does not significantly improve model
+model_type_dom <- lmer(Prop ~ (poly1+poly2) + trial_type * study_lang_dom + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(model_type_dom)
+
+anova(model_type, model_type_dom)
+```
+
+
 ## plot model
+
+### base model
+```{r}
+## set up a data frame to predict values for: one row per participant/cond label pair
+newdata_base <- gca %>% 
+  select(study_id, trial_type, Time, testing_location, Prop, poly1, poly2)
+
+newdata_base <- newdata_base %>% 
+  ## get the predicted value for each case
+  mutate(pred = predict(model_type, newdata=newdata_base))
+
+
+ggplot(newdata_base, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange", size = .75) + 
+  stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.75) +
+  expand_limits(y=c(0.5, 1)) +
+  scale_color_manual(labels = c("Code-Switched", "Single Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.title.y = element_text(margin = margin(r = 14)),
+        strip.text.x = element_text(size = 12))
+```
+
+
+### location model
 
 ``` {r}
 ## set up a data frame to predict values for: one row per participant/cond label pair
@@ -189,6 +301,55 @@ ggsave("figures/growth_curve_analysis_bucld.png", width = 11, height = 6.9, dpi 
 
 
 ```
+
+
+### SES model
+
+```{r}
+## set up a data frame to predict values for: one row per participant/cond label pair
+newdata_ses <- gca %>% 
+  select(study_id, trial_type, Time, testing_location, edu_years, Prop, poly1, poly2)
+
+newdata_ses <- newdata_ses %>% 
+  ## get the predicted value for each case
+  mutate(pred = predict(model_type_ses_slope, newdata=newdata_ses))
+
+ggplot(gaze_target, aes(x = edu_years, y = Prop, color = trial_type)) +
+  geom_point() +
+  geom_smooth(method = 'lm')
+
+ses <- newdata_ses %>% 
+  group_by(study_id, testing_location, edu_years) %>% 
+  summarize(n = n()) %>% 
+  group_by(edu_years, testing_location) %>% 
+  summarize(n = n())
+
+ggplot(newdata_ses, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop), fun.data=mean_se, geom="pointrange", size = .5) + 
+  stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.5) +
+  expand_limits(y=c(0.5, 1)) +
+  scale_color_manual(labels = c("Code-Switched", "Single Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  facet_grid(. ~ cut_interval(edu_years, 4), labeller = as_labeller(c(
+    "[4,8.25]" = "4 - 8 years (N = 2)",
+    "(8.25,12.5]" = "9 - 12 years (N = 5)",
+    "(12.5,16.8]" = "13 - 16 years (N = 12)",
+    "(16.8,21]" = "17 - 21 years (N = 11)")))  #+
+    # theme(legend.text = element_text(size = 12),
+    #       legend.title = element_text(size = 14),
+    #       axis.text = element_text(size = 12),
+    #       axis.title = element_text(size = 14),
+    #       axis.title.y = element_text(margin = margin(r = 14)),
+    #       strip.text.x = element_text(size = 12))
+#all kids in lowest two groups are from PCT, 3rd all from MTL, last 7 from MTL, 4 from PCT
+
+```
+
 
 ## Exploratory 
 

@@ -4,25 +4,25 @@ shorttitle        : "Children's code-switching comprehension"
 
 author: 
   - name          : "Lena V. Kremin"
-    affiliation   : "a"
+    affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
     address       : "7141 Sherbrooke St. West, PY-033, Montréal, QC, H4B 1R6"
     email         : "lena.kremin@mail.concordia.com"
     role          : "Formal analysis, Writing -- Original draft, Visualization"
   - name          : "Amel Jardak"
-    affiliation   : "a"
+    affiliation   : "1"
     role          : "Conceptualization, Methodology, Formal analysis, Investigation, Writing -- Original Draft"
   - name          : "Casey Lew-Williams"
-    affiliation   : "b"
+    affiliation   : "2"
     role          : "Conceptualization, Methodology, Writing -- Review & Editing, Supervision, Project administration, Funding acquisition"
   - name          : "Krista Byers-Heinlein"
-    affiliation   : "a"
+    affiliation   : "1"
     role          : "Conceptualization, Methodology, Writing -- Review & Editing, Supervision, Project administration, Funding acquisition"
 
 affiliation:
-  - id            : "a"
+  - id            : "1"
     institution   : "Concordia University, 7141 Sherbrooke St. West, PY-033, Montréal, QC, H4B 1R6, Canada"
-  - id            : "b"
+  - id            : "2"
     institution   : "Princeton University, 216 Peretsman Scully Hall, Princeton, NJ, 08540, USA"
 
 authornote: |
@@ -30,10 +30,10 @@ authornote: |
 
 
 abstract: |
-  Bilingual children hear sentences that contain words from both languages, also known as code-switching. Investigating how bilinguals process code-switching is a crucial component in understanding bilingual language acquisition, because young bilinguals experience processing costs and reduced comprehension when encountering code-switched nouns. Studies have yet to investigate if processing costs are present when children encounter code-switches at other parts of speech within a sentence. The current study examined how 30 young bilinguals (age range: 37 – 48 months) process sentences with code-switches at an uninformative adjective before the target noun (e.g., “Can you find *le bon* [the good] duck ?) compared to single-language sentences (e.g., “Can you find the good duck?”). Surprisingly, bilingual children accurately identified the target object in both sentence types, contrasting with previous findings that sentences containing code-switching lead to processing difficulties. The functional information a code-switch carries may contribute to bilingual children’s sentence processing.
+  Bilingual children regularly hear sentences that contain words from both languages, also known as code-switching. Investigating how bilinguals process code-switching is a crucial component in understanding bilingual language acquisition, because young bilinguals experience processing costs and reduced comprehension when encountering code-switched nouns. Studies have yet to investigate if processing costs are present when children encounter code-switches at other parts of speech within a sentence. The current study examined how 30 young bilinguals (age range: 37 – 48 months) processed sentences with code-switches at an uninformative determiner-adjective pair before the target noun (e.g., “Can you find *le bon* [the good] duck?) compared to single-language sentences (e.g., “Can you find the good duck?”). Surprisingly, bilingual children accurately identified the target object in both sentence types, contrasting with previous findings that sentences containing code-switching lead to processing difficulties. We conclude that the functional information conveyed by a code-switch may contribute to bilingual children’s sentence processing.
   
 keywords          : "code-switching, bilingualism, language processing, language acquisition"
-wordcount         : "7,174"
+wordcount         : "XXXX"
 
 bibliography      : "CompMix.bib"
 
@@ -71,6 +71,7 @@ library(flextable)
 library(officer)
 library(psych)
 library(knitr)
+library(broom.mixed)
 ```
 
 ```{r load-data}
@@ -96,51 +97,54 @@ lang_exp <- msl_keepers %>%
 # growth curve
 gca <- read_csv("data_frames/growth_curve_analysis.csv", col_types = cols(study_id = col_character())) %>% 
   mutate(trial_type = as.factor(trial_type),
-         testing_location = as.factor(testing_location))
+         testing_location = as.factor(testing_location),
+         study_lang_dom = as.factor(study_lang_dom))
 
 contrasts(gca$trial_type) <- contr.helmert(2)/2
 contrasts(gca$testing_location) <- contr.helmert(2)/2
-#contrasts(gca$study_lang_dom) <- contr.helmert(2)/2
+contrasts(gca$study_lang_dom) <- contr.helmert(2)/2
 
 #reliability
 reliability <- read_csv(here("data_frames/reliability.csv"))
 ```
 
-# Introduction
+# 1. Introduction
 
-Bilingual children can hear both of their languages within a single conversation and even within a single sentence (e.g., *C’est un* [fr. It’s a] monkey.). This phenomenon is known as code-switching. Most bilingual children hear code-switching in their daily lives [@kremin_etal2021], and there is some evidence that over time code-switching may impact a child’s vocabulary size [@bail_etal2015; @byers-heinlein2013] and overall language development [@kaushanskaya_crespo2019]. Code-switching can also reduce a child’s comprehension in the moment as they process speech [@byers-heinlein_etal2017; @morini_newman2019; @potter_etal2019]. To date, research on children’s comprehension of code-switching has focused on code-switches at a noun (e.g., “*Dónde está la* [sp. where’s the] ball?”), even though everyday code-switching happens at many different parts of speech, such as verbs, prepositions, and adjectives [e.g., “*C’est* [fr. It is] yucky.”\; @macswan2012]. Here, we extend previous findings with nouns and investigate how code-switching at an adjective affects bilingual children’s language comprehension.
+Bilingual children regularly hear both of their languages within a single conversation and even within a single sentence (e.g., *C’est un* [fr. It’s a] monkey.). This phenomenon is known as code-switching. Most bilingual children hear code-switching in their daily lives [@kremin_etal2021], and there is some evidence that over time code-switching may impact a child’s vocabulary size [@bail_etal2015; @byers-heinlein2013] and overall language development [@kaushanskaya_crespo2019]. Code-switching can also reduce a child’s comprehension in the moment as they process speech [@byers-heinlein_etal2017; @morini_newman2019; @potter_etal2019]. To date, research on children’s comprehension of code-switching has focused on code-switches at a noun (e.g., “*Dónde está la* [sp. where’s the] ball?”), even though everyday code-switching happens at many different parts of speech, such as verbs, prepositions, and adjectives [e.g., “*C’est* [fr. It is] yucky.”\; @macswan2012]. Here, we extend previous findings with nouns and investigate how code-switching at a mid-sentence determiner-adjective pair affects bilingual children’s language comprehension.
 
-A large body of literature has reported that bilingual adults process code-switches more slowly than single-language stimuli [for recent reviews see @beatty-martinez_etal2018; @valdeskroff_etal2018; @vanhell_etal2018], but researchers have only recently begun to study how young children process code-switches. One eye-tracking study indicates that children process code-switches differently depending on whether the switch happens between sentences or within a single sentence. When hearing between-sentence code-switching (e.g., “That one looks fun! *Le chien* [fr. the dog]!”), 1.5- to 2-year-old children were as accurate at identifying the target object as they were when hearing a single language [e.g., “That one looks fun! The dog!”\; @byers-heinlein_etal2017]. However, when hearing within-sentence code-switching (e.g., “Look! Find the *chien* [fr. dog]!”), children were less accurate at identifying the target object compared to hearing a single language [e.g., “Look! Find the dog!”\; @byers-heinlein_etal2017; @morini_newman2019]. Such studies with young children have focused solely on code-switches at the noun, so they do not address the potential impact of code-switching at other parts of speech. This limitation makes it impossible to draw generalized conclusions about how code-switching may or may not affect comprehension. Children may process code-switching at different parts of speech more readily depending on several factors, such as how often children hear code-switching in that location or what functional information is contained in the code-switched word(s). Evaluating children’s comprehension of code-switching at different parts of speech will allow us to adjudicate between two general accounts of what makes code-switching difficult to process, which we describe as the frequency account and the functional account.
+A large body of literature has reported that bilingual adults process code-switches more slowly than single-language stimuli [for recent reviews see @beatty-martinez_etal2018; @valdeskroff_etal2018; @vanhell_etal2018], but researchers have only recently begun to study how young children process code-switches. One eye-tracking study indicated that children process code-switches differently depending on whether the switch happens between sentences or within a single sentence. When hearing between-sentence code-switching (e.g., “That one looks fun! *Le chien* [fr. the dog]!”), 1.5- to 2-year-old children were as accurate at identifying the target object as they were when hearing a single language [e.g., “That one looks fun! The dog!”\; @byers-heinlein_etal2017]. However, when hearing within-sentence code-switching (e.g., “Look! Find the *chien* [fr. dog]!”), children were less accurate at identifying the target object compared to hearing a single language [e.g., “Look! Find the dog!”\; @byers-heinlein_etal2017; @morini_newman2019]. Such studies with young children have focused solely on code-switches at the noun, so they do not address the potential impact of code-switching at other parts of speech. This limitation makes it impossible to draw generalized conclusions about how code-switching may or may not affect comprehension. Children may process code-switching at different parts of speech more readily depending on several factors, such as how often children hear code-switching in that location or what functional information is contained in the code-switched word(s). Evaluating children’s comprehension of code-switching at different parts of speech will allow us to adjudicate between two general accounts of what makes code-switching difficult to process, which we describe as the frequency account and the functional account.
 
-## Frequency account
+## 1.1. Frequency account
 
 The frequency account posits that how easily bilinguals process a code-switch depends on how frequently that type of code-switched construction occurs in their everyday life [e.g., @abutalebi_etal2007; @guzzardotamargo_etal2016]. This account predicts that frequent code-switched constructions will be more easily processed than infrequent code-switched constructions. For example, in one study, Spanish--English bilingual adults more readily processed a common code-switch that included an entire compound verb (e.g., “*los senadores* [sp. the senators] **have requested** the funds”) than an uncommon code-switch that occurred in the middle of the compound verb [e.g., “*los senadores* ***han*** [sp. the senators **have**] **requested** the funds”\; @valdeskroff_etal2018]. Similarly, Welsh--English bilingual adults judged code-switching at common parts of speech, such as nouns, to be more acceptable than code-switching at uncommon parts of speech, such as adjectives [@vaughan-evans_etal2020]. The frequency account could also predict differences in comprehension between bilingual populations if they hear different rates of code-switching in their daily lives [@valdeskroff_etal2018; @gosselin_sabourin2021].
 
-If frequency is indeed an important factor in how bilingual adults process code-switching, its importance could also extend to children’s processing. Under the frequency account, children would be expected to have more difficulty understanding code-switching at infrequently code-switched parts of speech, such as adjectives, than at more frequently code-switched parts of speech, such as nouns. This account could explain existing findings on children’s processing of code-switching. Children hear fewer within-sentence code-switches than between-sentence code-switches from their parents [@bail_etal2015; @kremin_etal2021], so the frequency account is consistent with the finding that children experience difficulties when processing within-sentence code-switches compared to between-sentence code-switches [@byers-heinlein_etal2017; @morini_newman2019]. When children do hear within-sentence code-switching, it often occurs at a noun [@bail_etal2015]. Thus, if within-sentence code-switches at a relatively common location for code-switching (i.e., the noun) disrupt children’s processing, then within-sentence code-switches at an uncommon location should be even more disruptive.
+If frequency is indeed an important factor in how bilingual adults process code-switching, its importance could also extend to children’s processing. Under the frequency account, children would be expected to understand code-switching at frequently code-switched parts of speech, such as nouns, more easily than  at infrequently code-switched parts of speech, such as adjectives. This account could explain existing findings about children’s processing of code-switching. Children hear more between-sentence code-switches than within-sentence code-switches from their parents [@bail_etal2015; @kremin_etal2021], so the frequency account is consistent with the experimental finding that children more easily process between-sentence code-switches compared to within-sentence code-switches [@byers-heinlein_etal2017; @morini_newman2019]. When children do hear within-sentence code-switching, it often occurs at a noun [@bail_etal2015]. Thus, if within-sentence code-switches at a relatively common location for code-switching (i.e., the noun) disrupt children’s processing, then within-sentence code-switches at an uncommon location should be even more disruptive.
 
-## Functional account
+## 1.2. Functional account
 
-The functional account proposes that bilinguals process code-switches differently based on the functional properties of the code-switched word(s), including grammatical properties. While prior research has investigated a variety of functions of code-switching in production – such as adding emphasis, signaling community identity, and facilitating understanding [@nilep2006; @goodz1989; @heredia_altarriba2001] – comprehension studies have mainly focused on the functional dimension of grammatical class. One study of German--Russian bilingual adults used event-related potentials (ERPs) to examine the processing of code-switches at open-class words (e.g., nouns) versus closed-class words (e.g., prepositions). While code-switches at both nouns and prepositions elicited a broad late positivity, only code-switches at prepositions elicited a broad early negativity, suggesting that bilinguals process code-switches differently based on their grammatical function [@zeller2020]. Another ERP study compared how bilinguals processed code-switching at two types of open-class words: nouns and verbs. When reading a story, Spanish--English bilingual adults processed code-switching at nouns (e.g., “the wind and the *sol* [sp. sun]”) differently than code-switching at verbs (e.g., “they *miraron* [sp. saw] a traveler”) as indicated by larger N400 responses and an early Late Positive Component for nouns [@ng_etal2014]. The authors proposed that the difference was driven by the effort bilinguals put into integrating and remembering the information contained in each code-switch: nouns are likely to be referenced several times in a story and need to be held in working memory, thus eliciting more cognitive effort compared to verbs that may only be used once [@ng_etal2014]. Combined, these results highlight that bilinguals may be sensitive to the functional role of the code-switched words and process them accordingly. 
+The functional account proposes that bilinguals process code-switches differently based on the functional properties of the code-switched word(s), including grammatical properties. While prior research has investigated a variety of functions of code-switching in production – such as adding emphasis, signaling community identity, and facilitating understanding [@nilep2006; @goodz1989; @heredia_altarriba2001] – comprehension studies have mainly focused on the functional dimension of grammatical class. One study of German--Russian bilingual adults used event-related potentials (ERPs) to examine the processing of code-switches at open-class words (e.g., nouns) versus closed-class words (e.g., prepositions). While code-switches at both nouns and prepositions elicited a broad late positivity, only code-switches at prepositions elicited a broad early negativity, suggesting that bilinguals process code-switches differently based on their grammatical function [@zeller2020]. Another ERP study [@ng_etal2014] compared how bilinguals processed code-switching at two types of open-class words: nouns and verbs. When reading a story, Spanish--English bilingual adults processed code-switching at nouns (e.g., “the wind and the *sol* [sp. sun]”) differently than code-switching at verbs (e.g., “they *miraron* [sp. saw] a traveler”) as indicated by larger N400 responses and an early Late Positive Component for nouns. The authors proposed that the difference was driven by the effort bilinguals put into integrating and remembering the information contained in each code-switch. That is, nouns are likely to be referenced several times in a story and need to be held in working memory, thus eliciting more cognitive effort compared to verbs that may only be used once. Combined, these results highlight that bilinguals may be sensitive to the functional role of the code-switched words and process them accordingly. 
 
-Research has yet to investigate how bilingual children process code-switches with diverse functional or grammatical roles, but evidence from monolinguals shows that children are sensitive to some grammatical classes beginning around 8 months of age [@marino_etal2020]. Moreover, by age 3, children use the meaning of adjectives to predict which noun they refer to [e.g., predicting “heavy” is more likely to be followed by “stone” than “butterfly”\; @tribushinina_mak2016]. Additionally, monolingual children as young as 2 years old can recognize, but “listen through,” uninformative adjectives to quickly and correctly identify a target noun. For example, when shown a picture of a dog and a bunny, children identified the target object as quickly when it was preceded by an uninformative adjective [e.g., “Where’s the good bunny?”) as when it was not preceded by any adjective (e.g., “Where’s the bunny?”\; @thorpe_fernald2006]. These results show that young children can attend to the most relevant grammatical information to efficiently process speech. 
+Research has yet to investigate how bilingual children process code-switches with diverse functional or grammatical roles, but evidence from monolinguals shows that children are sensitive to some grammatical classes beginning around 8 months of age [@marino_etal2020]. Moreover, by age 3, children use the meaning of adjectives to predict which noun they refer to [e.g., predicting “heavy” is more likely to be followed by “stone” than “butterfly”\; @tribushinina_mak2016]. Additionally, monolingual children as young as 2 years old can recognize, but “listen through,” uninformative adjectives to quickly and correctly identify a target noun [@thorpe_fernald2006]. For example, when shown a picture of a dog and a bunny, children identified the target object as quickly when it was preceded by an uninformative adjective [e.g., “Where’s the good bunny?”) as when it was not preceded by any adjective (e.g., “Where’s the bunny?”). These results show that young children can attend to the most relevant functional information to efficiently process speech. 
 
-Following a functional account, code-switching may be particularly challenging for children to understand in a comprehension task when they need to process and retain the meaning of the code-switch, for example to identify a target noun. This idea is supported by previous research which has found that children experience difficulty in understanding functionally-important code-switched nouns [@byers-heinlein_etal2017; @morini_newman2019]. In contrast, code-switches at parts of speech that play a limited functional role in a comprehension task may be relatively easy for children to process, and code-switches that are uninformative to the task may not elicit any processing difficulties. However, to date, children’s comprehension of these types of code-switches has not yet been investigated; thus there is a lack of empirical evidence for the functional account with children.
+Following the functional account, code-switching that occurs at a word that is central to the meaning of the sentence may be particularly challenging for children to process. In many cases, this will be a noun, but in other cases it could be a verb, adjective, or other part of speech. This idea is supported by previous research finding that children experience difficulty in understanding functionally-important code-switched nouns [@byers-heinlein_etal2017; @morini_newman2019]. In contrast, code-switches at parts of speech that play a limited functional role in comprehension may be relatively easy for children to process, and code-switches that are uninformative in a comprehension task may not elicit any processing difficulties. However, to date, children’s comprehension of code-switches at words with limited functional meaning has not yet been investigated; thus there is a lack of empirical evidence for the functional account with children.
 
-## Current Study
+## 1.3. Current Study
 
-In the current study, we asked if code-switching within a sentence at an uninformative adjective affects children’s comprehension of a target noun that immediately follows it. Children viewed pairs of pictures, such as a duck and a fish, and heard sentences such as “Can you find *le bon* [fr. the good] duck?” or “Can you see *el buen* [sp. the good] duck?” Participants were 30 3-year-old bilinguals, including both French--English bilingual children in Montreal (*n* = 19) and Spanish--English children in New Jersey (*n* = 11). We combined data from these two testing locations to increase sample size, as bilingual children are a difficult-to-recruit populations. This is in line with various sampling strategies in the field of early bilingualism which range from testing homogeneous populations (e.g., all acquiring English and French) to testing heterogeneous populations [e.g., all acquiring English and a variety of other languages\; @byers-heinlein2015]. Assessing the effects of code-switching at adjectives was appropriate in our sample, because children of this age can generally understand their meaning [@tribushinina_mak2016], and because certain adjectives can occur in the same prenominal position across the languages spoken by our participants (i.e., English, French, and Spanish). Code-switching at an uninformative adjective also allows us to compare the competing predictions of the frequency and functional accounts. The frequency account predicts that children will show disrupted processing of a code-switch at an adjective, because it is not a common location for code-switching. This could result in weaker comprehension of the following noun, as processing difficulties earlier in the sentence can negatively affect how children process the end of the same sentence [@trueswell_etal1999]. In contrast, the functional account predicts that children may find it relatively easy to process a code-switch at an uninformative adjective as they do not necessarily have to attend to or remember its meaning in the context of the visual scene.  
+In the current study, we asked if code-switching within a sentence at an uninformative determiner-adjective pair (which we will hereafter refer to as an uninformative adjective) affects children’s comprehension of a target noun that immediately follows it. This allowed us to compare the competing predictions of the frequency and functional accounts. The frequency account predicts that children will show disrupted processing of a code-switch at an adjective, because it is not a common location for code-switching. This could result in weaker comprehension of the following noun, as processing difficulties earlier in the sentence can negatively affect how children process the end of the same sentence [@trueswell_etal1999]. In contrast, the functional account predicts that children may find it relatively easy to process a code-switch at an uninformative adjective as they do not necessarily have to attend to or remember its meaning in the context of the visual scene.
 
-Similar to previous studies on children’s processing of code-switching [@byers-heinlein_etal2017; @morini_newman2019; @potter_etal2019], we expected that code-switching at an uninformative adjective would hinder children’s comprehension of the target noun compared to sentences without code-switching. Specifically, we predicted that children would look less towards the target noun after hearing mid-sentence code-switching compared to hearing a sentence entirely in one language. Such a result would be consistent with the frequency account. In contrast, a finding that children’s performance was unaffected by an uninformative code-switched adjective would support the functional account. We did not predict any differences between the bilinguals at each testing location, given that previous studies have shown similar performance across the two populations in other code-switching tasks [@byers-heinlein_etal2017; @potter_etal2019].
+Children viewed pairs of pictures of animals, such as a duck and a fish, and heard sentences such as “Can you find *le bon* [fr. the good] duck?” or “Can you see *el buen* [sp. the good] duck?” In trials, both animals were equally consistent with the adjective (e.g., both were depicted as equally “good”). Participants were 30 3-year-old bilinguals, including both French--English bilingual children in Montreal (*n* = 19) and Spanish--English children in New Jersey (*n* = 11). We included participants from these two testing locations to increase sample size, as bilingual children are a difficult-to-recruit population. This is in line with various sampling strategies in the field of early bilingualism which range from testing homogeneous populations (e.g., all acquiring English and French) to testing heterogeneous populations [e.g., all acquiring English and a variety of other languages\; @byers-heinlein2015]. Assessing the effects of code-switching at adjectives was appropriate in our sample, because children of this age can generally understand their meaning [@tribushinina_mak2016], and because certain adjectives can occur in the same prenominal position across the languages being acquired by our participants (i.e., English, French, and Spanish). 
 
-# Methods
+Similar to previous studies on children’s processing of code-switching [@byers-heinlein_etal2017; @morini_newman2019; @potter_etal2019], we expected that code-switching at an uninformative adjective would hinder children’s comprehension of the target noun compared to sentences without code-switching. Specifically, we predicted that children would look less towards the target noun after hearing mid-sentence code-switching compared to hearing a sentence entirely in one language. Such a result would be consistent with the frequency account. In contrast, a finding that children’s performance was unaffected by an uninformative code-switched adjective would support the functional account. We also explored whether individual differences such as language dominance, testing location (as a proxy for language pair), SES, or vocabulary size would be related to performance.
+
+# 2. Methods
 
 Data collection occurred in two locations: Montreal, Canada and New Jersey, USA. The methods were approved by the Concordia University Human Research Ethics Committee ("Monolingual and Bilingual Language Development"; approval \#10000493) and the Princeton University Institutional Review Board ("Language learning and Communication"; approval \#7117), and parents provided informed consent prior to their child's participation. Data were collected in Montreal between November 2016 and April 2017 and in New Jersey between March 2017 and January 2018. Final data analysis occurred between May 2020 and June 2021, during the COVID-19 pandemic. As is common in laboratories testing hard-to-recruit populations such as bilingual children, children participated in a second, separate study, either immediately prior to or following participation in this study (the order of the two studies was counterbalanced). The results of that study are reported in a separate manuscript [@byers-heinlein_etal2021a]. All stimuli, data, and analysis scripts for the current study are available via the Open Science Framework at [https://osf.io/ecqwr/](https://osf.io/ecqwr/).
 
-## Participants
+## 2.1. Participants
 
 A total of `r nrow(msl_keepers)` 3-year-old (*M* = `r round(mean(msl_keepers$age_years), digits = 2)`, range = `r round(min(msl_keepers$age_years), digits = 2)` -- `r round(max(msl_keepers$age_years), digits = 2)`, `r nrow(filter(msl_keepers, gender == "female"))` females) full-term, healthy bilingual children participated in this study. This sample size was sufficiently sensitive to detect an effect size of *d* = 0.46 at 80% power in a paired-samples *t*-test, meaning there were enough participants to detect effect sizes reported in previous related studies (0.56 in Byers-Heinlein et al., 2017, 0.60 in Potter et al., 2019).
 
-`r msl_keepers %>% filter(testing_location == "Montreal") %>% nrow() %>% printnum(numerals = FALSE, capitalize = TRUE, zero_string = "no", na_string = getOption("papaja.na_string"))` French--English bilinguals were tested in Montreal, and `r msl_keepers %>% filter(testing_location == "Princeton") %>% nrow()` Spanish--English bilinguals were tested in New Jersey. In Montreal, children were recruited from a database of families interested in participating in our research, principally identified via government birth lists. In New Jersey, children were primarily recruited from nonprofit organizations. Another `r sum(msl_non_keepers$exclusion_n)` children were tested but not included in the final sample due to not meeting the language criteria (*n* = `r msl_non_keepers[4,2]`; see details below), fussiness or lack of attention (*n* = `r msl_non_keepers[1,2] + msl_non_keepers[3,2]`), technical issues (*n* = `r msl_non_keepers[6,2]`), health reasons such as low birth weight or gestation period under 37 weeks (*n* = `r msl_non_keepers[7,2]`), completing an insufficient number of trials (*n* = `r msl_non_keepers[2,2]`; see below), or having a speech delay or disorder (*n* = `r msl_non_keepers[5,2]`). Post-hoc data exclusion resulted in the unbalanced sample between the two locations. Unfortunately, because this discrepancy did not become clear until the time of data analysis, which occured during the COVID-19 pandemic, we were unable to test additional participants to address this difference.
+`r msl_keepers %>% filter(testing_location == "Montreal") %>% nrow() %>% printnum(numerals = FALSE, capitalize = TRUE, zero_string = "no", na_string = getOption("papaja.na_string"))` French--English bilinguals were tested in Montreal, Canada, and `r msl_keepers %>% filter(testing_location == "Princeton") %>% nrow()` Spanish--English bilinguals were tested in New Jersey, USA. In Montreal, children were recruited from a database of families interested in participating in our research, principally identified via government birth lists. In New Jersey, children were primarily recruited from nonprofit organizations. Another `r sum(msl_non_keepers$exclusion_n)` children were tested but not included in the final sample due to not meeting the language criteria (*n* = `r msl_non_keepers[4,2]`; see details below), fussiness or lack of attention (*n* = `r msl_non_keepers[1,2] + msl_non_keepers[3,2]`), technical issues (*n* = `r msl_non_keepers[6,2]`), health reasons such as low birth weight or gestation period under 37 weeks (*n* = `r msl_non_keepers[7,2]`), completing an insufficient number of trials (*n* = `r msl_non_keepers[2,2]`; see below), or having a reported speech delay or disorder (*n* = `r msl_non_keepers[5,2]`). Post-hoc data exclusion resulted in the unbalanced sample between the two locations. Unfortunately, because this discrepancy did not become clear until the time of data analysis, which occured during the COVID-19 pandemic, we were unable to test additional participants to address this difference.
 
 Children's language background and proficiency was assessed via a modified version of the Language Experience and Proficiency Questionnaire [LEAP-Q\; @marian_etal2007]. Parents were asked about their child's experience with the languages they were exposed to, and to rate their child's proficiency in English and French (in Montreal) or in English and Spanish (in New Jersey) compared to monolingual children of the same age. Following a pre-determined inclusion criterion, children had to receive a comprehension score of at least 7/10 for both languages to be eligible for the study. For each child, their dominant language was established as the language that had the highest comprehension score from the LEAP-Q. `r msl_keepers %>% filter(prof_eng == prof_o) %>% nrow() %>% printnum(numerals = FALSE, capitalize = TRUE, zero_string = "no", na_string = getOption("papaja.na_string"))` children had equal comprehension scores in both languages, so for these children, the language in which the child had the higher productive vocabulary score (see below) was considered their dominant language. In total, `r nrow(filter(msl_keepers, child_dom_lang == "English"))` children were dominant in English, `r nrow(filter(msl_keepers, child_dom_lang == "French"))` were dominant in French, and `r nrow(filter(msl_keepers, child_dom_lang == "Spanish"))` were dominant in Spanish. `r msl_keepers %>% filter(aoa_en == 0 & aoa_o == 0) %>% nrow() %>% printnum(numerals = FALSE, capitalize = TRUE, zero_string = "no", na_string = getOption("papaja.na_string"))` children were regularly exposed to both of their languages from birth, and `r nrow(filter(msl_keepers, aoa_en != 0 | aoa_o != 0))` children were exposed to their second language later in life, between the ages of `r lang_exp %>% summarize(min_aoa = min(min_aoa)) %>% pull(min_aoa)` and `r lang_exp %>% summarize(max_aoa = max(max_aoa)) %>% pull(max_aoa)` months. See Table \@ref(tab:participant-table) for additional information by testing location.
 
@@ -148,29 +152,32 @@ Children's language background and proficiency was assessed via a modified versi
 
 participant_table <- msl_keepers %>% 
   group_by(testing_location) %>% 
-  summarize(`Total *N*` = n(),
+  summarize(`Total *n*` = n(),
             age = round(mean(age_years), digits = 2),
             age_min = round(min(age_years), digits = 2),
             age_max = round(max(age_years), digits = 2),
-            `English dominant (*N*)` = sum(child_dom_lang == "English"),
-            `L2 exposure from birth (*N*)` = sum(aoa_en == 0 & aoa_o == 0),
+            `English dominant (*n*)` = sum(child_dom_lang == "English"),
+            `L2 exposure from birth (*n*)` = sum(aoa_en == 0 & aoa_o == 0),
             dom_mean = round(mean(vocab_dom, na.rm=T), digits = 2),
             dom_sd = round(sd(vocab_dom, na.rm=T), digits = 2),
             non_mean = round(mean(vocab_non_dom, na.rm=T), digits = 2),
             non_sd = round(sd(vocab_non_dom, na.rm=T), digits = 2),
+            ses_mean = round(mean(edu_years, na.rm=T), digits = 2),
+            ses_sd = round(sd(edu_years, na.rm=T), digits = 2)
             ) %>% 
   left_join(lang_exp, by = "testing_location") %>% 
   mutate(`Mean age in years (range)` = paste(age, " (", age_min, " -- ", age_max, ")", sep = ""),
          `Dominant Language Vocabulary (*SD*)` = paste(dom_mean, " (", dom_sd, ")", sep = ""),
          `Non-Dominant Language Vocabulary (*SD*)` = paste(non_mean, " (", non_sd, ")", sep = ""),
-         `Later L2 exposure (age range in months)` = paste(min_aoa, max_aoa, sep = " -- ")) %>% 
-  select(testing_location, `Total *N*`, `Mean age in years (range)`, `English dominant (*N*)`, `L2 exposure from birth (*N*)`, `Later L2 exposure (age range in months)`, `Dominant Language Vocabulary (*SD*)`, `Non-Dominant Language Vocabulary (*SD*)`) %>% 
+         `Later L2 exposure (age range in months)` = paste(min_aoa, max_aoa, sep = " -- "),
+         `Parental education (*SD*)` = paste(ses_mean, " (", ses_sd, ")", sep = "")) %>% 
+  select(testing_location, `Total *n*`, `Mean age in years (range)`, `English dominant (*n*)`, `L2 exposure from birth (*n*)`, `Later L2 exposure (age range in months)`, `Dominant Language Vocabulary (*SD*)`, `Non-Dominant Language Vocabulary (*SD*)`, `Parental education (*SD*)`) %>% 
   rename(`Testing Location` = testing_location)
 
 # Change "Princeton" to "New Jersey"
 participant_table[participant_table$`Testing Location` == "Princeton", "Testing Location"] <- "New Jersey"
 
-apa_table(participant_table, caption = "Demographics of participants at each testing location.", note = "English dominant (*N*) lists the number of children at each testing location who were dominant in English; the remainder of children were dominant in either French if tested in Montreal or Spanish if tested in New Jersey. Later L2 exposure (age range in months) only considers participants who were not exposed to both languages from birth.")  
+apa_table(participant_table, caption = "Demographics of participants at each testing location.", note = "English dominant (*n*) lists the number of children at each testing location who were dominant in English; the remainder of children were dominant in either French if tested in Montreal or Spanish if tested in New Jersey. Later L2 exposure (age range in months) only considers participants who were not exposed to both languages from birth.")  
 
 ```
 
@@ -191,19 +198,19 @@ mtl_pct_t_vocab <- t.test(filter(msl_keepers, testing_location == "Princeton")$v
 
 ```
 
-Children's productive vocabulary size in English was assessed using the Developmental Vocabulary Assessment for Parents [DVAP\; @libertus_etal2015], which consisted of a checklist of words known by children aged 2 to 18 years old based on words used in the Peabody Picture Vocabulary Test [PPVT\; @dunn_dunn2007]. We used a parent checklist rather than a direct measure to reduce children’s fatigue, as each child participated in two experiments, and we wished to assess their vocabulary in both languages. Moreover, the DVAP has shown strong convergent validity with children's performance on the PPVT [$\beta$ = .69\; @libertus_etal2015]. To assess children's productive vocabulary size in French or Spanish, we adapted a checklist similar to the DVAP, based on words used in the adaptation of the PPVT for Quebec French [Échelle de Vocabulaire en Images Peabody\; @dunn_etal1993] or Spanish [Test de Vocabulario en Imagenes Peabody\; @dunn_etal1986]. The words are ordered from easy (e.g., "boy", "chair") to hard (e.g., "honing", "angler"), and parents were asked to indicate which words their child could say. A parent or other adult that was familiar with the child's vocabulary in a particular language filled out the form for that language. In some cases, the forms for each language were completed by different parents who  normally interacted with their child in that language, while in other cases it was one parent who filled out both forms if they used both languages with their child. As expected, the number of words children produced in their dominant language (*M* = `r msl_keepers %$% mean(vocab_dom, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %$% sd(vocab_dom, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %$% min(vocab_dom, na.rm = TRUE) %>% round(digits = 0)` -- `r msl_keepers %$% max(vocab_dom, na.rm = TRUE) %>% round(digits = 0)`) was greater than the number of words they produced in their non-dominant language (*M* = `r msl_keepers %$% mean(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %$% sd(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %$% min(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)` -- `r msl_keepers %$% max(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)`), `r apa_print(t_vocab)$statistic`, `r apa_print(t_vocab)$estimate`. When combining the number of words produced in both languages, on average, children produced `r msl_keepers %$% mean(vocab_total, na.rm = TRUE) %>% round(digits = 0)` total words (*SD* = `r msl_keepers %$% sd(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %$% min(vocab_total, na.rm = TRUE) %>% round(digits = 0)` -- `r msl_keepers %$% max(vocab_total, na.rm = TRUE) %>% round(digits = 0)`). Children in Montreal (*M* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% mean(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% sd(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %>% filter(testing_location == "Montreal") %$% min(vocab_total, na.rm = TRUE)` -- `r msl_keepers %>% filter(testing_location == "Montreal") %$% max(vocab_total, na.rm = TRUE)`) produced more words than those in New Jersey (*M* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% mean(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% sd(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %>% filter(testing_location == "Princeton") %$% min(vocab_total, na.rm = TRUE)` -- `r msl_keepers %>% filter(testing_location == "Princeton") %$% max(vocab_total, na.rm = TRUE)`), `r apa_print(mtl_pct_t_vocab)$statistic`, `r apa_print(mtl_pct_t_vocab)$estimate`.
+Children's productive vocabulary size in English was assessed using the Developmental Vocabulary Assessment for Parents [DVAP\; @libertus_etal2015], which consisted of a checklist of words known by children aged 2 to 18 years old based on words used in the Peabody Picture Vocabulary Test [PPVT\; @dunn_dunn2007]. We used a parent checklist rather than a direct measure to reduce children’s fatigue, as each child participated in two experiments, and we wished to assess their vocabulary in both languages. Moreover, the DVAP has shown strong convergent validity with children's performance on the PPVT [$\beta$ = .69\; @libertus_etal2015]. To assess children's productive vocabulary size in French or Spanish, we adapted a checklist similar to the DVAP, based on words used in the adaptation of the PPVT for Quebec French [Échelle de Vocabulaire en Images Peabody\; @dunn_etal1993] or Spanish [Test de Vocabulario en Imagenes Peabody\; @dunn_etal1986]. The words are ordered from easy (e.g., "ball", "dog") to hard (e.g., "honing", "angler"), and parents were asked to indicate which words their child could say. A parent or other adult that was familiar with the child's vocabulary in a particular language filled out the form for that language. In some cases, the forms for each language were completed by different parents who  normally interacted with their child in that language, while in other cases it was one parent who filled out both forms if they used both languages with their child. As expected, the number of words children produced in their dominant language (*M* = `r msl_keepers %$% mean(vocab_dom, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %$% sd(vocab_dom, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %$% min(vocab_dom, na.rm = TRUE) %>% round(digits = 0)` -- `r msl_keepers %$% max(vocab_dom, na.rm = TRUE) %>% round(digits = 0)`) was greater than the number of words they produced in their non-dominant language (*M* = `r msl_keepers %$% mean(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %$% sd(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %$% min(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)` -- `r msl_keepers %$% max(vocab_non_dom, na.rm = TRUE) %>% round(digits = 0)`), `r apa_print(t_vocab)$statistic`, `r apa_print(t_vocab)$estimate`. When combining the number of words produced in both languages, on average, children produced `r msl_keepers %$% mean(vocab_total, na.rm = TRUE) %>% round(digits = 0)` total words (*SD* = `r msl_keepers %$% sd(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %$% min(vocab_total, na.rm = TRUE) %>% round(digits = 0)` -- `r msl_keepers %$% max(vocab_total, na.rm = TRUE) %>% round(digits = 0)`). Children in Montreal (*M* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% mean(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% sd(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %>% filter(testing_location == "Montreal") %$% min(vocab_total, na.rm = TRUE)` -- `r msl_keepers %>% filter(testing_location == "Montreal") %$% max(vocab_total, na.rm = TRUE)`) produced more words than those in New Jersey (*M* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% mean(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, *SD* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% sd(vocab_total, na.rm = TRUE) %>% round(digits = 0)`, range = `r msl_keepers %>% filter(testing_location == "Princeton") %$% min(vocab_total, na.rm = TRUE)` -- `r msl_keepers %>% filter(testing_location == "Princeton") %$% max(vocab_total, na.rm = TRUE)`), `r apa_print(mtl_pct_t_vocab)$statistic`, `r apa_print(mtl_pct_t_vocab)$estimate`.
 
 ```{r}
 ses_t <- t.test(filter(msl_keepers, testing_location == "Montreal")$edu_years, filter(msl_keepers, testing_location == "Princeton")$edu_years)
 ```
 
-As a proxy for socioeconomic status, we asked parents to indicate the highest level of education they had attained. As the education systems are somewhat different in the United States and Canada, to be able to compare responses across our two testing locations, we converted these responses to the typical number of years after kindergarten to complete each level of education (e.g., completing a bachelor's degree was equivalent to 16 years of education). On average, parents completed `r msl_keepers %$% mean(edu_years) %>% round(digits = 2)` (*SD* = `r msl_keepers %$% sd(edu_years) %>% round(digits = 2)`) years of education. Parents in Montreal reported completing more years of education (*M* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% mean(edu_years) %>% round(digits = 2)`, *SD* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% sd(edu_years) %>% round(digits = 2)`, range = `r msl_keepers %>% filter(testing_location == "Montreal") %$% min(edu_years) %>% round(digits = 2)` -- `r msl_keepers %>% filter(testing_location == "Montreal") %$% max(edu_years) %>% round(digits = 2)`) than parents in New Jersey (*M* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% mean(edu_years) %>% round(digits = 2)`, *SD* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% sd(edu_years) %>% round(digits = 2)`, range = `r msl_keepers %>% filter(testing_location == "Princeton") %$% min(edu_years) %>% round(digits = 2)` -- `r msl_keepers %>% filter(testing_location == "Princeton") %$% max(edu_years) %>% round(digits = 2)`), `r apa_print(ses_t)$statistic`, `r apa_print(ses_t)$estimate`, suggesting that the participants in Montreal came from a higher SES background than those in New Jersey.
+As a proxy for socioeconomic status (SES), we asked parents to indicate the highest level of education they had attained. As the education systems are somewhat different in the United States and Canada, to be able to compare responses across our two testing locations, we converted these responses to the typical number of years after kindergarten to complete each level of education (e.g., completing a bachelor's degree was equivalent to 16 years of education). For families where both parents’ education was provided, the higher level was selected for analysis. On average, parents completed `r msl_keepers %$% mean(edu_years) %>% round(digits = 2)` (*SD* = `r msl_keepers %$% sd(edu_years) %>% round(digits = 2)`) years of education, which ranged widely from `r msl_keepers %$% min(edu_years)` to `r msl_keepers %$% max(edu_years)` years. Parents in Montreal reported completing more years of education (*M* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% mean(edu_years) %>% round(digits = 2)`, *SD* = `r msl_keepers %>% filter(testing_location == "Montreal") %$% sd(edu_years) %>% round(digits = 2)`, range = `r msl_keepers %>% filter(testing_location == "Montreal") %$% min(edu_years) %>% round(digits = 2)` -- `r msl_keepers %>% filter(testing_location == "Montreal") %$% max(edu_years) %>% round(digits = 2)`) than parents in New Jersey (*M* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% mean(edu_years) %>% round(digits = 2)`, *SD* = `r msl_keepers %>% filter(testing_location == "Princeton") %$% sd(edu_years) %>% round(digits = 2)`, range = `r msl_keepers %>% filter(testing_location == "Princeton") %$% min(edu_years) %>% round(digits = 2)` -- `r msl_keepers %>% filter(testing_location == "Princeton") %$% max(edu_years) %>% round(digits = 2)`), `r apa_print(ses_t)$statistic`, `r apa_print(ses_t)$estimate`, suggesting that the participants in Montreal came from a higher SES background than those in New Jersey.
 
-## Material
+## 2.2. Material
 
-### Visual Stimuli
+### 2.2.1. Visual Stimuli
 
-Visual stimuli consisted of 8 pairs of pictures for each language combination (See Table \@ref(tab:stimuli-table) for picture pairs and Figure \@ref(fig:trial-ex) for an example trial). Each picture in a pair had the same animacy status (i.e., four pairs of animals and four pairs of inanimate pictures), so that the two pictures had similar visual salience. To ensure that they would be familiar to our 3-year-old participants, we selected pictures whose labels were highly understood by children in American English [@fenson_etal2007], Quebec French [@boudreault_etal2007], and Spanish [@jackson-maldonado_etal2003]. The labels of the picture pairs did not overlap in word onset and had the same grammatical gender in French or Spanish. Images were chosen from free online libraries and digitally edited as necessary.
+Visual stimuli consisted of 8 pairs of pictures for each language combination (See Table \@ref(tab:stimuli-table) for picture pairs and Figure \@ref(fig:trial-ex) for an example trial). Each picture in a pair had the same animacy status (i.e., four pairs of animals used in target trials and four pairs of inanimate pictures used in filler trials), so that the two pictures had similar visual salience. To ensure that they would be familiar to our 3-year-old participants, we selected pictures whose labels were highly understood by children in American English [@fenson_etal2007], Quebec French [@boudreault_etal2007], and Spanish [@jackson-maldonado_etal2003]. The labels of the picture pairs did not overlap in word onset, had the same grammatical gender in French or Spanish, and are widely used across French and Spanish dialects. Pictures were chosen from free online libraries and digitally edited as necessary.
 
 ```{r trial-ex, echo = FALSE, include = TRUE, fig.cap= "Example and timeline of experimental trial"}
 include_graphics("2016_CompMix_Design/goodduck.png")
@@ -211,7 +218,7 @@ include_graphics("2016_CompMix_Design/goodduck.png")
 ```
 
 
-### Auditory stimuli
+### 2.2.2. Auditory stimuli
 
 ```{r}
 art_onset <- read_csv("2016_CompMix_Design/article_onset.csv") %>% 
@@ -219,9 +226,9 @@ art_onset <- read_csv("2016_CompMix_Design/article_onset.csv") %>%
 ```
 
 
-Auditory stimuli were recorded by a female, native French--English or Spanish--English bilingual with no perceptible accent in either language using infant-directed speech. Each auditory stimulus contained a target word labeling one of the pictures on the screen (e.g., "Look! Can you find the good duck?"). The target noun (e.g., "duck") was preceded by a determiner (e.g., "the") and a prenominal adjective (e.g., "good"). Each stimulus sentence was recorded in a single-language version where the determiner and adjective were in the same language as the noun, and a code-switched version where the determiner and adjective were in the other language (e.g., "Look! Can you find *le bon* [fr. the good] duck?" or “Look! Can you see *el buen* [sp. the good] duck”?). Note that the target word (e.g., "duck") was always in the same language as the initial carrier phrase (e.g., "Look! Can you find..." for French--English and "Look! Can you see..." for Spanish--English). Parallel stimulus sets were created with the carrier sentences in each language (e.g., in French, the previous examples became "*Regarde! Peux-tu trouver le bon canard*?" and "*Regarde! Peux-tu trouver* the good *canard*?"; in Spanish, the previous examples became “*¡Mira! Puedes ver le buen pato*?” and “*¡Mira! Puedes ver* the good *pato*?”).
+Auditory stimuli were recorded by a female, native French--English or Spanish--English bilingual with no perceptible accent in either language using infant-directed speech. Each auditory stimulus contained a target word labeling one of the pictures on the screen (e.g., "Look! Can you find the good duck?"). The target noun (e.g., "duck") was preceded by a determiner (e.g., "the") and a prenominal adjective (e.g., "good"). Each stimulus sentence was recorded in a single-language version where the determiner and adjective were in the same language as the noun, and a code-switched version where the determiner and adjective were in the other language (e.g., "Look! Can you find *le bon* [fr. the good] duck?" or “Look! Can you see *el buen* [sp. the good] duck”?). Note that the target word (e.g., "duck") was always in the same language as the initial carrier phrase (e.g., "Look! Can you find..." for French--English and "Look! Can you see..." for Spanish--English). Parallel stimulus sets were created with the carrier sentences in each language (e.g., in French, the previous examples became "*Regarde! Peux-tu trouver le bon canard*?" and "*Regarde! Peux-tu trouver* the good *canard*?"; in Spanish, the previous examples became “*¡Mira! Puedes ver el buen pato*?” and “*¡Mira! Puedes ver* the good *pato*?”).
 
-For nouns with animate referents in target trials, there were a total of four English prenominal adjectives and their French and Spanish translations; similarly, there were four prenominal adjectives used for inanimate nouns in filler trials (See Table \@ref(tab:stimuli-table)). These adjectives were chosen such that they 1) were not cognates across French and English or Spanish and English, 2) did not share phonological overlap with their translation, 3) were not descriptive of one picture more than another, and 4) could precede a noun in French or Spanish. Although both French and Spanish usually place adjectives in a postnominal position, the adjectives we selected can be used prenominally in these grammatical contexts. Each adjective was always used with the same picture pair.
+For the animate nouns on target trials, there were a total of four English prenominal adjectives and their French and Spanish translations; similarly, for inanimate nouns in filler trials, there were four prenominal adjectives used (see Table \@ref(tab:stimuli-table)). These adjectives were chosen such that they 1) were not cognates across French and English or Spanish and English, 2) did not share phonological overlap with their translation, 3) were not descriptive of one picture more than another, and 4) could precede a noun in French or Spanish. Although both French and Spanish usually place adjectives in a postnominal position, the adjectives we selected can be used prenominally in these grammatical contexts. Each adjective was always used with the same picture pair.
 
 ```{r stimuli-table, include = TRUE, results = "asis"}
 #create empty df
@@ -293,11 +300,11 @@ stimuli_table %>%
 ```
 
 
-### Trial description
+### 2.2.3. Trial description
 
-During each trial, the target and distractor pictures appeared on the screen for 6000ms, and one of the stimulus sentences was played labeling the target picture. The onset of the target noun occurred exactly 3000ms into each trial. The determiner--adjective combinations were of somewhat different lengths, and so occurred between `r min(art_onset$diff)` and `r max(art_onset$diff)`ms before the noun onset. Trials were combined into four experimental orders of 24 trials: 8 single-language trials (e.g., "Look! Can you find the good duck?"), 8 code-switched trials (e.g., "Look! Can you find *le bon* [fr. the good] duck?"), and 8 additional single-language filler trials. Filler trials were used to reduce the overall number of trials with code-switching in the study and were not analyzed. The language of the carrier phrase was consistent for each child (i.e., always in English, French, or Spanish), but counterbalanced across children at the time of testing. In total, `r nrow(filter(msl_keepers, study_lang_dom == "dom"))` children were tested with carrier phrases in their dominant language (`r nrow(filter(msl_keepers, study_lang_dom == "dom" & testing_location == "Montreal"))` French--English and `r nrow(filter(msl_keepers, study_lang_dom == "dom" & testing_location == "Princeton"))` Spanish--English), and `r nrow(filter(msl_keepers, study_lang_dom == "non"))` children were tested with carrier phrases in their non-dominant language (`r nrow(filter(msl_keepers, study_lang_dom == "non" & testing_location == "Montreal"))` French--English and `r nrow(filter(msl_keepers, study_lang_dom == "non" & testing_location == "Princeton"))` Spanish--English).
+During each trial, the target and distractor pictures appeared on the screen for 6000ms, and one of the stimulus sentences was played labeling the target picture. The onset of the target noun occurred exactly 3000ms into each trial. The determiner--adjective combinations were of somewhat different lengths, and so occurred between `r min(art_onset$diff)` and `r max(art_onset$diff)`ms before the noun onset. Trials were combined into four experimental orders of 24 trials: 8 single-language trials (e.g., "Look! Can you find the good duck?"), 8 code-switched trials (e.g., "Look! Can you find *le bon* [fr. the good] duck?"), and 8 additional single-language filler trials. Filler trials were not analyzed and were mainly used to lower the overall number of trials with code-switching. Target trials (i.e., single-language and code-switched trials) and filler trials were intermixed throughout the study. The language of the carrier phrase was consistent for each child (i.e., always in English, French, or Spanish), but counterbalanced across children at the time of testing. In total, `r nrow(filter(msl_keepers, study_lang_dom == "dom"))` children were tested with carrier phrases in their dominant language (`r nrow(filter(msl_keepers, study_lang_dom == "dom" & testing_location == "Montreal"))` French--English and `r nrow(filter(msl_keepers, study_lang_dom == "dom" & testing_location == "Princeton"))` Spanish--English), and `r nrow(filter(msl_keepers, study_lang_dom == "non"))` children were tested with carrier phrases in their non-dominant language (`r nrow(filter(msl_keepers, study_lang_dom == "non" & testing_location == "Montreal"))` French--English and `r nrow(filter(msl_keepers, study_lang_dom == "non" & testing_location == "Princeton"))` Spanish--English).
 
-## Procedure
+## 2.3. Procedure
 
 In addition to signing a consent form, parents completed questionnaires on their child's vocabulary (DVAP) and language comprehension (LEAP-Q), on their own language mixing (Byers-Heinlein, 2013), and on basic demographic information. During the study, parents listened to music with headphones, wore darkened glasses, and were instructed not to interfere with the study or provide their child with any instruction. Testing occurred in a darkened room while children sat on their parent's lap.
 
@@ -305,11 +312,18 @@ Due to differences in lab equipment, the same apparatus was not available at bot
 
 Before each trial began, a colorful attention-getter was presented to draw the child's attention to the screen. Once the child was looking at the screen, the trial began. An experimenter monitored the status of the study via video camera and controlled the experiment from a computer in another room (Montreal) or within the same room (New Jersey). The total duration of the study was approximately 4 minutes.
 
-## Coding
+## 2.4. Coding
 
-In Montreal, the eye-tracking system collected data on the location of children's eye-gaze and their pupil size at a rate of 60Hz. We defined areas of interest corresponding to a rectangle of 2 cm around each picture presented on the screen. In New Jersey, a trained research assistant coded at 33-ms intervals whether the child was looking at the left or right object on the screen, shifting between objects, or inattentive. A second research assistant coded 18% of videos; on the frames surrounding eye movements, inter-coder reliability was 97%. Research suggests that automatic eyetracking and manual gaze coding, although potentially different in their amount of data loss, capture largely similar information [@venker_etal2020].
+```{r}
+trackloss <- read_csv(here("data_frames/trackloss.csv"))
 
-# Results
+t_trackloss <- t.test(TracklossForParticipant ~ testing_location, data = trackloss)
+```
+
+
+In Montreal, the eye-tracking system collected data on the location of children's eye-gaze and their pupil size at a rate of 60Hz. We defined areas of interest corresponding to a rectangle of 2 cm around each picture presented on the screen. In New Jersey, a trained research assistant coded at 33-ms intervals whether the child was looking at the left or right object on the screen, shifting between objects, or inattentive. A second research assistant coded 18% of videos; on the frames surrounding eye movements, inter-coder reliability was 97%. Research suggests that automatic eyetracking and manual gaze coding, although potentially different in their amount of data loss, capture largely similar information [@venker_etal2020]. We did not observe a difference in data loss between the two coding methods. An average of `r round(trackloss %>% filter(testing_location == "Montreal") %$% mean(TracklossForParticipant)*100, digits = 2)`% (SD = `r round(trackloss %>% filter(testing_location == "Montreal") %$% sd(TracklossForParticipant)*100, digits = 2)`) of eyetracking data and `r round(trackloss %>% filter(testing_location == "Princeton") %$% mean(TracklossForParticipant)*100, digits = 2)`% (SD = `r round(trackloss %>% filter(testing_location == "Princeton") %$% sd(TracklossForParticipant)*100, digits = 2)`) of manually coded data was lost for each participant, `r apa_print(t_trackloss)$statistic`, `r apa_print(t_trackloss)$estimate`. Additionally, previous research has combined data across these methods to create a single bilingual sample [@byers-heinlein_etal2021a], further supporting this approach.
+
+# 3. Results
 
 ```{r}
 
@@ -341,6 +355,110 @@ t_single <- gaze_target %>%
   t.test(Prop, mu = 0.5)
 ```
 
+Data for each trial were analyzed between 400 and 2000 ms after the onset of the target noun. While standard approaches typically begin analysis at 367 ms after onset of the target noun [@swingley2012], we opted to start our analysis window slightly later in order to create consistent 100-ms time bins to use in a growth curve analysis (see below). Trials where the child was inattentive (i.e., looked at the pictures for less than 750 ms during this window) were excluded from the analyses. Children who did not successfully complete at least 2 single-language and 2 code-switched trials were also removed from the analyses. Out of 8 possible trials of each type, children retained for analysis completed an average of `r round(trial_n_stats %>% filter(trial_type == "Single") %>% pull(mean), 2)` single-language trials (range = `r round(trial_n_stats %>% filter(trial_type == "Single") %>% pull(min), 2)` -- `r round(trial_n_stats %>% filter(trial_type == "Single") %>% pull(max), 2)`) and `r round(trial_n_stats %>% filter(trial_type == "Mixed") %>% pull(mean), 2)` code-switched trials (range = `r round(trial_n_stats %>% filter(trial_type == "Mixed") %>% pull(min), 2)` -- `r round(trial_n_stats %>% filter(trial_type == "Mixed") %>% pull(max), 2)`). To determine if children demonstrated successful comprehension of the target words, we examined the proportion of time that they looked towards the target picture on each trial. This was calculated by dividing the looking time to the target picture by the total time spent looking at either picture.
+
+First, we investigated whether children showed comprehension of the noun on each trial type. One-sample, two-sided *t*-tests revealed that children looked significantly above chance ($\mu$~0~ = 0.5) to the target picture on both single-language trials, `r apa_print(t_single)$statistic`, `r apa_print(t_single)$estimate`, and code-switched trials, `r apa_print(t_mixed)$statistic`, `r apa_print(t_mixed)$estimate`, indicating a robust ability to understand the target noun in both trial types (see Figure \@ref(fig:gaze)). 
+
+We then compared looking time during the two trial types using a paired-samples *t*-test. The effect of trial type was not  statistically significant, `r apa_print(t_target)$statistic`, `r apa_print(t_target)$estimate`, suggesting that children's comprehension of the noun did not differ between single-language  and code-switched trials. Contrary to our prediction that children's comprehension of the target noun would be impaired by the code-switching that preceded it, this result indicated that they were potentially unaffected by the code-switched adjective.
+
+```{r gaze, echo = FALSE, include = TRUE, fig.width=4, fig.cap= "Proportion looking to target picture by trial type for all children. The larger red dots and line represent the grand mean. Smaller gray dots and their connecting lines represent the mean values for individual participants."}
+ggplot(gaze_target, aes(x = trial_type, y = Prop)) +
+  geom_point(alpha = 0.5) +
+  geom_line(alpha = 0.5, aes(group = study_id)) +
+  #scale_color_manual(values = c("#b2abd2", "#fdb863"), name = "Testing Location", labels = c("Montreal", "New Jersey")) +
+  # stat_summary(fun.y = "mean", color = "black", size = 4, geom = "point", alpha = .9, na.rm = TRUE) +
+  geom_point(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean)), color = "red", size = 3) +
+    geom_point(aes(x = 2, y = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean)), color = "red", size = 3) +
+  geom_segment(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
+                                    xend = 2, yend = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean))
+                   , color = "red", size = 1) +
+  labs(x = "Trial Type", y = "Proportion Looking to Target") +
+  scale_x_discrete(labels= c("Code-Switched", "Single-Language")) +
+  ylim(0, 1) +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 12),
+        axis.title.y = element_text(margin = margin(r = 12)))
+
+
+
+```
+
+## 3.1. Growth Curve Analysis
+
+The previous analyses, which are typical in this area of research, collapsed infants’ data across the entire time window and averaged across trial types to yield two data points per child. However, it has long been recognized in the field that time course data can offer revealing  information about children's performance [e.g., @fernald_etal2001]. Analytic techniques such as growth curve analysis [@mirman2017] offer an approach to quantify differences in time course, and further allow analysis of trial-level data, thus increasing statistical power. We plotted the time course of our data and then conducted an exploratory growth curve analysis, using the same time window of 400 -- 2000ms. Looking-time data were binned in 100ms blocks. 
+
+Models were built through an iterative process. We started with a baseline model with only linear and quadratic time terms and by-participant random effects on both time terms. We then added one additional individual difference variable to the model and compared the two nested models with an analysis of variance. Only variables that significantly improved model fit were retained. Intermediary models are available in the supplementary materials. The categorical variables of trial type, testing location, and language dominance were coded using a simple contrast coding scheme. SES and vocabulary size were continuous. We estimated parameter estimate degrees of freedom and *p*-values using Satterthwaite's method.
+
+To address our main research question of the effect of code-switching on children's comprehension, our first exploratory model added trial type to the baseline model described above. We then conducted additional exploratory growth curve models building from this model looking at the potential individual effects of language dominance, testing location, SES, and vocabulary size. 
+
+### 3.1.1. Trial type
+
+```{r}
+gca.type <- lmer(Prop ~ (poly1+poly2) + trial_type + (poly1+poly2  || study_id), 
+               data=gca, REML=F)
+summary(gca.type)
+
+
+# extract data for APA table
+gca_table <- apa_print(gca.type)$table %>% 
+  mutate(term = case_when(
+    term == "Intercept" ~ "Intercept",
+    term == "Poly1" ~ "Time (Linear)",
+    term == "Poly2" ~ "Time (Quadratic)",
+    term == "Trial type1" ~ "Trial type"
+  ))
+
+# random effects info
+gca_ranef <- VarCorr(gca.type) %>% 
+  as.data.frame()
+
+gca_table_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
+
+gca_indent <- list(c(2:5,7))
+```
+
+In the growth curve model investigating the effect of trial type, the fixed effects of the final model included trial type, and linear and quadratic time terms. There was a statistically significant main effect of trial type, indicating that, opposite to our prediction, children were more accurate at gazing toward the target picture when hearing code-switched trials compared to single-language trials `r apa_print(gca.type)$statistic$trial_type1`, `r apa_print(gca.type)$estimate$trial_type1` (See Table \@ref(tab:gca-type) for full results). This result differs from that of the paired-samples *t*-test, which did not find a statistically significant difference in children's looking between the two trial types.
+
+```{r gca-type, include = TRUE, results = "asis"}
+apa_table(gca_table_print, stub_indents = gca_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Growth curve analysis including trial type", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type +  ([time (linear) + time (quadratic)] || participant)*")
+```
+
+### 3.1.2. Individual Differences
+
+```{r}
+gca.dom <- lmer(Prop ~ (poly1+poly2) + trial_type * study_lang_dom + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(gca.dom)
+
+gca.loc <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + (poly1+poly2  || study_id),
+               data=gca, REML=F)
+summary(gca.loc)
+
+
+gca.ses <- lmer(Prop ~ (poly1+poly2) + trial_type * edu_years + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(gca.ses)
+
+gca.vocab <- lmer(Prop ~ (poly1+poly2) + trial_type * vocab_total + (poly1+poly2  || study_id), data=filter(gca, study_id != "S13"), REML=F)
+summary(gca.vocab)
+
+vocab <- broom.mixed::tidy(gca.vocab)
+
+options(scipen=999)
+
+vocab <- vocab %>% 
+  filter(effect == "fixed") %>% 
+    mutate(ci_min = round(estimate - 1.96*std.error, digits = 4),
+           ci_min = case_when(ci_min < 0 ~ str_pad(as.character(ci_min), width = 7, side = "right", pad = "0"),
+                              TRUE ~ as.character(ci_min)),
+         ci_max = round(estimate + 1.96*std.error, digits = 4),
+         CI = paste0("[", ci_min, ",", ci_max, "]"),
+         estimate = round(estimate, digits = 4))
+
+options(scipen = 0)
+
+```
+
 ```{r}
 # reliability per trial type
 
@@ -357,100 +475,32 @@ ICC(reliability_mixed, missing = FALSE, lmer = TRUE)
 #ICC3k = 0.39, 95% CI = [0.07, 0.64]
 ```
 
+As previous studies have found some evidence of individual differences in bilingual children's ability to process code-switching [@byers-heinlein_etal2021a; @potter_etal2019], we next investigated how such differences may have affected children's performance on this task. Prior to conducting these individual differences analyses, we first quantified the consistency of children's performance, by estimating the reliability of the looking time to each trial type using an intraclass correlation coefficient (ICC), based on a mean-rating, consistent, 2-way random-effects model [@byers-heinlein_etal2021]. The estimated consistency was 0.19, 95% CI = [--0.24, 0.51] for single-language trials and 0.39, 95% CI = [0.07, 0.64] for code-switched trials. The magnitude of these ICCs was higher than in many other infant studies [@byers-heinlein_etal2021], supporting a cautious investigation of individual differences. However, these ICCs could be considered moderate to low on an absolute scale thus reducing statistical power for detecting correlations with other measures of individual differences.
 
-Data for each trial were analyzed between 400 and 2000 ms after the onset of the target noun. While standard approaches typically begin analysis at 367 ms after onset of the target noun [@swingley2012], we opted to start our analysis window slightly later in order to create consistent 100 ms time bins to use in a growth curve analysis (see below). This change did not affect the statistical patterns observed in the other analyses, so we kept the analysis window consistent across all analyses. Trials where the child was inattentive (i.e., looked at the pictures for less than 750 ms during this window) were excluded from the analyses. Children who did not successfully complete at least 2 single-language and 2 code-switched trials were also removed from the analyses. Out of 8 possible trials of each type, children completed an average of `r round(trial_n_stats %>% filter(trial_type == "Single") %>% pull(mean), 2)` single-language trials (range = `r round(trial_n_stats %>% filter(trial_type == "Single") %>% pull(min), 2)` -- `r round(trial_n_stats %>% filter(trial_type == "Single") %>% pull(max), 2)`) and `r round(trial_n_stats %>% filter(trial_type == "Mixed") %>% pull(mean), 2)` code-switched trials (range = `r round(trial_n_stats %>% filter(trial_type == "Mixed") %>% pull(min), 2)` -- `r round(trial_n_stats %>% filter(trial_type == "Mixed") %>% pull(max), 2)`). To determine if children demonstrated successful comprehension of the target words, we examined the proportion of time that they looked towards the target picture on each trial. This was calculated by dividing the looking time to the target picture by the total time spent looking at either picture.
+We investigated four individual difference variables: language dominance, testing location (which was also a proxy for language pair), SES, and vocabulary size. We note that the last three variables were interrelated in our dataset: children from Montreal generally came from higher SES backgrounds, `r apa_print(ses_t)$statistic`, `r apa_print(ses_t)$estimate`, and had a larger vocabulary, `r apa_print(mtl_pct_t_vocab)$statistic`, `r apa_print(mtl_pct_t_vocab)$estimate`, than children from New Jersey. Given our sample size, it was not possible to statistically disentangle these factors. Thus, our approach was to create separate models for each variable to gain some insight into which factor might have the largest explanatory power. We did so by adding each variable to the previous model including trial type as a main effect and in an interaction with trial type. Here, we focus on the specific effect of these terms. Full results of these models are reported in the supplementary materials.
 
-First, we investigated whether children showed comprehension of the noun on each trial type. One-sample, two-sided *t*-tests revealed that children looked significantly above chance ($\mu$~0~ = 0.5) to the target picture on both single-language trials, `r apa_print(t_single)$statistic`, `r apa_print(t_single)$estimate`, and code-switched trials, `r apa_print(t_mixed)$statistic`, `r apa_print(t_mixed)$estimate`, indicating a robust ability to understand the target noun in both trial types (see Figure \@ref(fig:mtl-pct-gaze)). The reliability of the looking time to each trial type was estimated with an intraclass correlation coefficient, based on a mean-rating, consistent, 2-way random-effects model [@byers-heinlein_etal2021]. The estimated consistency was 0.19, 95% CI = [--0.24, 0.51] for single-language trials and 0.39, 95% CI = [0.07, 0.64] for code-switched trials. 
+In each model there was a statistically significant main effect of trial type, indicating that, opposite to our prediction, children were more accurate at gazing towards the target picture when hearing code-switched trials compared to single-language trials, whether controlling for language dominance, `r apa_print(gca.dom)$statistic$trial_type1`, `r apa_print(gca.dom)$estimate$trial_type1`, testing location, `r apa_print(gca.loc)$statistic$trial_type1`, `r apa_print(gca.loc)$estimate$trial_type1`, SES, `r apa_print(gca.ses)$statistic$trial_type1`, `r apa_print(gca.ses)$estimate$trial_type1`, or vocabulary, `r apa_print(gca.vocab)$statistic$trial_type1`, `r apa_print(gca.vocab)$estimate$trial_type1`.
 
-We then compared looking time during the two trial types using a paired-samples *t*-test. The effect of trial type was not  statistically significant, `r apa_print(t_target)$statistic`, `r apa_print(t_target)$estimate`, suggesting that children's comprehension of the noun did not differ between single-language  and code-switched trials. Contrary to our prediction that children's comprehension of the target noun would be negatively affected by the code-switching that preceded it, this result indicated that children were potentially unaffected by the code-switched adjective.
+We then examined the main effect of each individual difference variable and its interaction with trial type (See Figure \@ref(fig:time-course)), and an interesting pattern of results emerged. For language dominance, there was no statistically significant main effect, `r apa_print(gca.dom)$statistic$study_lang_dom1`, `r apa_print(gca.dom)$estimate$study_lang_dom1`, or interaction with trial type, `r apa_print(gca.dom)$statistic$trial_type1_study_lang_dom1`, `r apa_print(gca.dom)$estimate$trial_type1_study_lang_dom1`, suggesting that both children tested in their dominant language and children tested in their non-dominant language performed similarly across trial types. Effects of testing location, SES, and vocabulary showed similar patterns across models. Analyses of testing location revealed that children from Montreal performed similarly on both trial types, whereas children from New Jersey performed better on code-switched than single-language trials `r apa_print(gca.loc)$statistic$trial_type1_testing_location`, `r apa_print(gca.loc)$estimate$trial_type1_testing_location`. To follow up on the Montreal results, we conducted the pupillometry analyses reported in supplementary materials, which support the main finding that children did not process code-switched and single-language trials differently (these analyses could not be carried out for New Jersey participants, as their data were hand coded from a video recording rather than collected via an eye-tracker). SES analyses showed that children from higher-SES backgrounds performed similarly across trial types whereas children from lower-SES backgrounds performed better on code-switched than single-language trials, `r apa_print(gca.ses)$statistic$trial_type1_edu_years`, `r apa_print(gca.ses)$estimate$trial_type1_edu_years`. Finally, children with larger vocabularies performed better across trial types (i.e., looked more to the labeled target in general) than children with smaller vocabularies, `r apa_print(gca.vocab)$statistic$vocab_total`, $\hat{\beta}$ = `r vocab %>% filter(term == "vocab_total") %>% pull(estimate) %>% printnum(digits = 4)`, 95% CI `r vocab %>% filter(term == "vocab_total") %>% pull(CI)`, but the effect of vocabulary size did not differ significantly as a function of trial type, `r apa_print(gca.vocab)$statistic$trial_type1_vocab_total`, $\hat{\beta}$ = `r vocab %>% filter(term == "trial_type1:vocab_total") %>% pull(estimate) %>% printnum(digits = 4)`, 95% CI `r vocab %>% filter(term == "trial_type1:vocab_total") %>% pull(CI)`. 
 
-```{r mtl-pct-gaze, echo = FALSE, include = TRUE, fig.cap= "Proportion looking to target picture by trial type. The larger, black dots and line represent the grand mean. Smaller, purple and orange dots and their connecting lines represent the mean values for individual participants."}
-ggplot(gaze_target, aes(x = trial_type, y = Prop, color = testing_location)) +
-  geom_point() +
-  geom_line(aes(group = study_id)) +
-  scale_color_manual(values = c("#b2abd2", "#fdb863"), name = "Testing Location", labels = c("Montreal", "New Jersey")) +
-  # stat_summary(fun.y = "mean", color = "black", size = 4, geom = "point", alpha = .9, na.rm = TRUE) +
-  geom_point(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean)), color = "black", size = 4) +
-    geom_point(aes(x = 2, y = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean)), color = "black", size = 4) +
-  geom_segment(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
-                                    xend = 2, yend = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean))
-                   , color = "black", size = 1) +
-  labs(x = "Trial Type", y = "Proportion Looking to Target") +
-  scale_x_discrete(labels= c("Code-Switched", "Single-Language")) +
-  ylim(0, 1) +
-  theme(legend.text = element_text(size = 12),
-        legend.title = element_text(size = 14),
-        axis.text = element_text(size = 12),
-        axis.title = element_text(size = 14),
-        axis.title.y = element_text(margin = margin(r = 14)))
-```
+These results indicate that individual differences in performance across the two trial types were statistically related to testing location and SES, but not to language dominance or vocabulary size. Spanish-English bilingual children from New Jersey, particularly those whose parents had received a high school education or less (i.e., 12 years or fewer; see Figure \@ref(fig:time-course)), performed better on code-switched trials compared to single-language trials, whereas French-English bilingual children and those whose parents had more education performed similarly on the two trial types. Together, the findings show the importance of examining individual differences between participants and samples, as bilingual children’s comprehension of these code-switched sentences was not uniform.
 
-## Language Dominance
+```{r time-course, echo = FALSE, include = TRUE, fig.height = 9, fig.cap= "Proportion looking to target picture throughout the analysis window. Dots represent means averaged over participants, bars represent ± 1 SEM, and lines represent the growth curve analysis model. SES and vocabulary were included in the model as a continuous variable but have been split into categories for the purposes of visualization. Note that one participant did not have a vocabulary score and was thus excluded from that model."}
 
-```{r}
-# test for language dominance
-# combo_target_dom <- msl_keepers %>% 
-#   select(study_id, study_lang_dom) %>% 
-#   right_join(gaze_target, by = "study_id")
+# language dominance
 
-dom_anova <- aov(Prop ~ trial_type * study_lang_dom, data = gaze_target)
+## set up a data frame to predict values for: one row per participant/cond label pair
+newdata_dom <- gca %>% 
+  select(study_id, trial_type, Time, study_lang_dom, Prop, poly1, poly2)
 
-gaze_target_des_dom <- gaze_target %>% 
-  group_by(trial_type, study_lang_dom) %>% 
-  summarize(mean = mean(Prop, rm.na = TRUE), min = min(Prop), max = max(Prop), sd = sd(Prop))
-
-gaze_target %>% 
-  ggplot(aes(x = trial_type, y = Prop)) +
-  geom_point() +
-  geom_point(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean)), color = "red", size = 2) +
-    geom_point(aes(x = 2, y = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean)), color = "red", size = 2) +
-  facet_wrap(. ~ study_lang_dom)
-```
+newdata_dom <- newdata_dom %>% 
+  ## get the predicted value for each case
+  mutate(pred = predict(gca.dom, newdata=newdata_dom))
 
 
-As previous research has shown that language dominance affects children's comprehension of code-switching (Potter et al., 2019), we compared children's looking time towards the target picture when hearing single-language and code-switched sentences by whether the target picture was labeled in their dominant or non-dominant language. In an ANOVA, the main effect of language dominance approached statistical significance, `r apa_print(dom_anova)$statistic$study_lang_dom`, `r apa_print(dom_anova)$estimate$study_lang_dom` suggesting that children tested in their dominant language may have looked more towards the target pictures overall than children tested in their non-dominant language. However, the interaction between language dominance and trial type was not statistically significant, `r apa_print(dom_anova)$statistic$trial_type_study_lang_dom`, `r apa_print(dom_anova)$estimate$trial_type_study_lang_dom` suggesting that children's comprehension of code-switching was not affected by the combination of trial type and whether they were tested in their dominant or non-dominant language.
-
-## Growth Curve Analysis
-
-```{r}
-gca.m <- lmer(Prop ~ (poly1+poly2) + trial_type * testing_location + testing_location:poly1 + testing_location:poly2 + (poly1+poly2  || study_id), data=gca, REML=F)
-summary(gca.m)
-
-
-# extract data for APA table
-gca_table <- apa_print(gca.m)$table %>% 
-  mutate(term = case_when(
-    term == "Intercept" ~ "Intercept",
-    term == "Poly1" ~ "Time (Linear)",
-    term == "Poly2" ~ "Time (Quadratic)",
-    term == "Trial type1" ~ "Trial type",
-    term == "Testing location1" ~ "Testing location",
-    term == "Trial type1 $\\times$ Testing location1" ~ "Testing location x Trial type",
-    term == "Poly1 $\\times$ Testing location1" ~ "Testing location x Time (Linear)",
-    term == "Poly2 $\\times$ Testing location1" ~ "Testing location x Time (Quadratic)"
-  ))
-
-# random effects info
-gca_ranef <- VarCorr(gca.m) %>% 
-  as.data.frame()
-
-gca_table_print <- rbind(c("**Fixed effects**", "", "", "", "", ""), gca_table, c("**Random effects**", "", "**Variance**", "", "", ""), c("Participant", "Intercept", round(pull(filter(gca_ranef, var1 == "(Intercept)"), vcov), digits = 3), "", "", ""), c(" ", "Time (Linear)", round(pull(filter(gca_ranef, var1 == "poly1"), vcov), digits = 3), "", "", ""), c(" ", "Time (Quadratic)", round(pull(filter(gca_ranef, var1 == "poly2"), vcov), digits = 3), "", "", ""))
-
-gca_indent <- list(c(2:9,11))
-
-```
-
-The previous  analyses, which are typical in this area of research, collapsed infants’ data across the entire time window and averaged across trial types to yield two data points per child. However, it has long been recognized in the field that time course data can offer revealing  information about children's performance [e.g., @fernald_etal2001]. Analytic techniques such as growth curve analysis [@mirman2017] offer an approach to quantify differences in time course, and further allow analysis of trial-level data, thus increasing statistical power. We plotted the time course of our data in Figure \@ref(fig:time-course) and then conducted an exploratory growth curve analysis, using the same time window of 400 -- 2000ms. Looking-time data were binned in 100ms blocks. The final model was built through an iterative process. Starting from a baseline model, we added an additional term to the model and compared the two nested models with an analysis of variance. Only terms that significantly improved model fit were retained. Intermediary models are available in the supplementary materials. The fixed effects of the final model included trial type, linear and quadratic time terms, testing location, and an interaction between testing location and each of the other terms. The model also included by-participant random effects on both time terms. Trial type and testing location were coded using a simple contrast coding scheme. We estimated parameter estimate degrees of freedom and *p*-values using Satterthwaite's method.
-
-In the final growth curve model, there was a statistically significant main effect of trial type, indicating that, opposite to our prediction, children were statistically significantly more accurate at gazing towards the target picture when hearing code-switched trials compared to single-language trials `r apa_print(gca.m)$statistic$trial_type1`, `r apa_print(gca.m)$estimate$trial_type1`. This effect was driven by the participants from New Jersey, as there was a statistically significant interaction between testing location and trial type, `r apa_print(gca.m)$statistic$trial_type1_testing_location1`, `r apa_print(gca.m)$estimate$trial_type1_testing_location1`. Participants from Montreal performed similarly on both trial types, which is supported by a pupillometry analysis reported in the supplementary materials (note that pupillometry analyses could not be undertaken for New Jersey participants, as their data were hand coded from a video recording rather than collected via an eye-tracker). The model also revealed that children across the two testing locations looked towards the target picture with different speed and accuracy (See Table \@ref(tab:gca) for full results), with the Montreal participants gazing more quickly and with greater accuracy to the target compared to the New Jersey participants. This finding suggests that code-switching may have actually facilitated comprehension in the sample of Spanish--English bilingual children. 
-
-```{r time-course, echo = FALSE, include = TRUE, fig.cap= "Proportion looking to target picture throughout the analysis window. Dots represent means averaged over participants, bars represent ± 1 SEM, and lines represent the growth curve analysis model."}
-# time course data
-gca %>% 
-  filter(Prop != "NaN") %>% 
-ggplot(aes(x = Time, y = Prop, color = trial_type)) + 
-  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange") + 
-  stat_summary(aes(y=fitted(gca.m)), fun=mean, geom="line") +
+viz_dom <- ggplot(newdata_dom, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange", size = .5) + 
+  stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.5) +
   expand_limits(y=c(0.5, 1)) +
   scale_color_manual(labels = c("Code-Switched", "Single-Language"),
                      values = c("#1f78b4", "#33a02c"),
@@ -459,47 +509,159 @@ ggplot(aes(x = Time, y = Prop, color = trial_type)) +
                      values = c(19, 15),
                      name = "Trial Type") +
   labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
-  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Montreal", "Princeton" = "New Jersey")))  
+  facet_grid(. ~ study_lang_dom, labeller = as_labeller(c("dom" = "Dominant (n = 15)", "non" = "Non-dominant (n = 15)")))  +
+  ggtitle("Language dominance")
+
+
+
+# testing location
+
+## set up a data frame to predict values for: one row per participant/cond label pair
+newdata_loc <- gca %>% 
+  select(study_id, trial_type, Time, testing_location, Prop, poly1, poly2)
+
+newdata_loc <- newdata_loc %>% 
+  ## get the predicted value for each case
+  mutate(pred = predict(gca.loc, newdata=newdata_loc))
+
+newdata_loc$testing_location <- ordered(newdata_loc$testing_location, levels = c("Princeton", "Montreal"))
+
+viz_loc <- ggplot(newdata_loc, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange", size = .5) + 
+  stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.5) +
+  expand_limits(y=c(0.5, 1)) +
+  scale_color_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Montreal (n = 19)", "Princeton" = "New Jersey (n = 11)")))  +
+  ggtitle("Testing location") #+
+  #theme(legend.position="bottom")
 #+    theme(legend.text = element_text(size = 12),
           # legend.title = element_text(size = 14),
           # axis.text = element_text(size = 12),
           # axis.title = element_text(size = 14),
           # axis.title.y = element_text(margin = margin(r = 14)),
           # strip.text.x = element_text(size = 12))
+
+
+# SES
+
+## set up a data frame to predict values for: one row per participant/cond label pair
+newdata_ses <- gca %>% 
+  select(study_id, trial_type, Time, testing_location, edu_years, Prop, poly1, poly2)
+
+newdata_ses <- newdata_ses %>% 
+  ## get the predicted value for each case
+  mutate(pred = predict(gca.ses, newdata=newdata_ses)) %>% 
+  # add SES grouping
+  mutate(edu_years_group = case_when(
+    edu_years < 13 ~ "1",
+    edu_years > 16 ~ "3",
+    TRUE ~ "2"
+  ))
+
+
+viz_ses <- ggplot(newdata_ses, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange", size = .5) + 
+  stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.5) +
+  expand_limits(y=c(0.5, 1)) +
+  scale_color_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  facet_grid(. ~ edu_years_group, labeller = as_labeller(c(
+    "1" = "4 - 12 years (n = 7)",
+    "2" = "13 - 16 years (n = 12)",
+    "3" = "17 - 21 years (n = 11)"))) +
+  ggtitle("Parental education (SES)") + 
+  theme(legend.position="none")
+
+
+
+# Vocab
+
+## set up a data frame to predict values for: one row per participant/cond label pair
+newdata_vocab <- gca %>% 
+  select(study_id, trial_type, Time, testing_location, vocab_total, Prop, poly1, poly2) %>% 
+  filter(!is.na(vocab_total))
+
+newdata_vocab <- newdata_vocab %>% 
+  ## get the predicted value for each case
+  mutate(pred = predict(gca.vocab, newdata=newdata_vocab)) %>%
+  # add vocab grouping
+  mutate(vocab_group = case_when(
+    vocab_total < 90 ~ "1",
+    vocab_total > 130 ~ "3",
+    TRUE ~ "2"
+  ))
+
+test <- newdata_vocab %>% 
+  group_by(study_id, vocab_total, vocab_group) %>% 
+  summarize(n = n())
+
+
+viz_vocab <- ggplot(newdata_vocab, aes(x = Time, y = Prop, color = trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange", size = .5) + 
+  stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.5) +
+  expand_limits(y=c(0.5, 1)) +
+  scale_color_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c("#1f78b4", "#33a02c"),
+                     name = "Trial Type") +
+  scale_shape_manual(labels = c("Code-Switched", "Single-Language"),
+                     values = c(19, 15),
+                     name = "Trial Type") +
+  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+  facet_grid(. ~ vocab_group, labeller = as_labeller(c(
+    "1" = "0 - 90 (n = 11)",
+    "2" = "91 - 130 (n = 9)",
+    "3" = "131+ (n = 9)"))) +
+  ggtitle("Vocabulary") + 
+  theme(legend.position="none")
+
+layout <- c(
+  area(1, 1, 1, 2),
+  area(1, 3, 2, 3),
+  area(2, 1, 2, 2),
+  #area(2, 3, 2, 3),
+  area(3, 1, 3, 3),
+  area(4, 1, 4, 3)
+)
+
+# to test layout of plots
+#plot(layout)
+
+viz_dom + guide_area() + viz_loc + viz_ses + viz_vocab + plot_layout(design = layout, guides = 'collect')
+
 ```
 
-```{r gca, include = TRUE, results = "asis"}
-apa_table(gca_table_print, stub_indents = gca_indent, col.names = c("", "Estimate", "95% CI", "$t$", "$df$", "$p$"), caption = "Growth curve analysis for all participants", note =  "Equation = *proportion looking time ~ [time (linear) + time (quadratic)] + trial type + testing location + testing location x trial type + testing location x time (linear) + testing location x time (quadratic) + ([time (linear) + time (quadratic)] || participant)*")
-```
+# 4. Discussion
 
+This study compared bilingual children’s comprehension of sentences with code-switching at an uninformative determiner-adjective pair (e.g., “Can you find *le bon* [fr. the good] duck?”) to their comprehension of single-language sentences (e.g., “Can you find the good duck?”). We tested 3-year-old bilingual children, including French--English bilinguals in Montreal and Spanish--English bilinguals in New Jersey. We found that bilinguals were, on average, successful at identifying the target noun in both types of sentences, and we did not see evidence that code-switching at an uninformative adjective caused any difficulties in sentence processing. Language dominance did not affect performance, likely because the target noun was always presented in a consistent language, and the switch occurred at the preceding adjective. This finding contrasts with prior reports of dominance effects in studies of children’s processing of code-switches [@potter_etal2019]. Surprisingly, we found some evidence that, for certain children, code-switched sentences may have facilitated comprehension relative to single-language sentences. 
 
-# Discussion
+Our experimental design allowed us to test two sets of competing theoretical predictions. Under the frequency account of code-switch processing, the infrequent nature of code-switching at a determiner-adjective pair should have hindered children’s comprehension, perhaps even more so than code-switching at nouns [@byers-heinlein_etal2017; @morini_newman2019; @potter_etal2019]. In contrast, under the functional account, children may have been able to seamlessly process code-switching at an uninformative adjective, because they did not need to integrate the meaning of the adjective to identify the target noun. Our results generally support the functional account as children were able to understand the code-switch sentences as well as the single-language sentences. Below, we further discuss why young children’s processing was not disrupted by code-switching at uninformative adjectives. Then, we turn to addressing the observed individual differences between participants and communities.
 
-This study compared bilingual children’s comprehension of sentences with code-switching at an uninformative adjective (e.g., “Can you find *le bon* [fr. the good] duck?”) to their comprehension of single-language sentences (e.g., “Can you find the good duck?”). We tested 3-year-old bilingual children, including French--English bilinguals in Montreal and Spanish--English bilinguals in New Jersey. Our experimental design allowed us to test two sets of competing theoretical predictions. Under the frequency account of code-switch processing, the infrequent nature of code-switching at adjectives should hinder children’s comprehension, perhaps even more so than code-switching at nouns [@byers-heinlein_etal2017; @morini_newman2019; @potter_etal2019]. In contrast, under the functional account, children may seamlessly process code-switching at an uninformative adjective, because they do not need to integrate the meaning of the adjective to identify the target noun. We found that bilinguals were on average successful at identifying the target noun in both types of sentences, and we did not see evidence that code-switching at an uninformative adjective caused any difficulties in sentence processing. Surprisingly, we found some evidence that code-switching may have facilitated comprehension among certain children – specifically Spanish--English bilinguals in New Jersey – relative to single-language sentences. Below, we discuss several possible explanations for why young children’s processing was not disrupted by code-switching at uninformative adjectives, and how the functional account might explain the overall findings. Then, we address the observed differences between French--English and Spanish--English participants.
+A key aspect of our experimental design was that the determiner-adjective pair in our sentences was uninformative. Children heard sentences with mid-sentence code-switching, as in “Can you find *le bon* [fr. the good] duck?” Critically, the adjective “*bon*” [fr. good] did not add relevant information for identifying the target object, as there was only one duck on the screen. Children typically process the meaning of adjective--noun phrases incrementally [@tribushinina_mak2016; @fernald_etal2010], but they can “listen through” the adjective to quickly identify the target object when a prenominal adjective is uninformative and does not disambiguate two objects [@thorpe_fernald2006]. Following the functional account, code-switching may not be disruptive when the information it carries does not need to be retrieved or integrated into processing. Children may not have experienced a code-switching cost in the current study, because they did not need to process the meaning of the code-switched adjective to identify the target and were therefore able to ignore it. 
 
-## “Listening through” uninformative code-switching
+Similarly, if code-switching is related to prediction processes during language comprehension [e.g., @yacovone_etal2021], the unexpected code-switch at the adjective might have led to a brief processing slowdown combined with a simultaneous increase in attention [@reuter_etal2019], effectively canceling each other out in the context of an uninformative adjective. Thus, derailment in children’s processing of code-switches may be limited to functionally important words or phrases that require them to integrate the information contained in the switch. 
 
-A key aspect of our experimental design was that the adjectives in our sentences were uninformative. Children heard sentences with mid-sentence code-switching at an adjective, as in “Can you find *le bon* [fr. the good] duck ?” Critically, the word “*bon*” [fr. good] did not add relevant information for identifying the target object, as there was only one duck on the screen. Children typically process the meaning of adjective--noun phrases incrementally [@tribushinina_mak2016; @fernald_etal2010], but they seem to “listen through” the adjective to quickly identify the target object when a prenominal adjective is uninformative and does not disambiguate two objects [@thorpe_fernald2006]. Following the functional account, code-switching may not be disruptive when the information it carries does not need to be retrieved or integrated into processing. Children may not have experienced a code-switching cost in the current study, because they did not need to process the meaning of the code-switched adjective to identify the target and were therefore able to ignore it. Similarly, under a prediction-based account of code-switching [e.g., @yacovone_etal2021], the unexpected code-switch at the adjective might have led to a brief processing slowdown combined with a simultaneous increase in attention [@reuter_etal2019], effectively canceling each other out in the context of an uninformative adjective. Thus, derailment in children’s processing of code-switches may be limited to functionally important words or phrases that require them to integrate the information contained in the switch. To further test this possibility, future studies could compare performance on trials like those in the current study and trials with an informative adjective (e.g., by showing a picture of a big and small duck and examining children’s real-time interpretation of the sentence “Do you see *le petit* [fr. the little] duck?”). Sentences with an informative adjective would presumably result in a code-switching cost, because children would no longer be able to “listen through” the code-switched adjective and would potentially need to engage their other language more fully.
+To further test this possibility, future studies could compare performance on trials like those in the current study and trials with an informative adjective (e.g., by showing a picture of a big and small duck and examining children’s real-time interpretation of the sentence “Do you see *le petit* [fr. the little] duck?”). Under the functional account, sentences with an informative adjective would presumably result in a code-switching cost, because children would no longer be able to “listen through” the code-switched adjective and would potentially need to engage their other language more fully.
 
-## Code-switching as a cue to word boundaries
+While “listening through” could explain why we did not observe a code-switching cost in this study, it does not explain the observed individual differences in children’s performance on code-switched and single-language sentences. Our analyses revealed that testing location and SES accounted for significant individual variation in performance across the single-language and code-switched trials, but language dominance and vocabulary size did not. Specifically, children from higher-SES backgrounds performed similarly across trial types; children from lower-SES backgrounds, particularly whose parents received a high school education or less, performed better on code-switched trials than single-language trials, and were all Spanish–English bilinguals in New Jersey. 
 
-Another potentially relevant aspect of our experimental design was that the code-switch occurred before the target noun, whereas in previous research the code-switch occurred at the target noun [e.g., “Find the *chien* [fr. dog]!”\; @byers-heinlein_etal2017]. Code-switched words at these different sentence locations may affect children’s ability to segment the speech stream into discrete words. Children can segment a speech stream based on a wide range of factors, such as transitional probabilities between syllables [@saffran_etal1996], reduplication of the word [@ota_skarabela2018], and the presence of familiar words [@mersad_nazzi2012]. It is possible that code-switching can also support word segmentation. Given that code-switches overwhelmingly happen between words [@poplack1980], they may be a useful signal for word boundaries. Thus, the prenominal code-switch in the current study may have helped children segment and subsequently identify the target noun, potentially boosting comprehension relative to single-language sentences. Additionally, if code-switching can aid segmentation, hearing code-switching in different locations could potentially help children to identify individual words more rapidly. To test this hypothesis, future studies could compare children’s comprehension of sentences with code-switches that occur either immediately before or several words before a target noun (e.g., “Find *le bon* [fr. the good] duck!” compared to “*Trouve* [fr. find] the good duck!”). If code-switching contributes to speech segmentation, code-switches that occur immediately prior to a target noun should be easier to process.
+In our sample, testing location (a proxy for language pair), SES, and vocabulary size were tightly related: French–English children from Montreal had higher vocabularies and were from higher SES backgrounds on average than Spanish–English children from New Jersey. Because of the correlational nature of this finding and the interrelatedness of these variables, it is not possible to pinpoint the factors driving the individual differences we observed. However, previous studies have reported similar patterns of individual differences in infants from these same communities; one study suggested that Spanish–English children may have slightly weaker skills in real-time language tasks than French–English children [@byers-heinlein_etal2021a].  Following the functional account, if some children were slower to switch between processing their two languages, or if they were less aware of its meaning, it is possible that they were able to “listen through” the uninformative adjective more easily (or under a prediction-based framework, encountered little to no prediction error). However, note that under this explanation, we would have expected vocabulary size to predict performance, which it did not. Rather, SES was a predictor of performance, a variable which has previously been related to children’s language development [@fernald_etal2013; @pace_etal2017; @pungello_etal2009]. We tentatively suggest that experiential factors related to SES might be driving the observed community differences we observed.
 
-## Community differences
+There are also other potentially relevant differences between children that we were not able to directly observe that may have affected infants’ performance on our task. For example, different infants have different experiences with code-switching [@bail_etal2015; @kremin_etal2021], which could in turn impact their comprehension of code-switching. The frequency account predicts that bilinguals with frequent exposure to code-switching should experience less disruption in processing compared to bilinguals without frequent exposure to code-switching [@gosselin_sabourin2021; @valdeskroff_etal2018]. In the context of the current study, experience with code-switching may have been able to build on top of children’s ability to “listen through” the uninformative adjective. It is also possible that production of code-switching varies by SES within the the two communities we studied, although this has not yet been examined directly. We speculate that Spanish-English bilinguals in New Jersey, particularly those from lower-SES backgrounds, may have been more accustomed to hearing code-switching than our other participants, resulting in the potential boost in real-time sentence interpretation – at least in the context of sentences with mid-sentence code-switches at uninformative locations. To address this question, additional research is needed to directly investigate the relationship between the amount and type of code-switching that bilingual children hear and how they process incoming speech input in two languages.
 
-In the previous sections, we put forward several explanations for why we did not observe a code-switching cost in this study. However, these accounts do not explain why the children at the two testing sites appeared to perform differently, particularly the tentative evidence that children from New Jersey showed an advantage for processing code-switched sentences over single-language sentences. Although the same eligibility criteria were used across the two sites, there may be some underlying differences between the samples in each location that influenced performance.
+# 5. Conclusion
 
-First, community differences in the frequency of code-switching could impact children’s comprehension of code-switching. As discussed above, the frequency account of code-switching predicts that it is easier to process code-switches that occur at parts of speech that are frequently code-switched. It also predicts that bilinguals with frequent exposure to code-switching should experience less disruption in processing compared to bilinguals without frequent exposure to code-switching [@valdeskroff_etal2018; @gosselin_sabourin2021]. Based on this account together with previous empirical results, we did not predict a difference between Spanish--English and French--English children’s comprehension, because the overall frequency of code-switching in French--English children’s environment was unknown when this study was designed. Since then, research has shown that Spanish--English parents in the U.S. code-switch more frequently than French--English parents in Montreal [@bail_etal2015; @kremin_etal2021]. Thus, children from New Jersey may have been more accustomed to hearing code-switching than those in Montreal, resulting in the potential boost in real-time sentence interpretation. 
-
-Second, the Spanish--English children in New Jersey had smaller productive vocabulary sizes than the French--English children in Montreal, and other studies have suggested that this population may have slightly weaker skills in real-time language tasks [@byers-heinlein_etal2021a]. Thus, Spanish--English children (versus French--English children) may have benefitted more from certain aspects of our experimental design. For example, we speculate that they may have gotten a somewhat larger boost to word segmentation from code-switching. It is also possible that the Spanish--English children were able to “listen through” the uninformative adjective more easily (or under a prediction-based account, encounter little to no prediction error) if they were less aware of its meaning or if they were slower to switch between processing their two languages. These explanations alone or combined could explain the potential boost in comprehension that Spanish--English children demonstrated for code-switched sentences. Future research is needed to directly test these tentative explanations.
-
-Third, the Spanish--English children in New Jersey came from more socioeconomically diverse backgrounds than the French--English children in Montreal. Given that socio-economic status is related to children’s language development [@fernald_etal2013; @pungello_etal2009; @pace_etal2017], the variability in this sample may have contributed to the high variability in children’s performance. Performance variability, combined with a small sample size for this subgroup (*n* = 11), may have produced a Type I error, leading us to incorrectly conclude that children from New Jersey understood code-switched sentences better than single-language sentences. That is, with a larger sample (which was not possible to recruit due to the COVID-19 pandemic), this effect could diminish or disappear. 
-
-Finally, an important consideration is whether differences in language dominance across the two groups could explain this pattern of results. Previous research has shown that language dominance contributes to effects of code-switching in comprehension [@litcofsky_vanhell2017; @bultena_etal2015]. Specifically, children more easily process code-switched nouns in their dominant language than code-switched nouns in their non-dominant language [@potter_etal2019]. However, this asymmetry between comprehension and language dominance cannot easily explain why children in New Jersey appear to have understood code-switched sentences more efficiently than single-language sentences. First, children heard the target noun in the same language across sentence types. That is, an English-dominant toddler tested in their dominant language always heard the target noun in English regardless of whether they heard a code-switched sentence (e.g., “Can you see *el buen* [sp. the good] duck?”) or a single-language sentence (e.g., “Can you see the good duck?”). Second, roughly half of the participants in each testing location were tested in their dominant language. Thus, if language dominance did play a large role in children’s comprehension of code-switching, it should have also been apparent in the Montreal sample. Overall, dominance does not provide a good explanation for our pattern of results, although this could be investigated in future studies.
-
-# Conclusion
-
-Code-switching is common in bilingual speech, making it important to understand its effect on children’s language comprehension and acquisition. Past research has overwhelmingly found that code-switching leads to processing costs, while in the current study, bilingual children processed sentences with code-switching at an uninformative adjective similarly or perhaps better than single-language sentences, showing no evidence of a processing cost. These unexpected findings demonstrate that linguistic features such as informativeness and location may impact how bilingual children process code-switching in natural settings. 
+Code-switching is common in bilingual speech, making it important to understand its effect on children’s language comprehension and language learning. Past research has generally found that code-switching leads to processing costs, but in the current study, bilingual children did not show this processing cost. They showed similar (and in some cases, better) processing of sentences with a code-switch at an uninformative adjective phrase, relative to single-language sentences. These findings demonstrate that linguistic features such as informativeness and location may impact how bilingual children process code-switching in natural settings.
 
 
 \newpage

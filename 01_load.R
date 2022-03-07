@@ -22,7 +22,7 @@ mtl_msl <- read_csv(here("data/Montreal/mtl_msl_anon.csv")) %>%
 mtl_msl_keepers <- mtl_msl %>% 
   # only data from those marked as keepers
   filter(keeper == 1) %>% 
-  # add column determining whether lang of testin was child's dom or non-dominate lanuage
+  # add column determining whether lang of testing was child's dom or non-dominant language
   mutate(study_lang_dom = case_when(
     study_language == child_dom_lang ~ "dom",
     TRUE ~ "non"
@@ -115,13 +115,13 @@ px_by_object <- object_n %>%
   select(-n_object) %>% 
   left_join(select(aois_by_object, - half_px), by = c("object", "location"))
 
-# get AOIs for remaing objects
+# get AOIs for remaining objects
 aois_final <- aois_by_object %>% 
   # by matching it to the width of the AOI for it on the other side (height will match too, but is unnecessary code)
   filter(x_width %in% px_by_object$x_width,
          # remove this weird entry for Fish on the R as it's different than other AOIs and wasn't picked up by the other code
          y_height != 493) %>% 
-  # remove unnecessarily columns
+  # remove unnecessary columns
   select(-half_px, -x3, -x4, -y2, -y4) %>% 
   rename(x_left = x1, x_right = x2, y_top = y1, y_bottom = y3)
 
@@ -228,7 +228,7 @@ mtl_trial_number_type <- mtl_data_cleaned %>%
 mtl_data_cleaned <- mtl_data_cleaned %>% 
   left_join(mtl_trial_number_type, by = c("study_id", "trial_number", "trial_type"))
 
-write_csv(mtl_data_cleaned, path = here("data_frames/mtl_data_cleaned.csv"))
+write_csv(mtl_data_cleaned, file = here("data_frames/mtl_data_cleaned.csv"))
 
 
 
@@ -330,7 +330,7 @@ pct_msl_non_keepers <- pct_msl %>%
 
 write_csv(pct_msl_non_keepers, here("data_frames/pct_msl_non_keepers.csv"))
 
-## one df that's paired down to merge with eye tracking data
+## one df that's pared down to merge with eye tracking data
 pct_comp_eye <- pct_msl_keepers %>% 
   select(study_id, child_dom_lang, study_language, study_lang_dom, edu_years, vocab_total) 
 

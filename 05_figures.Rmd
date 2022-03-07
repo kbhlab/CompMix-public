@@ -22,7 +22,7 @@ library(lme4)
 gaze_target <- read_csv(here("data_frames/gaze_target_sum.csv")) %>% 
   mutate(trial_type = as.factor(trial_type),
          location = as.factor(testing_location))
-combo_time <- read_csv(here("data_frames/gaze_time.csv"))
+#combo_time <- read_csv(here("data_frames/gaze_time.csv"))
 
 
   
@@ -102,6 +102,30 @@ ggplot(gaze_target, aes(x = trial_type, y = Prop, color = testing_location)) +
 
 ggsave(here("figures/line_anon.png"), dpi=300)
 
+
+## BUCLD - no color difference for location, transparent background, white text
+ggplot(gaze_target, aes(x = trial_type, y = Prop)) +
+  geom_hline(aes(yintercept = 0.5), linetype = 2, color = "blue") +
+  geom_point(alpha = 0.3) +
+  geom_line(aes(group = study_id), alpha= 0.3) +
+  stat_summary(fun.y = "mean", color = "red", size = 4, geom = "point", alpha = .9) +
+  geom_segment(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
+                                    xend = 2, yend = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean))
+                   , color = "red", size = 1) +
+    labs(x = "Trial Type", y = "Proportion Looking to Target") +
+  scale_x_discrete(labels= c("Code-Switched", "Single Language")) +
+  ylim(0, 1) +
+    theme(legend.text = element_text(size = 16, color = "white"),
+          legend.title = element_text(size = 20, color = "white"),
+          axis.text = element_text(size = 16, color = "white"),
+          axis.title = element_text(size = 20, color = "white"),
+          axis.title.y = element_text(margin = margin(r = 20)),
+          strip.text.x = element_text(size = 16),
+          plot.background = element_rect(fill = "transparent", color = NA),
+          legend.background = element_rect(fill = "transparent", color = NA))
+
+ggsave(here("figures/line_no-location_BUCLD.png"), width = 9.5, height = 6.9, dpi = 500, bg = "transparent")
+
 ```
 
 
@@ -150,10 +174,11 @@ ggsave(here("figures/growth_curve_analysis_anon.png"), dpi = 300)
 
 
 
-### Psychoshorts - translucent background, white text
-ggplot(gca, aes(Time, Prop, color=trial_type)) + 
-  stat_summary(fun.data=mean_se, geom="pointrange") + 
-  stat_summary(aes(y=fitted(m.3.1)), fun=mean, geom="line") +
+### Psychoshorts - translucent background, white text ##HK can't get this one to work
+gca %>%
+  ggplot(aes(x = Time, y = Prop, color=trial_type)) + 
+  stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange") +
+  stat_summary(aes(y=fitted(gca.m)), fun=mean, geom="line") +
   expand_limits(y=c(0.5, 1)) +
     scale_color_manual(labels = c("Code-Switched", "Single Language"), values = c("#ea4276", "#47c7d1"), name = "Trial Type") +
     labs(x = "Time from Noun Onset", y = "Proportion Looking to Target")  +
@@ -166,6 +191,29 @@ ggplot(gca, aes(Time, Prop, color=trial_type)) +
           legend.background = element_rect(fill = "transparent", color = NA))
 
 ggsave("figures/growth_curve_analysis_psychoshorts.png", width = 8.4, height = 6.9, dpi = 500, bg = "transparent")
+
+
+
+### BUCLD - translucent background, white text, by location
+gca %>% 
+  filter(Prop != "NaN") %>% 
+ggplot(aes(Time, Prop, color=trial_type)) + 
+  stat_summary(fun.data=mean_se, geom="pointrange") + 
+  stat_summary(aes(y=fitted(gca.m)), fun=mean, geom="line") +
+  expand_limits(y=c(0.5, 1)) +
+    scale_color_manual(labels = c("Code-Switched", "Single Language"), values = c("#ea4276", "#47c7d1"), name = "Trial Type") +
+    labs(x = "Time from Noun Onset", y = "Proportion Looking to Target")  +
+    theme(legend.text = element_text(size = 16, color = "white"),
+          legend.title = element_text(size = 20, color = "white"),
+          axis.text = element_text(size = 16, color = "white"),
+          axis.title = element_text(size = 20, color = "white"),
+          axis.title.y = element_text(margin = margin(r = 20)),
+          strip.text.x = element_text(size = 16),
+          plot.background = element_rect(fill = "transparent", color = NA),
+          legend.background = element_rect(fill = "transparent", color = NA))+
+  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Montreal", "Princeton" = "New Jersey"))) 
+
+ggsave("figures/growth_curve_analysis_BUCLD.png", width = 9.5, height = 6.9, dpi = 500, bg = "transparent")
 
 
 
