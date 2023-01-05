@@ -228,7 +228,7 @@ mtl_trial_number_type <- mtl_data_cleaned %>%
 mtl_data_cleaned <- mtl_data_cleaned %>% 
   left_join(mtl_trial_number_type, by = c("study_id", "trial_number", "trial_type"))
 
-write_csv(mtl_data_cleaned, file = here("data_frames/mtl_data_cleaned.csv"))
+write_csv(mtl_data_cleaned, here("data_frames/mtl_data_cleaned.csv"))
 
 
 
@@ -384,4 +384,4 @@ pct_trial_number_type <- pct_data_cleaned %>%
 pct_data_cleaned <- pct_data_cleaned %>% 
   left_join(pct_trial_number_type, by = c("study_id", "trial_number", "trial_type"))
 
-write_csv(pct_data_cleaned, path = here("data_frames/pct_data_cleaned.csv"))
+write_csv(pct_data_cleaned, here("data_frames/pct_data_cleaned.csv"))

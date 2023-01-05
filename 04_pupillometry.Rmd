@@ -263,7 +263,7 @@ pupil_type_filtered <- create_window_data(data = baseline_filtered,
 pupil_windows_filtered <- create_time_windows(data = baseline_filtered,
                                          pupil = pupil_baseline,
                                          breaks = c(3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800)) %>% 
-  mutate(Window = replace_na(Window, 10))
+  mutate(Window = replace_na(as.numeric(Window), 10))
 
 # write csv for dfs
 write_csv(baseline_filtered, "data_frames/mtl_baseline_filtered.csv")

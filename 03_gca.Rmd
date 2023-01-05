@@ -14,8 +14,14 @@ This notebook contains the growth curve analysis of CompMix-36 combining Montrea
 library(tidyverse)
 library(lme4)
 library(lmerTest)
-library(gazer)
+
+library(devtools)
+
 library(here)
+
+#Workaround since gazer does not seem to be on R Jan 5, 2023. Install from github
+#devtools::install_github("dmirman/gazer")
+library(gazer)
 ```
 
 ## load data

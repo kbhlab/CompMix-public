@@ -139,9 +139,10 @@ response_window_clean <- clean_by_trackloss(data = response_window,
 # get number of trials per subj
 gaze_trial_n <- response_window_clean %>% 
   group_by(study_id, trial_type, testing_location) %>% 
-  summarize(trial_n = length(unique(trial_number))) %>% 
+  summarize(trial_n = length(unique(trial_number)), .groups = "drop") %>% 
   ## filter for participants with at least 2 trials per condition
-  pivot_wider(id_cols = c("study_id", "trial_type", "testing_location"), names_from = trial_type, values_from = trial_n) %>% 
+  pivot_wider(names_from = trial_type, values_from = trial_n) %>% 
+ # pivot_wider(id_cols = c("study_id", "trial_type", "testing_location"), names_from = trial_type, values_from = trial_n) %>% #this line did not work for some reason
   filter(Single >= 2 & Mixed >= 2) %>% 
   pivot_longer(cols = c("Single", "Mixed"), names_to = "trial_type")
 
