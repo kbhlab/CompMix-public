@@ -5,15 +5,15 @@ shorttitle        : "Children's code-switching comprehension"
 author: 
   - name          : "Lena V. Kremin"
     affiliation   : "a"
-    corresponding : yes    # Define only one corresponding author
-    address       : "7141 Sherbrooke St. West, PY-033, Montréal, QC, H4B 1R6"
-    email         : "lena.kremin@mail.concordia.com"
   - name          : "Amel Jardak"
     affiliation   : "a"
   - name          : "Casey Lew-Williams"
     affiliation   : "b"
   - name          : "Krista Byers-Heinlein"
     affiliation   : "a"
+    corresponding : yes    # Define only one corresponding author
+    address       : "7141 Sherbrooke St. West, PY-033, Montréal, QC, H4B 1R6"
+    email         : "k.byers@concordia.ca"
 
 affiliation:
   - id            : "a"
