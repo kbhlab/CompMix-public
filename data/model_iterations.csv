@@ -1,0 +1,8 @@
+Model,Fixed effects
+Base model,Linear time + quadratic time
+Model 1,Linear time + quadratic time + trial type
+Model 2,Linear time + quadratic time + trial type + trial type x linear time
+Model 3,Linear time + quadratic time + trial type + language dominance + trial type x language dominance
+Model 4,Linear time + quadratic time + trial type + testing location + trial type x testing location
+Model 5,Linear time + quadratic time + trial type + socioeconomic status + trial type x socioeconomic status
+Model 6,Linear time + quadratic time + trial type + vocabulary + trial type x vocabulary

@@ -99,7 +99,7 @@ For each subsequent model, the variable of interest was added as a main effect a
 
 ```{r model-iterations, include = TRUE, results = "asis"}
 
-model_iterations <- read_csv(here("2016_CompMix_Design/model_iterations_revision.csv"))
+model_iterations <- read_csv(here("data/model_iterations.csv"))
 
 apa_table(model_iterations, caption = "Fixed effects in each model in the iterative process", note = "Each model had the same random effect structure including linear and quadratic time as random slope for participants")
 

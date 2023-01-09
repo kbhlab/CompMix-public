@@ -1,7 +1,6 @@
 ---
 title             : "Bilingual children's comprehension of code-switching at an uninformative adjective"
 shorttitle        : "Children's code-switching comprehension"
-numbersections    : false
 
 author: 
   - name          : "Lena V. Kremin"
@@ -27,8 +26,8 @@ affiliation:
     institution   : "Princeton University, 216 Peretsman Scully Hall, Princeton, NJ, 08540, USA"
 
 authornote: |
-  Acknowledgments: This work was supported by a grant to KBH from the Natural Sciences and Engineering Research Council of Canada (402470-2011), grants to CLW and KBH from the U.S. National Institute of Child Health and Human Development (R01HD095912, R03HD079779), a grant to CLW from the Speech-Language-Hearing Foundation, support for KBH from the Concordia University Research Chairs program, and fellowships to LVK and AJ from the Fonds de Recherche du Québec–Société et Culture. We thank the many members of the Concordia Infant Research Lab and the Princeton Baby Lab who assisted with testing participants, and the children and parents who participated.
- Data, code and materials availability statement: All stimuli, data, and analysis scripts for the current study are available via the Open Science Framework at https://doi.org/10.17605/OSF.IO/ECQWR.
+  **Acknowledgments**: This work was supported by a grant to KBH from the Natural Sciences and Engineering Research Council of Canada (402470-2011), grants to CLW and KBH from the U.S. National Institute of Child Health and Human Development (R01HD095912, R03HD079779), a grant to CLW from the Speech-Language-Hearing Foundation, support for KBH from the Concordia University Research Chairs program, and fellowships to LVK and AJ from the Fonds de Recherche du Québec–Société et Culture. We thank the many members of the Concordia Infant Research Lab and the Princeton Baby Lab who assisted with testing participants, and the children and parents who participated.
+  **Data, code and materials availability statement**: All stimuli, data, and analysis scripts for the current study are available via the Open Science Framework at https://doi.org/10.17605/OSF.IO/ECQWR.
 
 
 
@@ -51,7 +50,6 @@ draft             : no
 documentclass     : "apa6"
 classoption       : "man"
 output            : papaja::apa6_word
-
 ---
 
 ```{r setup, echo = FALSE, include = FALSE}
