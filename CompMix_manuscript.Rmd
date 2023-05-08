@@ -373,8 +373,8 @@ ggplot(gaze_target, aes(x = trial_type, y = Prop)) +
   geom_segment(aes(x = 1, y = gaze_target_des %>% filter(trial_type == "Mixed") %>% pull(mean),
                                     xend = 2, yend = gaze_target_des %>% filter(trial_type == "Single") %>% pull(mean))
                    , color = "red", size = 1) +
-  labs(x = "Trial Type", y = "Proportion Looking to Target") +
-  scale_x_discrete(labels= c("Code-Switched", "Single-Language")) +
+  labs(x = "Trial Type", y = "Proportion looking to target") +
+  scale_x_discrete(labels= c("Code-switched", "Single-language")) +
   ylim(0, 1) +
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12),
@@ -503,13 +503,13 @@ viz_dom <- ggplot(newdata_dom, aes(x = Time, y = Prop, color = trial_type)) +
   stat_summary(aes(y = Prop, shape = trial_type), fun.data=mean_se, geom="pointrange", size = .5) + 
   stat_summary(aes(y = pred), fun=mean, geom="line", size = 0.5) +
   expand_limits(y=c(0.5, 1)) +
-  scale_color_manual(labels = c("Code-Switched", "Single-Language"),
+  scale_color_manual(labels = c("Code-switched", "Single-language"),
                      values = c("#1f78b4", "#33a02c"),
                      name = "Trial Type") +
-  scale_shape_manual(labels = c("Code-Switched", "Single-Language"),
+  scale_shape_manual(labels = c("Code-switched", "Single-language"),
                      values = c(19, 15),
-                     name = "Trial Type") +
-  labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
+                     name = "Trial type") +
+  labs(x = "Time from Noun Onset", y = "Proportion looking to target") +
   facet_grid(. ~ study_lang_dom, labeller = as_labeller(c("dom" = "Dominant (n = 15)", "non" = "Non-dominant (n = 15)")))  +
   ggtitle("Language dominance")
 
