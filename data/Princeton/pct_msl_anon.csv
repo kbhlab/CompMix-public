@@ -1,35 +1,35 @@
-study_id,test_date,years,months,days,gender,study,order,notes,exclude,parental_edu_level,edu_years,ethnicity,parent_reported_dominance,parent_report_average_exposure_english,ef_notes,acq_first,age_hear_e,age_hear_s,age_exp_e,age_exp_s,mom_dom,vocab_eng,vocab_sp,age_years
-1,2017-02-21T00:00:00Z,4,0,20,F,3a,E1,made it through! Lost attention at times,N,"Some college, no degree",11,Hispanic,English,60,NA,S,12,0,12,0,NA,43,53,4.04654346338125
-2,2017-02-22T00:00:00Z,3,2,21,M,3a,E2,made it through! Lost attention at times. Trial 5 remaining and 2 remaining were weird in WISP,??? Maybe monolingual,6th grade,6,Hispanic,Spanish,5,NA,S,24,0,"NA",0,S,NC,77,3.20328542094456
-3,2017-02-22T00:00:00Z,3,8,21,F,3a,S1,made it through!,N,Masters,18,Hispanic,English,40,NA,E/S,2,0,2,0,S,69,9,3.72895277207392
-4,2017-02-22T00:00:00Z,3,10,21,M,3a,S2,made it through!,N,4th grade,4,Hispanic,Spanish,50,NA,S,12,0,18,0,S,51,69,3.90417522245038
-9,2017-02-28T00:00:00Z,3,7,27,M,3a,E1,"trial 16 messed up video, made it through!",N,High school (she said secretaria),12,Hispanic,Spanish,10,NA,S,36,0,36,0,S,NC,23,3.6249144421629
-10,2017-03-01T00:00:00Z,3,9,0,F,3a,E2,"wisp video messed up on trial 6, made it through!",N,6th grade,6,Hispanic,English,30,NA,E/S,14,0,14,0,NA,107,31,3.76180698151951
-11,2017-03-02T00:00:00Z,3,6,1,M,3a,S1,made it through! Lost a little interest in the late teens but brought it back,N,High school (she said secundaria),12,Hispanic,Spanish,30,NA,S,36,0,36,0,NA,7,24,3.55099247091034
-12,2017-03-02T00:00:00Z,4,1,1,F,3a,S2,made it through! sat without mom.,N,Masters,18,Mix,English,50,NA,S,4,0,4,0,S,74,55,4.09308692676249
-17,2017-03-07T00:00:00Z,3,11,6,M,3a,E1,"tested in trenton, grey hoodie, made it through but lost focus at times throughout",N,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.94798083504449
-18,2017-03-13T00:00:00Z,3,1,12,M,3a,E2,made it!,N,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.12936344969199
-19,2017-03-20T00:00:00Z,3,3,19,M,3a,S1,made it but talked/screamed through entire thing. probably exclude because I have no idea if he heard any of it.,Y,Associate Degree,14,Hispanic,English,30,NA,E,0,0,0,0,S,58,36,3.27446954140999
-20,2017-03-24T00:00:00Z,3,5,23,M,3a,S2,"made it. wisp completely messed up first time (see file Mix_020a, Mix_020a1 is second, succesful try). family had to leave room for Eva to fix. then trial 8, 13, and 22 were funky. watch video to see exactly.",Y,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.44969199178645
-25,2017-05-05T00:00:00Z,3,7,4,M,3a,E1,made it but pointed so his looks were obscured on most trials,Y,Masters,18,Hispanic,E/S,40,NA,S,3,0,3,0,E/S,99,22,3.63039014373717
-26,2017-05-11T00:00:00Z,3,7,10,M,3a,E2,made it! Speech problem,Y,Bachelors,16,Latinx,English,90,EXCLUDE - Speech delay,S,12,0,12,0,S,57,4,3.59206023271732
-27,2017-07-21T00:00:00Z,3,6,20,M,3a,S1,made it but distracted at end,N,High school diploma or GED,12,Mix,English,60,NA,E/S,0,0,0,0,E,61,2,3.51813826146475
-28,2017-10-16T00:00:00Z,3,6,15,M,3a,S2,made it,N,"Some college, no degree",11,Hispanic,Spanish,50,NA,S,12,0,12,0,S,37,23,3.51813826146475
-33,2018-01-19T00:00:00Z,3,0,18,M,3a,E1,made it!,N,Masters,18,Hispanic,English,80,NA,E/S,0,0,0,0,E,84,4,3.07734428473648
-34,2018-01-23T00:00:00Z,3,3,22,F,3a,E2,made it!,NA,PhD/MD/JD,20,?,English,85,NA,E/S,0,0,0,0,E,56,3,3.28542094455852
-5,2017-02-24T00:00:00Z,3,10,23,F,3a,S1,made it through! Got bored at end,N,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.91238877481177
-6,2017-02-24T00:00:00Z,3,11,23,M,3a,S2,made it through! No headphones,N,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.96440793976728
-7,2017-02-24T00:00:00Z,3,7,23,F,3a,E1,didn't make it. did not seem to understand the english.,NA,6th grade,6,Hispanic,Spanish,25,NA,E,0,0,0,0,NA,21,21,3.64407939767283
-8,2017-02-28T00:00:00Z,3,0,27,M,3a,E2,made it through! Lost attention at the end,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.06365503080082
-13,2017-03-03T00:00:00Z,4,0,2,F,3a,S1,made it!,N,High school diploma or GED,12,Hispanic,E/S,40,NA,S,12,0,12,0,S,60,44,4.02737850787132
-14,2017-03-03T00:00:00Z,4,0,2,F,3a,S2,made it through!,N,High school diploma or GED,12,Hispanic,E/S,40,NA,S,12,0,12,0,NA,60,45,4.02737850787132
-15,2017-03-03T00:00:00Z,3,6,2,F,3a,E1,made it through!,N,Associate Degree,14,Hispanic,English,50,NA,S,12,0,12,0,E,82,5,3.57289527720739
-16,2017-03-07T00:00:00Z,3,5,6,F,3a,E2,made it through!,N,6th grade,6,Hispanic,Spanish,30,NA,S,24,0,36,0,S,1,76,3.46885694729637
-21,2017-03-25T00:00:00Z,3,11,24,F,3a,S1,made it!,N,Current grad student,17,Hispanic,English,70,NA,E/S,0,0,0,0,S,84,6,3.93976728268309
-22,2017-04-13T00:00:00Z,4,0,12,F,3a,S2,made it but was distracted throughout,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,4.0684462696783
-23,2017-04-13T00:00:00Z,4,0,12,M,3a,E1,made it! Mom not masked,N,?,NA,Hispanic,E/S,30,NA,E/S,0,0,0,0,S,85,70,4.06023271731691
-24,2017-04-20T00:00:00Z,3,8,19,M,3a,E2,made it! Unclear if he understood much English,N,?,NA,Hispanic,Spanish,20,NA,S,36,0,36,0,S,NC,105,3.73442847364819
-29,2017-10-16T00:00:00Z,3,4,15,M,3a,S1,made it,N,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.35386721423682
-30,2017-10-17T00:00:00Z,3,2,16,F,3a,S2,made it,N,Masters,18,Black,English,33,NA,S,0,0,0,0,S,36,19,3.19233401779603
-31,2017-10-30T00:00:00Z,4,0,29,F,3a,E1,made it,N,PhD/MD/JD,20,White,English,67,NA,E/S,0,0,0,0,NA,96,25,4.04380561259411
-32,2018-01-12T00:00:00Z,3,9,11,M,3a,E2,made it but walked around a bit,N,Masters,18,White,English,50,NA,E/S,0,0,0,0,S,82,3,3.79192334017796
+study_id,test_date,years,months,days,gender,study,order,notes,exclude,parental_edu_level,edu_years,ethnicity,parent_reported_dominance,parent_report_average_exposure_english,lang_mix,ef_notes,acq_first,age_hear_e,age_hear_s,age_exp_e,age_exp_s,mom_dom,vocab_eng,vocab_sp,age_years
+1,2017-02-21T00:00:00Z,4,0,20,F,3a,E1,made it through! Lost attention at times,N,"Some college, no degree",11,Hispanic,English,60,0,NA,S,12,0,12,0,NA,43,53,4.046543463
+2,2017-02-22T00:00:00Z,3,2,21,M,3a,E2,made it through! Lost attention at times. Trial 5 remaining and 2 remaining were weird in WISP,??? Maybe monolingual,6th grade,6,Hispanic,Spanish,5,,NA,S,24,0,NA,0,S,NC,77,3.203285421
+3,2017-02-22T00:00:00Z,3,8,21,F,3a,S1,made it through!,N,Masters,18,Hispanic,English,40,18,NA,E/S,2,0,2,0,S,69,9,3.728952772
+4,2017-02-22T00:00:00Z,3,10,21,M,3a,S2,made it through!,N,4th grade,4,Hispanic,Spanish,50,30,NA,S,12,0,18,0,S,51,69,3.904175222
+9,2017-02-28T00:00:00Z,3,7,27,M,3a,E1,"trial 16 messed up video, made it through!",N,High school (she said secretaria),12,Hispanic,Spanish,10,,NA,S,36,0,36,0,S,NC,23,3.624914442
+10,2017-03-01T00:00:00Z,3,9,0,F,3a,E2,"wisp video messed up on trial 6, made it through!",N,6th grade,6,Hispanic,English,30,6,NA,E/S,14,0,14,0,NA,107,31,3.761806982
+11,2017-03-02T00:00:00Z,3,6,1,M,3a,S1,made it through! Lost a little interest in the late teens but brought it back,N,High school (she said secundaria),12,Hispanic,Spanish,30,25,NA,S,36,0,36,0,NA,7,24,3.550992471
+12,2017-03-02T00:00:00Z,4,1,1,F,3a,S2,made it through! sat without mom.,N,Masters,18,Mix,English,50,,NA,S,4,0,4,0,S,74,55,4.093086927
+17,2017-03-07T00:00:00Z,3,11,6,M,3a,E1,"tested in trenton, grey hoodie, made it through but lost focus at times throughout",N,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.947980835
+18,2017-03-13T00:00:00Z,3,1,12,M,3a,E2,made it!,N,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.12936345
+19,2017-03-20T00:00:00Z,3,3,19,M,3a,S1,made it but talked/screamed through entire thing. probably exclude because I have no idea if he heard any of it.,Y,Associate Degree,14,Hispanic,English,30,,NA,E,0,0,0,0,S,58,36,3.274469541
+20,2017-03-24T00:00:00Z,3,5,23,M,3a,S2,"made it. wisp completely messed up first time (see file Mix_020a, Mix_020a1 is second, succesful try). family had to leave room for Eva to fix. then trial 8, 13, and 22 were funky. watch video to see exactly.",Y,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.449691992
+25,2017-05-05T00:00:00Z,3,7,4,M,3a,E1,made it but pointed so his looks were obscured on most trials,Y,Masters,18,Hispanic,E/S,40,,NA,S,3,0,3,0,E/S,99,22,3.630390144
+26,2017-05-11T00:00:00Z,3,7,10,M,3a,E2,made it! Speech problem,Y,Bachelors,16,Latinx,English,90,,EXCLUDE - Speech delay,S,12,0,12,0,S,57,4,3.592060233
+27,2017-07-21T00:00:00Z,3,6,20,M,3a,S1,made it but distracted at end,N,High school diploma or GED,12,Mix,English,60,17,NA,E/S,0,0,0,0,E,61,2,3.518138261
+28,2017-10-16T00:00:00Z,3,6,15,M,3a,S2,made it,N,"Some college, no degree",11,Hispanic,Spanish,50,17,NA,S,12,0,12,0,S,37,23,3.518138261
+33,2018-01-19T00:00:00Z,3,0,18,M,3a,E1,made it!,N,Masters,18,Hispanic,English,80,,NA,E/S,0,0,0,0,E,84,4,3.077344285
+34,2018-01-23T00:00:00Z,3,3,22,F,3a,E2,made it!,NA,PhD/MD/JD,20,?,English,85,,NA,E/S,0,0,0,0,E,56,3,3.285420945
+5,2017-02-24T00:00:00Z,3,10,23,F,3a,S1,made it through! Got bored at end,N,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.912388775
+6,2017-02-24T00:00:00Z,3,11,23,M,3a,S2,made it through! No headphones,N,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.96440794
+7,2017-02-24T00:00:00Z,3,7,23,F,3a,E1,didn't make it. did not seem to understand the english.,NA,6th grade,6,Hispanic,Spanish,25,,NA,E,0,0,0,0,NA,21,21,3.644079398
+8,2017-02-28T00:00:00Z,3,0,27,M,3a,E2,made it through! Lost attention at the end,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.063655031
+13,2017-03-03T00:00:00Z,4,0,2,F,3a,S1,made it!,N,High school diploma or GED,12,Hispanic,E/S,40,14,NA,S,12,0,12,0,S,60,44,4.027378508
+14,2017-03-03T00:00:00Z,4,0,2,F,3a,S2,made it through!,N,High school diploma or GED,12,Hispanic,E/S,40,,NA,S,12,0,12,0,NA,60,45,4.027378508
+15,2017-03-03T00:00:00Z,3,6,2,F,3a,E1,made it through!,N,Associate Degree,14,Hispanic,English,50,,NA,S,12,0,12,0,E,82,5,3.572895277
+16,2017-03-07T00:00:00Z,3,5,6,F,3a,E2,made it through!,N,6th grade,6,Hispanic,Spanish,30,,NA,S,24,0,36,0,S,1,76,3.468856947
+21,2017-03-25T00:00:00Z,3,11,24,F,3a,S1,made it!,N,Current grad student,17,Hispanic,English,70,9,NA,E/S,0,0,0,0,S,84,6,3.939767283
+22,2017-04-13T00:00:00Z,4,0,12,F,3a,S2,made it but was distracted throughout,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,4.06844627
+23,2017-04-13T00:00:00Z,4,0,12,M,3a,E1,made it! Mom not masked,N,?,NA,Hispanic,E/S,30,,NA,E/S,0,0,0,0,S,85,70,4.060232717
+24,2017-04-20T00:00:00Z,3,8,19,M,3a,E2,made it! Unclear if he understood much English,N,?,NA,Hispanic,Spanish,20,,NA,S,36,0,36,0,S,NC,105,3.734428474
+29,2017-10-16T00:00:00Z,3,4,15,M,3a,S1,made it,N,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,3.353867214
+30,2017-10-17T00:00:00Z,3,2,16,F,3a,S2,made it,N,Masters,18,Black,English,33,1,NA,S,0,0,0,0,S,36,19,3.192334018
+31,2017-10-30T00:00:00Z,4,0,29,F,3a,E1,made it,N,PhD/MD/JD,20,White,English,67,26,NA,E/S,0,0,0,0,NA,96,25,4.043805613
+32,2018-01-12T00:00:00Z,3,9,11,M,3a,E2,made it but walked around a bit,N,Masters,18,White,English,50,,NA,E/S,0,0,0,0,S,82,3,3.79192334
