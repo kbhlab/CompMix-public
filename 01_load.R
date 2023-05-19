@@ -43,7 +43,7 @@ mtl_msl_keepers <- mtl_msl %>%
 
 # select only relevant columns for analysis to merge with eye-tracking data
 mtl_msl_keepers_eye <- mtl_msl_keepers %>% 
-  select(study_id, gender, first_study, study_language, child_dom_lang, study_lang_dom, edu_years, vocab_total) 
+  select(study_id, gender, first_study, study_language, child_dom_lang, study_lang_dom, edu_years, vocab_total, lang_mix, ethnicity) 
 
 
 # identify how many participants were excluded for each reason
@@ -332,7 +332,7 @@ write_csv(pct_msl_non_keepers, here("data_frames/pct_msl_non_keepers.csv"))
 
 ## one df that's pared down to merge with eye tracking data
 pct_comp_eye <- pct_msl_keepers %>% 
-  select(study_id, child_dom_lang, study_language, study_lang_dom, edu_years, vocab_total) 
+  select(study_id, child_dom_lang, study_language, study_lang_dom, edu_years, vocab_total, lang_mix, ethnicity) 
 
 
 ##### prep eye tracking data

@@ -34,7 +34,7 @@ mtl_data_cleaned <- read_csv("data_frames/mtl_data_cleaned.csv", col_types = col
 
 mtl_msl_keepers <- read_csv("data_frames/mtl_msl_keepers.csv") %>% 
   rename(prof_o = prof_fr, aoa_o = aoa_fr) %>% 
-  select(study_id, gender, age_years, study_language, prof_eng, prof_o, aoa_en, aoa_o, child_dom_lang, study_lang_dom, vocab_dom, vocab_non_dom, vocab_total, edu_years, testing_location)
+  select(study_id, gender, age_years, study_language, prof_eng, prof_o, aoa_en, aoa_o, child_dom_lang, study_lang_dom, vocab_dom, vocab_non_dom, vocab_total, lang_mix, edu_years, testing_location, ethnicity)
 
 mtl_msl_non_keepers<- read_csv("data_frames/mtl_msl_non_keepers.csv")
 
@@ -64,7 +64,7 @@ pct_data_cleaned <- read_csv("data_frames/pct_data_cleaned.csv",
 
 pct_msl_keepers <- read_csv("data_frames/pct_msl_keepers.csv") %>% 
   rename(prof_o = comp_s, prof_eng = comp_e, aoa_en = age_exp_e, aoa_o = age_exp_s) %>% 
-  select(study_id, gender, age_years, study_language, prof_eng, prof_o, aoa_en, aoa_o, child_dom_lang, study_lang_dom, vocab_dom, vocab_non_dom, vocab_total, edu_years, testing_location)
+  select(study_id, gender, age_years, study_language, prof_eng, prof_o, aoa_en, aoa_o, child_dom_lang, study_lang_dom, vocab_dom, vocab_non_dom, vocab_total, lang_mix, edu_years, testing_location, ethnicity)
 
 pct_msl_non_keepers <- read_csv("data_frames/pct_msl_non_keepers.csv") %>% 
   rename(exclusion = reason)
