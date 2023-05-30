@@ -22,7 +22,7 @@ library(psych)
 
 ## selected columns needed for analyses 
 
-selected_cols <- c("study_id", "trackloss", "time_from_zero", "trial_type", "trial_number", "trial_number_type", "trial_unique", "target_look", "distractor_look", "target",  "edu_years", "vocab_total","study_lang_dom")
+selected_cols <- c("study_id", "trackloss", "time_from_zero", "trial_type", "trial_number", "trial_number_type", "trial_unique", "target_look", "distractor_look", "target",  "edu_years", "vocab_total","study_lang_dom", "lang_mix")
 
 # Montreal data
 
@@ -180,7 +180,7 @@ write_csv(combo_msl_keepers, "data_frames/msl_keepers.csv")
 ## aggregate across the response window for all trials by subject and trial type
 gaze_trial_type <- make_time_window_data(response_window_clean, 
                                              aois = c("target_look", "distractor_look"),
-                                             predictor_columns = c("trial_type", "study_lang_dom", "trial_number_type", "testing_location", "edu_years", "vocab_total"),
+                                             predictor_columns = c("trial_type", "study_lang_dom", "trial_number_type", "testing_location", "edu_years", "vocab_total", "lang_mix"),
                                              summarize_by = "study_id")
 
 write_csv(gaze_trial_type, "data_frames/gaze_trial_type.csv")
@@ -192,7 +192,7 @@ gaze_target <- gaze_trial_type %>%
 
 ### summarize for each participant
 gaze_target_sum <- gaze_target %>% 
-  group_by(study_id, trial_type, study_lang_dom, edu_years, vocab_total, testing_location) %>% 
+  group_by(study_id, trial_type, study_lang_dom, edu_years, vocab_total, lang_mix, testing_location) %>% 
   summarize(Prop = mean(Prop))
 
 write_csv(gaze_target, "data_frames/gaze_target.csv")
@@ -315,7 +315,7 @@ ggplot(gaze_target_sum, aes(x = trial_type, y = Prop, color = testing_location))
 gaze_trial_time_gca <- make_time_sequence_data(response_window_clean,
                                            time_bin_size = 100,
                                            aois = c("target_look", "distractor_look"),
-                                           predictor_columns = c("trial_type", "study_lang_dom", "testing_location", "trial_number", "edu_years", "vocab_total"),
+                                           predictor_columns = c("trial_type", "study_lang_dom", "testing_location", "trial_number", "edu_years", "vocab_total", "lang_mix"),
                                            summarize_by = "study_id") %>% 
   #add Time from zero column
   mutate(time_from_zero = Time - 3000)

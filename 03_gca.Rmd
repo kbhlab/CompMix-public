@@ -214,6 +214,7 @@ model_type_vocab_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * vocab_total +
 summary(model_type_vocab_slope)
 ```
 
+
 ### dominance model
 
 ```{r}
@@ -223,6 +224,58 @@ summary(model_type_dom)
 
 anova(model_type, model_type_dom)
 ```
+### lang_mix model
+
+```{r}
+## add dominance (ME & interaction) - does not significantly improve model
+model_type_lang_mix <- lmer(Prop ~ (poly1+poly2) + trial_type * lang_mix + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(model_type_lang_mix)
+
+# significant interaction between trial type and language mixing
+
+anova(model_type, model_type_lang_mix)
+
+# note that lang_mix doesn't significantly improve model fit compared to base model. Will still explore these results, but no justification to report this model.
+
+
+## add lang_mix as slope FINAL LANG_MIX MODEL
+model_type_lang_mix_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * lang_mix + lang_mix:poly1 + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(model_type_lang_mix_slope)
+
+anova(model_type_lang_mix, model_type_lang_mix_slope) #no sign. improvement
+
+
+## add lang_mix as quadratic
+model_type_lang_mix_quad <- lmer(Prop ~ (poly1+poly2) + trial_type * lang_mix + lang_mix:poly1 + lang_mix:poly2 + (poly1+poly2  || study_id), data=gca, REML=F)
+summary(model_type_lang_mix_quad)
+
+anova(model_type_lang_mix_slope, model_type_lang_mix_quad) # no sign. improvement
+
+
+## as trial type as random slope
+model_type_lang_mix_ran_slope <- lmer(Prop ~ (poly1+poly2) + trial_type * lang_mix + lang_mix:poly1 + ((poly1+poly2) + trial_type  || study_id), data=gca, REML=F)
+summary(model_type_lang_mix_ran_slope)
+# Fails to converge
+
+
+#trying to understand lang_mix x trial type interaction (even though overall model is not significantly better than null model)
+#seems to go back to Montreal-Princeton difference we identified in other analyses
+gaze_target_wide_lang_mix <- gaze_target %>% 
+  pivot_wider(id_cols = c("study_id", "lang_mix"), names_from = "trial_type", values_from = "Prop") %>% 
+  mutate(diff = Single - Mixed )
+
+ggplot(filter(gaze_target, lang_mix > 15), aes(x = lang_mix, y = Prop, color = trial_type)) +
+  geom_point() + 
+  geom_smooth(method = 'lm')
+
+ggplot(filter(gaze_target, lang_mix > 15), aes(x = lang_mix, y = Prop, color = trial_type)) +
+  geom_point() + 
+  geom_smooth(method = 'lm')+
+  facet_grid(.~testing_location)
+
+
+```
+
 
 
 ## plot model
