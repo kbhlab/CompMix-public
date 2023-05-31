@@ -1,0 +1,5 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,Identifier for individual participants,
+trial_type,character,,"Mixed, Single",
+Window,integer,1 – 3,"Index of time window, increases by 1 with each subsequent time window",
+pupil_baseline,numeric,-0.0971765198875889 – 0.274281127706504,Baseline pupil size in mm,

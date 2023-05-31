@@ -1,0 +1,10 @@
+column,column_type,range,description
+aoi_name,character,NA,Name of the area of interest/stimulus for a particular trial
+x1,numeric,3 - 1211,X value of the left-hand limit of the area of interest (to be combined with y1 to create lower left coordinate)
+x2,numeric,649 - 1907,X value  of the right-hand limit of the area of interest (to be combined with y2 to create upper left coordinate)
+x3,numeric,649 - 1907,X value  of the right-hand limit of the area of interest (to be combined with y3 to create lower right coordinate)
+x4,numeric,3 - 1211,X value of the left-hand limit of the area of interest (to be combined with y4 to create upper right coordinate)
+y1,numeric,190 - 392,Y value of the bottom limit of the area of interest (to be combined with x1 to create lower left coordinate)
+y2,numeric,190 - 392,Y value of the bottom limit of the area of interest (to be combined with x2 to create lower right coordinate)
+y3,numeric,810 - 979,Y value of the top limit of the area of interest (to be combined with x3 to create upper left coordinate)
+y4,numeric,810 - 979,Y value of the top limit of the area of interest (to be combined with x4 to create upper right coordinate)

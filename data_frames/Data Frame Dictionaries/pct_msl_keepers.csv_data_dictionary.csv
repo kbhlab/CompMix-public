@@ -1,0 +1,38 @@
+﻿column,column_type,range,level_values,description
+study_id,integer,1 – 31,,Identifier for individual participants
+test_date,character,,,Date of participation
+years,integer,3 – 4,,"Participant age, years component"
+months,integer,0 – 11,,"Participant age, months component"
+days,integer,0 – 29,,"Participant age, days component"
+gender,character,,"female, male",Participant gender
+study,character,,3a,Lab's internal name for study
+order,character,,"E1, S1, S2, E2",Indicates study order presented to participant
+notes,character,,,Researcher notes
+exclude,character,,N,"Indicates whether participant's data to be excluded, N = no, Y = Yes"
+parental_edu_level,character,,"Some college, no degree, Masters, 4th grade, 6th grade, High school (she said secundaria), High school diploma or GED, Current grad student, PhD/MD/JD",Indicates  highest level of parental education
+edu_years,integer,4 – 20,,Parental education in years
+ethnicity,character,,"Hispanic, Mix, Black, White",Participant's ethnicity
+parent_reported_dominance,character,,"English, Spanish, E/S",Participant's dominant language
+parent_report_average_exposure_english,integer,30 – 70,,"Participant's exposure to English, percent"
+lang_mix,integer,0 – 30,,Participant's language mixing score
+ef_notes,logical,,,Researcher notes
+acq_first,character,,"S, E/S","Indicates language acquired first, S = Spanish, E = English"
+age_hear_e,integer,0 – 36,,Indicates age in months participant first heard English
+age_hear_s,integer,0 – 0,,Indicates age in months participant first heard Spanish
+age_exp_e,integer,0 – 36,,
+age_exp_s,integer,0 – 0,,
+mom_dom,character,,,Indicate's mother's dominant language
+vocab_eng,integer,7 – 107,,Participant's English vocabulary
+vocab_sp,integer,2 – 69,,Participant's Spanish vocabulary
+age_years,numeric,3.192334018 – 4.046543463,,Participant's decimal age in years
+comp_e,numeric,7 – 10,,Participant's English comprehension
+comp_s,integer,7 – 10,,Participant's Spanish comprehension
+keeper,character,,Y,"Indicates whether data for participant is to be kept for analyses, Y = yes, N = no"
+reason,logical,,,Reason for exclusion
+child_dom_lang,character,,"English, Spanish",Indicates participant's dominant language
+vocab_dom,integer,24 – 107,,Participant's vocabulary in their dominant language
+vocab_non_dom,integer,2 – 53,,Participant's vocabulary in their non-dominant language
+vocab_total,integer,31 – 138,,Participant's total vocabulary across all languages
+study_language,character,,"English, Spanish",Indicates the language the study was presented in
+study_lang_dom,character,,"dom, non",Indicates whether the study language is the participant's dominant or non-dominant language
+testing_location,character,,Princeton,Indicates where the participant was tested

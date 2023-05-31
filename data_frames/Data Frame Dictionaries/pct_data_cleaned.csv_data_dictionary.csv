@@ -1,0 +1,33 @@
+﻿column,column_type,range,level_values,description
+study_id,integer,1 – 31,,Identifier for individual participants
+months,integer,38 – 48,,Participant age in months
+sex,character,,"F, M",Participant gender
+study_name,character,,Mix3a,Lab's internal name for study
+study_order,character,,"e1, e2, s1, s2",Indicates study order presented to participant
+prescreen_notes,logical,,,Researcher notes
+l_image,character,,"Bear, Sheep, Bunny, Dog, Froggy, Duck, Cow, Butterfly",Indicates image shown on left-hand side of screen
+c_image,logical,,,Indicates image shown in central screen area (not used)
+r_image,character,,"Duck, Butterfly, Dog, Bunny, Cow, Bear, Froggy, Sheep",Indicates image shown on right-hand side of sreen
+target_side,character,,"l, r","Indicates side of screen target appears, l = Left, r = Right"
+target,character,,"Bear, Sheep, Dog, Bunny, Cow, Froggy, Duck, Butterfly",Indicates target image
+trial_type,character,,"Single, Mixed","Indicates type of trial, mixed-language or single-language"
+response,character,,"D, T, A","Indicates participant's response, D = Looking at Distractor, T = Looking at Target, A = Looking Away"
+first_shift_gap,integer,1 – 47,,
+rt,integer,33 – 2400,,Indicates participant's reaction time in ms
+crit_on_set,integer,3100 – 3100,,
+crit_off_set,integer,4000 – 4000,,
+time_from_zero,integer,-3100 – 4767,,Indicates time in trial in ms from zero point
+look,integer,0 – 1,,"Indicates whether participant was looking, 0 = no, 1 = yes"
+trial_unique,character,,,Unique identifier for a particular trial of a particular type for a particular participant
+trial_number,integer,1 – 16,,"Index of trial, increases by 1 for each subsequent trial"
+trackloss,logical,,,Indicates whether eye gaze is missing
+target_look,integer,0 – 1,,"Indicates whether participant was looking at the target, 0 = no, 1 = yes"
+distractor_look,integer,0 – 1,,"Indicates whether participant was looking at the distractor, 0 = no, 1 = yes"
+child_dom_lang,character,,"English, Spanish",Indicates participant's dominant language
+study_language,character,,"English, Spanish",Indicates the study language
+study_lang_dom,character,,"dom, non",Indicates whether the study language is the participant's dominant or non-dominant language
+edu_years,integer,4 – 20,,Parental education in years
+vocab_total,integer,31 – 138,,Participant's total vocabulary across all languages
+lang_mix,integer,0 – 30,,Participant's language mixing score
+ethnicity,character,,"Hispanic, Mix, Black, White",Participant's ethnicity
+trial_number_type,integer,1 – 8,,"Index of trial of a particular type, increases by 1 for each subsequent trial of that type"

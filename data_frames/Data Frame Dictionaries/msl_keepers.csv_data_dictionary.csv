@@ -1,0 +1,18 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,,Identifier for individual participant
+gender,character,,"female, male",Participant's gender
+age_years,numeric,3.09650924 – 4.046543463,,Participant's age in decimal years
+study_language,character,,"French, English, Spanish",Indicates the language trials were presented in
+prof_eng,numeric,7 – 10,,Participant's English proficiency
+prof_o,integer,7 – 10,,Participant's other language proficiency
+aoa_en,integer,0 – 36,,Participant's age of acquisition for English
+aoa_o,integer,0 – 12,,Participant's age of acquisition for other language
+child_dom_lang,character,,"French, English, Spanish",Participant's dominant language
+study_lang_dom,character,,"dom, non",Indicates whether the study language was the participant's dominant or non-dominant language
+vocab_dom,integer,24 – 177,,Participant's vocabulary in their dominant language
+vocab_non_dom,integer,2 – 131,,Participant's vocabulary in their non-dominant language
+vocab_total,integer,31 – 308,,Participant's total vocabulary in both langauges together
+lang_mix,integer,0 – 30,,Participant's langauge mixing score
+edu_years,integer,4 – 21,,Parental education in number of years
+testing_location,character,,"Montreal, Princeton",Where the participant was tested
+ethnicity,character,,,Participant's ethnicity

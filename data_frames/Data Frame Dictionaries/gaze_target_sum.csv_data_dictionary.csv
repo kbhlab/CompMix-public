@@ -1,0 +1,9 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,,Identifier for individual participants
+trial_type,character,,"Mixed, Single",Indicates whether trial is mixed-language or single-language
+study_lang_dom,character,,"dom, non",Indicates whether trial was presented in participant's dominant or non-dominant language
+edu_years,integer,4 – 21,,Parental education in number of years
+vocab_total,integer,31 – 308,,Total number of vocabulary words known by participant in all langauges
+lang_mix,integer,0 – 30,,Participant's language mixing score
+testing_location,character,,"Princeton, Montreal",Where participants were tested
+Prop,numeric,0.343715161649944 – 0.981366459627329,,"Proportion of gaze samples within the area of interest for the time window, as calculated by eyetrackingr package"

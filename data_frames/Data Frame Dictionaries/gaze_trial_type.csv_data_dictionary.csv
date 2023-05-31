@@ -1,0 +1,17 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,,Identifier for individual participants
+trial_type,character,,"Mixed, Single",Indicates whether trial is mixed-language or single-language
+study_lang_dom,character,,"dom, non",Indicates whether trial was presented in participant's dominant or non-dominant language
+trial_number_type,integer,1 – 8,,"Index of trial, increases by 1 for each subsequent trial"
+testing_location,character,,"Princeton, Montreal",Where participants were tested
+edu_years,integer,4 – 21,,Parental education in number of years
+vocab_total,integer,31 – 308,,Total number of vocabulary words known by participant in all langauges
+lang_mix,integer,0 – 30,,Participant's language mixing score
+SamplesInAOI,integer,0 – 96,,Number of eyetracker samples where the gaze was detected to be within the area of interest within time window
+SamplesTotal,integer,27 – 96,,Total number of eyetracker samples within time window
+AOI,character,,"target_look, distractor_look",Area of interest; labels the target area on the display being analyzed
+Elog,numeric,-5.26269018890489 – 5.26269018890489,,Corrected logit transformation calculated by eyetrackingr package
+Weights,numeric,0.491071428571429 – 24.25,,Sample weights per time window calculated by eyetrackingr package to further correct Elog values
+Prop,numeric,0 – 1,,"Proportion of gaze samples within the area of interest for the time window, as calculated by eyetrackingr package"
+LogitAdjusted,numeric,-5.24174701505964 – 5.24174701505964,,Corrected logit transformation calculated by eyetrackingr package
+ArcSin,numeric,0 – 1.5707963267949,,"Arcsine root transformation of raw proportions, as calculated by eyetrackingr package"

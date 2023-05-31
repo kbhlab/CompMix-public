@@ -1,0 +1,4 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,,Identifier for individual participants
+trial_type,character,,"Mixed, Single","Indicates type of trial shown, mixed-language or single-language"
+trial_n,integer,3 – 8,,Indicates number of trials per type

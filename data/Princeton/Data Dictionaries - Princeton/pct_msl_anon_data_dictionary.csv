@@ -1,0 +1,27 @@
+column,column_type,range,description
+study_id,numeric,1 - 34,Identifier for individual participants
+test_date,date,2017-02-21 - 2018-01-23,Date of participation
+years,numeric,3 - 4,Participant's age in years
+months,numeric,0 - 11,Participant's age in months (to be added to age in years)
+days,numeric,0 - 29,Participant's age in days (to be added to age in years plus age in months)
+gender,character,F - M,Participant's gender
+study,character,3a,Research group's internal name for the study
+order,character,NA,The study order presented to the participant
+notes,character,NA,Researcher notes
+exclude,character,N - Y,"Was participant's data excluded? Y = yes, N = no"
+parental_edu_level,character,NA,Highest level of education of parent
+edu_years,numeric,4 - 20,"Highest level of education of parent, in years of education"
+ethnicity,character,NA,Participant's ethnicity
+parent_reported_dominance,character,NA,Participant's dominant language
+parent_report_average_exposure_english,numeric,5 - 90,Participant's exposure to English
+lang_mix,numeric,0 - 30,Participant's language mixing score
+ef_notes,character,NA,Researcher notes
+acq_first,character,"E, S, E/S",Which language did the participant acquire first?
+age_hear_e,numeric,0 - 36,Age in months the participant first heard English
+age_hear_s,numeric,0 - 0,Age in months the participant first heard Spanish
+age_exp_e,numeric,0 - 36,
+age_exp_s,numeric,0 - 0,
+mom_dom,character,NA,Mother's dominant language
+vocab_eng,character,1 - 99,Participant's English vocabulary
+vocab_sp,numeric,2 - 105,Participant's Spanish vocabulary
+age_years,numeric,3.063655031 - 4.093086927,Participant's decimal age

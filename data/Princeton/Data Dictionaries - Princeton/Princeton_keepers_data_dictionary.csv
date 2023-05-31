@@ -1,0 +1,4 @@
+column,column_type,range,description
+study_id,numeric,0-34,Participant identifier
+keeper,character,N - Y,"Is data from this participant to be used in analyses? Y = yes, N = no"
+reason,character,NA,"If excluded, what is the reason?"

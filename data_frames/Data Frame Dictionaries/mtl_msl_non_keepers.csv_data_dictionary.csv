@@ -1,0 +1,3 @@
+﻿column,column_type,range,level_values,description
+exclusion,character,,"fussiness, health, language, technical",Reason for exclusion
+exclusion_n,integer,1 – 4,,Number of participants excluded for specific reason

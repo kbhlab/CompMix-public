@@ -1,0 +1,4 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,,Identifier for individual participants
+TracklossForParticipant,numeric,0.0384114583333333 – 0.341145833333333,,Proportion of samples where trackloss occurred
+testing_location,character,,"Montreal, Princeton",Indicates where participant was tested

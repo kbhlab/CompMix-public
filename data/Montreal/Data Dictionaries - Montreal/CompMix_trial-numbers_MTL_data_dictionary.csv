@@ -1,0 +1,6 @@
+column,column_type,range,description
+study_order,character,NA,Study order presented to participant
+target,character,NA,Target displayed to participant
+target_side,character,l - r,Side of screen target displayed on
+trial_type,character,Mixed - Single,"Trial type, mixed language or single language"
+trial_number,numeric,1-16,Trial number

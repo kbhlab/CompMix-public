@@ -1,0 +1,56 @@
+﻿column,column_type,range,level_values,description
+recording_name,character,,,File name of the eyetracker recording
+study_name,character,,"CompMix36, CompMix",Lab's internal name for study
+study_id,character,,,Identifier for individual participants
+study_order,character,,"F1, E1, E2, F2",Identifier for study order presented to participant
+recording_duration,integer,197296 – 254601,,Length in ms of eyetracker recording
+media_name,character,,,Name of media file presented on eyetracker
+target,character,,"Fish, Sheep, Dog, Bunny, Cow, Froggy, Duck, Monkey",Indicates target object shown to participant
+trial_type,character,,"Single, Mixed",Indicates whether trial is mixed-language or single-language
+target_location,character,,"R, L","Indicates side of screen target is located on, R = right, L = left"
+timestamp,integer,21453 – 250767,,Time within eyetracker recording in ms
+studio_event,logical,,,"Not used, all NA"
+fixation_index,integer,1103 – 13452,,Index of eye fixation
+gaze_event_type,character,,"Unclassified, Fixation",Indicates type of eye gaze found by eyetracker
+gaze_event_duration,integer,16 – 17,,Length in ms of eye gaze
+gaze_point_x,integer,-5726 – 1963,,X coordinate of eye gaze
+gaze_point_y,integer,-93 – 3997,,Y coordinate of eye gaze
+validity_left,integer,0 – 4,,"Eyetracker data quality score for left eye; 0 = high quality, 4 = eye not found"
+validity_right,integer,0 – 4,,"Eyetracker data quality score for right eye; 0 = high quality, 4 = eye not found"
+pupil_left,numeric,2.02138121367836 – 5.4264532644184,,Left pupil size in mm
+pupil_right,numeric,2.20867041985073 – 5.42645630473312,,Right pupil size in mm
+trial_unique,character,,,Unique identifier for specific trial for specific participant
+trial_number,integer,1 – 16,,"Index of trial, increases by 1 for each subsequent trial"
+trial_start,integer,18772 – 246354,,Time stamp of beginning of trial
+time_from_zero,integer,2298 – 4680,,Time in ms from start of trial
+trackloss,logical,,"TRUE, FALSE",Indicates whether eye gaze was missing
+distractor,character,,"Duck, Monkey, Bunny, Dog, Froggy, Cow, Fish, Sheep",Indicates distractor object shown to participant
+distractor_location,character,,"L, R","Indicates side of screen distractor is located on, R = right, L = left"
+target_x_left,integer,3 – 1211,,"Left limit of target area of interest, in pixels"
+target_x_right,integer,649 – 1907,,"Right limit of target area of interest, in pixels"
+target_y_top,integer,190 – 392,,"Upper limit of target area of interest, in pixels"
+target_y_bottom,integer,810 – 974,,"Lower limit of target area of interest, in pixels"
+target_x_width,integer,602 – 922,,"Width of target area of interest, in pixels"
+target_y_height,integer,423 – 713,,"Height of target area of interest, in pixels"
+distractor_x_left,integer,3 – 1211,,"Left limit of distractor area of interest, in pixels"
+distractor_x_right,integer,649 – 1907,,"Right limit of distractor area of interest, in pixels"
+distractor_y_top,integer,190 – 392,,"Upper limit of distractor area of interest, in pixels"
+distractor_y_bottom,integer,810 – 974,,"Lower limit of distractor area of interest, in pixels"
+distractor_x_width,integer,602 – 922,,"Width of distractor area of interest, in pixels"
+distractor_y_height,integer,423 – 713,,"Height of distractor area of interest, in pixels"
+target_look,integer,0 – 1,,"Indicates whether participant was looking at target, 0 = no, 1 = yes"
+distractor_look,integer,0 – 1,,"Indicates whether participant was looking at distractor, 0 = no, 1 = yes"
+gender,character,,"female, male",Participant's gender
+first_study,character,,"CompMix, LearnMix",Indicates which study participant took part in first
+study_language,character,,"French, English",Indicates which language study materials were presented in
+child_dom_lang,character,,"French, English",Indicates participant's dominant language
+study_lang_dom,character,,"dom, non",Indicates whether the study langauge was the participant's dominant or non-dominant language
+edu_years,integer,13 – 21,,Parental education in number of years
+vocab_total,integer,39 – 308,,Total number of vocabulary words known by participant in all langauges
+trial_number_type,integer,1 – 8,,"Index of trial per trial type, increases by 1 for each subsequent trial of that type"
+article_onset,integer,2295 – 2689,,"Time of onset of article, in ms"
+testing_location,character,,Montreal,Where participant was tested
+time_from_adj,integer,0 – 2000,,"Time from offset of adjective, in ms"
+mean_pupil,numeric,2.36136550991254 – 5.17607398387387,,Average pupil size
+mean_pupil_baseline,numeric,2.54895296706966 – 4.35393104740786,,Average baseline pupil size
+pupil_baseline,numeric,-1.42653541834449 – 0.822142936466012,,Baseline pupil size

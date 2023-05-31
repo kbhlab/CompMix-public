@@ -1,0 +1,3 @@
+﻿column,column_type,range,level_values,description
+exclusion,character,,"fussiness, insufficient trials, lack of attention, language, speech problem, technical, health",Reason for exclusion from study
+exclusion_n,integer,1 – 15,,Number of participants excluded for each reason

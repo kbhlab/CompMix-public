@@ -1,0 +1,45 @@
+﻿column,column_type,range,level_values,description
+study_group,character,,CompMix,Lab's internal name for study
+study_id,character,,,Identifier for individual participants
+recording_name,character,,,File name of the eyetracker recording
+test_date,character,,,Date of participation
+study_order_comp,character,,"F1, E1, E2, F2","Identifier for study order presented to participant for ""comp"" trials"
+study_order_learn,character,,"E1, F1, F2, E2","Identifier for study order presented to participant for ""learn"" trials"
+first_study,character,,"CompMix, LearnMix",Indicates target object shown to participant
+study_language,character,,"French, English",Indicates which language study materials were presented in
+order_seen,character,,"F1, E1, E2, F2","Identifier for study order presented to participant for ""comp"" trials"
+years,integer,3 – 3,,"Participant age, years component"
+months,integer,1 – 11,,"Participant age, months component"
+days,integer,0 – 30,,"Participant age, days component"
+prof_eng,integer,7 – 10,,Participant's English proficiency
+prof_fr,integer,7 – 10,,Participant's French proficiency
+prof_other,integer,6 – 6,,Participant's proficiency in other language
+dom_lang,character,,"dominant, both",Indicates whether the study langauge was the participant's dominant or non-dominant language
+child_dom_lang,character,,"French, English",Indicates participant's dominant language
+aoa_en,integer,0 – 18,,Participant's age of acquisition for English
+aoa_fr,integer,0 – 12,,Participant's age of acquisition for French
+vocab_eng,integer,19 – 177,,Participant's English vocabulary
+vocab_fr,integer,2 – 131,,Participant's French vocabulary
+vocab_total,integer,39 – 308,,Participant's total vocabulary in all languages
+vocab_te,integer,0 – 38,,Participant's translation equivalent vocabulary
+vocab_concept,integer,39 – 270,,Participant's conceptual vocabulary
+lang_mix,integer,4 – 28,,Participant's language mixing score
+gender,character,,"female, male",Participant's gender
+keeper,integer,1 – 1,,"Indicates whether participant's data may be analyzed, 0 = no, 1 = yes"
+exclusion,logical,,,Indicates whether participant's data to be excluded
+exclusion_details,logical,,,Indicates reason for exclusion
+child_gender,character,,"F, M",Participant's gender
+parent_a_gender,character,,"F, M",Parent A's gender
+parent_a_education,character,,,Parent A's highest education
+parent_a_education_other_description,character,,NA,"Parent A's highest education, if other"
+parent_b_gender,character,,"M, F",Parent B's gender
+parent_b_education,character,,,Parent B's highest education
+parent_b_education_other_description,character,,NA,"Parent B's highest education, if other"
+highest_edu,character,,"Bachelor, Doctoral, Some college, Master, College certificate",Highest education of either parent
+edu_years,integer,13 – 21,,Years of education for highest education of either parent
+age_years,numeric,3.09650924 – 3.994524298,,Participant's decimal age
+ethnicity,character,,NA,Participant's ethinicity
+study_lang_dom,character,,"dom, non",Indicates whether the study langauge was the participant's dominant or non-dominant language
+vocab_dom,integer,37 – 177,,Participant's vocabulary in their dominant language
+vocab_non_dom,integer,2 – 131,,Participant's vocabulary in their non-dominant language
+testing_location,character,,Montreal,Indicates where the participant was tested

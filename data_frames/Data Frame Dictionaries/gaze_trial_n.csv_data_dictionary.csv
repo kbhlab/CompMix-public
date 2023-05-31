@@ -1,0 +1,5 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,,Identifier for individual participants
+testing_location,character,,"Princeton, Montreal",Where participant was tested
+trial_type,character,,"Single, Mixed",Indicates whether trial is mixed-language or single-language
+value,integer,3 – 8,,Number of trials analyzed per trial type per participant

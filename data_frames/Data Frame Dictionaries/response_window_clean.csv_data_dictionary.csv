@@ -1,0 +1,16 @@
+﻿column,column_type,range,level_values,description
+study_id,character,,,Identifier for individual participants
+trackloss,logical,,,Indicates whether eye gaze is missing
+time_from_zero,integer,400 – 1998,,"Time in ms from trial start, relative to time zero"
+trial_type,character,,"Single, Mixed","Indicates type of trial, mixed-language or single-language"
+trial_number,integer,1 – 16,,"Index of trial, increases by 1 for each subsequent trial"
+trial_number_type,integer,1 – 8,,"Index of trial of a particular type, increases by 1 for each subsequent trial of that type"
+trial_unique,character,,,Unique identifier for a particular trial of a particular type for a particular participant
+target_look,logical,,,"Indicates whether participant was looking at the target, 0 = no, 1 = yes"
+distractor_look,logical,,,"Indicates whether participant was looking at the distractor, 0 = no, 1 = yes"
+target,character,,"Bear, Sheep, Dog, Bunny, Cow, Froggy, Duck, Butterfly, Fish, Monkey",Indicates target image
+edu_years,integer,4 – 21,,Parental education in years
+vocab_total,integer,31 – 308,,Participant's total vocabulary across all languages
+study_lang_dom,character,,"dom, non",Indicates whether the study language is the participant's dominant or non-dominant language
+lang_mix,integer,0 – 30,,Participant's language mixing score
+testing_location,character,,"Princeton, Montreal",Indicates where participant was tested

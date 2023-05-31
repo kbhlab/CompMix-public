@@ -1,0 +1,3 @@
+﻿column,column_type,range,level_values,description
+window_number,integer,1 – 10,,"Index of time window, increases by 1 for each subsequent window"
+p_value,numeric,0.392786689829485 – 0.95580200364619,,p-value for time window indicated

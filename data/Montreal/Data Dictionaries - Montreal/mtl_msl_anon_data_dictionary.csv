@@ -1,0 +1,41 @@
+column,column_type,range,description
+study_group,character,CompMix,Research group's internal name for the study
+study_id,character,S01 - S30,Identifier for individual participants
+recording_name,character,NA,File name of the eyetracker recording relating to this participant
+test_date,Date,2016-11-04 - 2017-04-29,Date of the eyetracker recording
+study_order_comp,character,NA,"The study order presented to the participant for ""comp"" trials"
+study_order_learn,character,NA,"The study order presented to the participant for ""learn"" trials"
+first_study,character,"CompMix, LearnMix",Which study was presented first to the participant?
+study_language,character,English - French,Which language were the trials presented in?
+order_seen,character,NA,"The study order presented to the participant for ""comp"" trials"
+years,numeric,3-Mar,Participant's age in years
+months,numeric,0 - 11,Participant's age in months (to be added to age in years)
+days,numeric,0 - 30,Participant's age in days (to be added to age in years plus age in months)
+prof_eng,numeric,10-May,Participant's English proficiency
+prof_fr,numeric,10-Jun,Participant's French proficiency
+prof_other,numeric,11-Jun,Participant's other language proficiency
+dom_lang,character,"dominant, non-dominant, both",Were the trials presented in the participant's dominant or non-dominant language?
+child_dom_lang,character,NA,Participant's dominant language
+aoa_en,numeric,0 - 24,"Age of acquisition for English, in months"
+aoa_fr,numeric,0 - 24,"Age of acquisition for French, in months"
+vocab_eng,numeric,11 - 177,Participant's English vocabulary
+vocab_fr,numeric,1 - 131,Participant's French vocabulary
+vocab_total,numeric,39 - 308,Participant's total vocabulary (English + French)
+vocab_te,numeric,0 - 38,Participant's translation equivalent vocabulary
+vocab_concept,numeric,39 - 270,Participant's conceptual vocabulary
+lang_mix,numeric,28-Apr,Participant's language mixing score
+gender,character,female - male,Participant's gender
+keeper,numeric,0 - 1,"Was this participant's data kept for analysis? 0 for no, 1 for yes"
+exclusion,character,"fussiness, language, health, technical, NA","If participant was excluded, what was the reason?"
+exclusion_details,character,NA,"If participant was excluded, what were the details for why?"
+child_gender,character,F - M,Participant's gender
+parent_A_gender,character,F - M,Parent A's gender
+parent_A_education,character,NA,Parent A's education
+parent_A_education_other_description,character,NA,Parent A's education description
+parent_B_gender,character,F - M,Parent B's gender
+parent_B_education,character,NA,Parent B's education
+parent_B_education_other_description,character,NA,Parent B's education description
+highest_edu,character,NA,Highest level of education of either parent
+edu_years,numeric,13 - 21,"Highest level of education of either parent, in years of education"
+age_years,numeric,3.069130732 - 3.994524298,Participant's decimal age
+ethnicity,character,NA,Participant's ethnicity

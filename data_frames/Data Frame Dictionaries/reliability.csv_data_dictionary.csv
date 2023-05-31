@@ -1,0 +1,17 @@
+﻿column,column_type,range,level_values,description
+Mixed_1,numeric,0 – 1,,Reliability score for Mixed-language Trial 1
+Mixed_2,numeric,0.295454545454545 – 1,,Reliability score for Mixed-language Trial 2
+Mixed_3,numeric,0.434782608695652 – 1,,Reliability score for Mixed-language Trial 3
+Mixed_4,numeric,0.170212765957447 – 1,,Reliability score for Mixed-language Trial 4
+Mixed_5,numeric,0 – 1,,Reliability score for Mixed-language Trial 5
+Mixed_6,numeric,0 – 1,,Reliability score for Mixed-language Trial 6
+Mixed_7,numeric,0.540540540540541 – 1,,Reliability score for Mixed-language Trial 7
+Single_1,numeric,0.189473684210526 – 1,,Reliability score for Single-language Trial 1
+Single_2,numeric,0.111111111111111 – 1,,Reliability score for Single-language Trial 2
+Single_3,numeric,0 – 1,,Reliability score for Single-language Trial 3
+Single_4,numeric,0.0217391304347826 – 1,,Reliability score for Single-language Trial 4
+Single_5,numeric,0.179775280898876 – 1,,Reliability score for Single-language Trial 5
+Single_6,numeric,0.333333333333333 – 1,,Reliability score for Single-language Trial 6
+Mixed_8,numeric,0 – 1,,Reliability score for Mixed-language Trial 8
+Single_7,numeric,0.213333333333333 – 1,,Reliability score for Single-language Trial 7
+Single_8,numeric,0 – 1,,Reliability score for Single-language Trial 8
