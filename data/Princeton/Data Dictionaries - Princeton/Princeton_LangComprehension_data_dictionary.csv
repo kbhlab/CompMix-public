@@ -1,4 +1,4 @@
-column,column_type,range,description
-Subj ID,numeric,0 - 34,Participant identifier
-CompE,numeric,2 - 10,Participant's English comprehension score
-CompS,numeric,3 - 10,Participant's Spanish comprehension score
+﻿column,column_type,range,level_values,description
+Subj ID,numeric,1 – 34,,Participant identifier
+CompE,numeric,2 – 10,,Participant's English comprehension score
+CompS,numeric,3 – 10,,Participant's Spanish comprehension score

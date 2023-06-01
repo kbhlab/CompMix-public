@@ -1,0 +1,214 @@
+﻿column,column_type,range,level_values,description
+export_date,date,,12/28/2017,Date the data were exported
+studio_version_rec,character,,3.4.7,Software version  number
+studio_project_name,character,,CompMix-36,"Name of the project in the software, lab's internal name for study"
+studio_test_name,character,,"F1, F2, E1, E2",Study order
+recording_name,character,,,File name of the participant's eyetracker recording
+recording_date,date,,,Date of participation
+recording_duration,numeric,197296 – 286085,,Length in ms of the eyetracker recording
+recording_resolution,character,,1920 x 1200,Resolution of the eytracker display
+presentation_sequence,logical,,,Not used
+fixation_filter,character,,Raw Data,Type of filter for data export
+media_name,character,,,File name of the media displayed to the participant on a given trial
+media_pos_x_adc_spx,numeric,0 – 0,,X position of the media display
+media_pos_y_adc_spx,numeric,60 – 60,,Y position of the media display
+media_width,numeric,1920 – 1920,,Width in pixels of the media display
+media_height,numeric,1080 – 1080,,Height in pixels of the media display
+segment_name,character,,,Not used
+segment_start,numeric,,,Not used
+segment_end,numeric,,,Not used
+segment_duration,numeric,,,Not used
+scene_name,character,,,Not used
+scene_segment_start,numeric,,,Not used
+scene_segment_end,numeric,,,Not used
+scene_segment_duration,numeric,,,Not used
+recording_timestamp,numeric,0 – 286042,,"Time stamp from beginning of recording, referencing start of 0"
+local_time_stamp,numeric,,,"Time stamp from beginning of recording, referencing local computer's time"
+eye_tracker_timestamp,numeric,1478086375271002 – 1493294357816930,,"Time stamp from beginning of recording, referencing eyetracker's internal time"
+mouse_event_index,numeric,,,Not used
+mouse_event,character,,,Not used
+mouse_event_x_adc_spx,numeric,,,Not used
+mouse_event_y_adc_spx,numeric,,,Not used
+mouse_event_x_mc_spx,numeric,,,Not used
+mouse_event_y_mc_spx,numeric,,,Not used
+key_press_event_index,character,1 – 25,,"Index of key press event, starting from 1 and incrementing by 1 with each key press"
+key_press_event,numeric,,NA,Which key was pressed
+studio_event_index,numeric,1 – 96,,"Index of study display event, starting from 1 and incrementing by 1 with each new event"
+studio_event,character,,NA,What was the study display event
+studio_event_data,character,,NA,Details of the study display event (what media was shown)
+external_event_index,numeric,,,Not used
+external_event,character,,,Not used
+external_event_value,numeric,,,Not used
+event_marker_value,numeric,,,Not used
+fixation_index,numeric,1 – 14251,,"Index of eye fixation data, starting from 1 and incrementing by 1 with each new fixation captured by the eyetracker"
+saccade_index,numeric,,,Not used
+gaze_event_type,character,,"Fixation, Unclassified",Eyetracker's classification of type of eye movement
+gaze_event_duration,numeric,7 – 250,,Length in ms of the gaze event
+fixation_point_x_mc_spx,numeric,0 – 1919,,X value for eye fixation
+fixation_point_y_mc_spx,numeric,0 – 1079,,Y value for eye fixation
+saccadic_amplitude,numeric,0 – 91.36,,Amplitude value for eye saccade
+absolute_saccadic_direction,numeric,0 – 359.88,,Absolute direction in degrees for eye saccade
+relative_saccadic_direction,numeric,0 – 360,,Relative direction in degrees for eye saccade
+aoi_fr_distractor_duck_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_fish_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_monkey_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_sheep_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_dog_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_bunny_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_bunny_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_dog_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_sheep_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_monkey_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_cow_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_froggy_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_bunny_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_dog_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_fish_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_duck_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_cow_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_froggy_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_froggy_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_cow_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_dog_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_bunny_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_fish_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_duck_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_sheep_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_monkey_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_duck_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_fish_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_monkey_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_sheep_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_froggy_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_cow_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_fish_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_duck_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_sheep_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_monkey_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_bunny_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_dog_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_dog_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_bunny_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_monkey_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_sheep_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_froggy_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_cow_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_dog_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_bunny_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_duck_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_fish_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_froggy_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_cow_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_cow_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_froggy_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_bunny_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_dog_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_fish_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_duck_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_monkey_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_sheep_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_fish_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_duck_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_sheep_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_monkey_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_target_cow_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_fr_distractor_froggy_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_duck_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_fish_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_monkey_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_sheep_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_dog_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_bunny_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_bunny_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_dog_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_sheep_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_monkey_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_cow_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_froggy_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_bunny_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_dog_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_fish_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_duck_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_cow_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_froggy_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_froggy_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_cow_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_dog_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_bunny_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_fish_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_duck_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_sheep_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_monkey_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_duck_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_fish_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_monkey_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_sheep_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_froggy_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_cow_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_fish_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_duck_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_sheep_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_monkey_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_bunny_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_dog_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_dog_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_bunny_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_monkey_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_sheep_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_froggy_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_cow_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_dog_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_bunny_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_duck_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_fish_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_froggy_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_cow_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_cow_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_froggy_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_bunny_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_dog_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_duck_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_fish_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_monkey_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_sheep_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_fish_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_duck_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_sheep_switch_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_monkey_switch_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_target_cow_single_l_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+aoi_en_distractor_froggy_single_r_hit,logical,0 - 1,,Did the eye gaze fall within the area of interest indicated in column A? 
+gaze_point_index,numeric,1 – 17176,,"Index for gaze point, incrementing by 1 for each new gaze point captured by the eyetracker"
+gaze_point_left_x_adc_spx,numeric,-5726 – 4385,,"X value for eye fixation, not used"
+gaze_point_left_y_adc_spx,numeric,-1111 – 3997,,"Y value for eye fixation, not used"
+gaze_point_right_x_adc_spx,numeric,-1959 – 3412,,"X value for eye fixation, not used"
+gaze_point_right_y_adc_spx,numeric,-1425 – 3247,,"Y value for eye fixation, not used"
+gaze_point_x_adc_spx,numeric,-5726 – 4385,,"X value for eye fixation, not used"
+gaze_point_y_adc_spx,numeric,-1152 – 3997,,"Y value for eye fixation, not used"
+gaze_point_x_mc_spx,numeric,0 – 1919,,"X value for eye fixation, not used"
+gaze_point_y_mc_spx,numeric,0 – 1079,,"Y value for eye fixation, not used"
+gaze_point_left_x_adc_smm,numeric,-1546.56 – 1184.39,,"X value for eye fixation, not used"
+gaze_point_left_y_adc_smm,numeric,-755.83 – 624.53,,"Y value for eye fixation, not used"
+gaze_point_right_x_adc_smm,numeric,-529.1 – 921.48,,"X value for eye fixation, not used"
+gaze_point_right_y_adc_smm,numeric,-553.08 – 709.4,,"Y value for eye fixation, not used"
+strict_average_gaze_point_x_adc_smm,numeric,-440.31 – 806.94,,"X value for eye fixation, not used"
+strict_average_gaze_point_y_adc_smm,numeric,-317.77 – 617.68,,"Y value for eye fixation, not used"
+eye_pos_left_x_adc_smm,numeric,126.28 – 398.2,,"X value for eye fixation, not used"
+eye_pos_left_y_adc_smm,numeric,54.99 – 393,,"Y value for eye fixation, not used"
+eye_pos_left_z_adc_smm,numeric,366.89 – 919.36,,"Depth value for eye coordinate, not used"
+eye_pos_right_x_adc_smm,numeric,171.5 – 443.06,,"X value for eye fixation, not used"
+eye_pos_right_y_adc_smm,numeric,-33.13 – 393,,"Y value for eye fixation, not used"
+eye_pos_right_z_adc_smm,numeric,342.89 – 915.72,,"Depth value for eye coordinate, not used"
+cam_left_x,numeric,,,"X value for eye fixation, not used"
+cam_left_y,numeric,,,"Y value for eye fixation, not used"
+cam_right_x,numeric,,,"X value for eye fixation, not used"
+cam_right_y,numeric,,,"Y value for eye fixation, not used"
+distance_left,numeric,374.79 – 1000.92,,"Distance between left eye and eyetracker, not used"
+distance_right,numeric,0 – 1000.92,,"Distance between right eye and eyetracker, not used"
+pupil_left,numeric,1.46 – 8.08,,Size of the left pupil
+pupil_right,numeric,1.48 – 9.08,,Size of the right pupil
+validity_left,numeric,0 – 4,,"Validity score for data quality of the left eye (0 = high quality, 4 = eye not found)"
+validity_right,numeric,0 – 4,,"Validity score for data quality of the right eye (0 = high quality, 4 = eye not found)"
+ir_marker_count,numeric,,,Not used
+ir_marker_id,numeric,,,Not used
+pupil_glasses_right,numeric,,,Not used
+x214,,,,Not used

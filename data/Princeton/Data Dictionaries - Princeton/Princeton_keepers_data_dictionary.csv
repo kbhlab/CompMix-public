@@ -1,4 +1,4 @@
-column,column_type,range,description
-study_id,numeric,0-34,Participant identifier
-keeper,character,N - Y,"Is data from this participant to be used in analyses? Y = yes, N = no"
-reason,character,NA,"If excluded, what is the reason?"
+﻿column,column_type,range,level_values,description
+ï..study_id,integer,1 – 34,,Participant identifier
+keeper,character,,"Y, N","Is data from this participant to be used in analyses? Y = yes, N = no"
+reason,character,,"technical, lack of attention, language, fussiness, insufficient trials, speech problem","If excluded, what is the reason?"

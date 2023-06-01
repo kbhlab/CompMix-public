@@ -1,6 +1,6 @@
-column,column_type,range,description
-study_order,character,NA,Study order presented to participant
-target,character,NA,Target displayed to participant
-target_side,character,l - r,Side of screen target displayed on
-trial_type,character,Mixed - Single,"Trial type, mixed language or single language"
-trial_number,numeric,1-16,Trial number
+﻿column,column_type,range,level_values,description
+study_order,character,,"e1, e2, f1, f2",Study order presented to participant
+target,character,,"Fish, Sheep, Dog, Bunny, Cow, Froggy, Duck, Monkey",Target displayed to participant
+target_side,character,,"r, l","Side of screen target displayed on (r = Right, l = Left)"
+trial_type,character,,"Single, Mixed","Trial type, mixed language or single language"
+trial_number,integer,1 – 16,,Trial number index

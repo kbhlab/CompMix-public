@@ -1,255 +1,255 @@
-column,column_type,range,description
-Sub Num,character,NA,Subject number identifier for individual participants
-Months,character,NA,Participant age in months
-Sex,character,NA,Participant sex
-Order,character,NA,Study order
-Tr Num,character,NA,Trial number
-Prescreen Notes,character,NA,Researcher notes
-L-image,character,NA,Left-hand image
-C-Image,character,NA,Central image
-R-image,character,NA,Right-hand image
-Target Side,character,NA,Side the target is displayed on
-Target Image,character,NA,What is the target image?
-Condition,character,NA,Trial condition
-Response,character,NA,Participant response
-First Shift Gap,character,NA,
-RT,character,NA,Participant reaction time
-CritOnSet,character,NA,
-CritOffSet,character,NA,
--3100,character,NA,
--3067,character,NA,
--3033,character,NA,
--3000,character,NA,
--2967,character,NA,
--2933,character,NA,
--2900,character,NA,
--2867,character,NA,
--2833,character,NA,
--2800,character,NA,
--2767,character,NA,
--2733,character,NA,
--2700,character,NA,
--2667,character,NA,
--2633,character,NA,
--2600,character,NA,
--2567,character,NA,
--2533,character,NA,
--2500,character,NA,
--2467,character,NA,
--2433,character,NA,
--2400,character,NA,
--2367,character,NA,
--2333,character,NA,
--2300,character,NA,
--2267,character,NA,
--2233,character,NA,
--2200,character,NA,
--2167,character,NA,
--2133,character,NA,
--2100,character,NA,
--2067,character,NA,
--2033,character,NA,
--2000,character,NA,
--1967,character,NA,
--1933,character,NA,
--1900,character,NA,
--1867,character,NA,
--1833,character,NA,
--1800,character,NA,
--1767,character,NA,
--1733,character,NA,
--1700,character,NA,
--1667,character,NA,
--1633,character,NA,
--1600,character,NA,
--1567,character,NA,
--1533,character,NA,
--1500,character,NA,
--1467,character,NA,
--1433,character,NA,
--1400,character,NA,
--1367,character,NA,
--1333,character,NA,
--1300,character,NA,
--1267,character,NA,
--1233,character,NA,
--1200,character,NA,
--1167,character,NA,
--1133,character,NA,
--1100,character,NA,
--1067,character,NA,
--1033,character,NA,
--1000,character,NA,
--967,character,NA,
--933,character,NA,
--900,character,NA,
--867,character,NA,
--833,character,NA,
--800,character,NA,
--767,character,NA,
--733,character,NA,
--700,character,NA,
--667,character,NA,
--633,character,NA,
--600,character,NA,
--567,character,NA,
--533,character,NA,
--500,character,NA,
--467,character,NA,
--433,character,NA,
--400,character,NA,
--367,character,NA,
--333,character,NA,
--300,character,NA,
--267,character,NA,
--233,character,NA,
--200,character,NA,
--167,character,NA,
--133,character,NA,
--100,character,NA,
--67,character,NA,
--33,character,NA,
-0,character,NA,
-33,character,NA,
-67,character,NA,
-100,character,NA,
-133,character,NA,
-167,character,NA,
-200,character,NA,
-233,character,NA,
-267,character,NA,
-300,character,NA,
-333,character,NA,
-367,character,NA,
-400,character,NA,
-433,character,NA,
-467,character,NA,
-500,character,NA,
-533,character,NA,
-567,character,NA,
-600,character,NA,
-633,character,NA,
-667,character,NA,
-700,character,NA,
-733,character,NA,
-767,character,NA,
-800,character,NA,
-833,character,NA,
-867,character,NA,
-900,character,NA,
-933,character,NA,
-967,character,NA,
-1000,character,NA,
-1033,character,NA,
-1067,character,NA,
-1100,character,NA,
-1133,character,NA,
-1167,character,NA,
-1200,character,NA,
-1233,character,NA,
-1267,character,NA,
-1300,character,NA,
-1333,character,NA,
-1367,character,NA,
-1400,character,NA,
-1433,character,NA,
-1467,character,NA,
-1500,character,NA,
-1533,character,NA,
-1567,character,NA,
-1600,character,NA,
-1633,character,NA,
-1667,character,NA,
-1700,character,NA,
-1733,character,NA,
-1767,character,NA,
-1800,character,NA,
-1833,character,NA,
-1867,character,NA,
-1900,character,NA,
-1933,character,NA,
-1967,character,NA,
-2000,character,NA,
-2033,character,NA,
-2067,character,NA,
-2100,character,NA,
-2133,character,NA,
-2167,character,NA,
-2200,character,NA,
-2233,character,NA,
-2267,character,NA,
-2300,character,NA,
-2333,character,NA,
-2367,character,NA,
-2400,character,NA,
-2433,character,NA,
-2467,character,NA,
-2500,character,NA,
-2533,character,NA,
-2567,character,NA,
-2600,character,NA,
-2633,character,NA,
-2667,character,NA,
-2700,character,NA,
-2733,character,NA,
-2767,character,NA,
-2800,character,NA,
-2833,character,NA,
-2867,character,NA,
-2900,character,NA,
-2933,character,NA,
-2967,character,NA,
-3000,character,NA,
-3033,character,NA,
-3067,character,NA,
-3100,character,NA,
-3133,character,NA,
-3167,character,NA,
-3200,character,NA,
-3233,character,NA,
-3267,character,NA,
-3300,character,NA,
-3333,character,NA,
-3367,character,NA,
-3400,character,NA,
-3433,character,NA,
-3467,character,NA,
-3500,character,NA,
-3533,character,NA,
-3567,character,NA,
-3600,character,NA,
-3633,character,NA,
-3667,character,NA,
-3700,character,NA,
-3733,character,NA,
-3767,character,NA,
-3800,character,NA,
-3833,character,NA,
-3867,character,NA,
-3900,character,NA,
-3933,character,NA,
-3967,character,NA,
-4000,character,NA,
-4033,character,NA,
-4067,character,NA,
-4100,character,NA,
-4133,character,NA,
-4167,character,NA,
-4200,character,NA,
-4233,character,NA,
-4267,character,NA,
-4300,character,NA,
-4333,character,NA,
-4367,character,NA,
-4400,character,NA,
-4433,character,NA,
-4467,character,NA,
-4500,character,NA,
-4533,character,NA,
-4567,character,NA,
-4600,character,NA,
-4633,character,NA,
-4667,character,NA,
-4700,character,NA,
-4733,character,NA,
-4767,character,NA,
+﻿column,column_type,range,level_values,description
+Sub.Num,numeric,1 – 34,,Identifier for individual participants
+Months,numeric,36 – 49,,Participant age in months
+Sex,character,,"F, M",Participant sex
+Order,character,,,Indicates study order presented to participant
+Tr.Num,numeric,3 – 24,,"Index of trial, increases by 1 for each subsequent trial"
+Prescreen.Notes,character,,,Researcher notes
+L.image,character,,"Bear, Sheep, Bunny, Dog, Froggy, Duck, Cow, Butterfly",Indicates image shown on left-hand side of screen
+C.Image,character,,,Indicates image shown in central screen area (not used)
+R.image,character,,"Duck, Butterfly, Dog, Bunny, Cow, Bear, Froggy, Sheep",Indicates image shown on right-hand side of sreen
+Target.Side,character,,"l, r","Indicates side of screen target appears, l = Left, r = Right"
+Target.Image,character,,"Bear, Sheep, Dog, Bunny, Cow, Froggy, Duck, Butterfly",Indicates target image
+Condition,character,,"Single, Switch","Indicates type of trial, mixed-language or single-language"
+Response,character,,"D, T, A","Indicates participant's response, D = Looking at Distractor, T = Looking at Target, A = Looking Away"
+First.Shift.Gap,numeric,1 – 47,,Duration of first shift (in # of frames) from distracter to target or from target to distracter
+RT,numeric,33 – 2400,,Indicates participant's reaction time in ms
+CritOnSet,numeric,3000 – 3100,,Onset in ms of noun
+CritOffSet,numeric,4000 – 4000,,Offset in ms of noun
+X.3100,integer,0 – 1,,"Time window start, in ms"
+X.3067,integer,0 – 1,,"Time window start, in ms"
+X.3033,integer,0 – 1,,"Time window start, in ms"
+X.3000,integer,0 – 1,,"Time window start, in ms"
+X.2967,integer,0 – 1,,"Time window start, in ms"
+X.2933,integer,0 – 1,,"Time window start, in ms"
+X.2900,integer,0 – 1,,"Time window start, in ms"
+X.2867,integer,0 – 1,,"Time window start, in ms"
+X.2833,integer,0 – 1,,"Time window start, in ms"
+X.2800,integer,0 – 1,,"Time window start, in ms"
+X.2767,integer,0 – 1,,"Time window start, in ms"
+X.2733,integer,0 – 1,,"Time window start, in ms"
+X.2700,integer,0 – 1,,"Time window start, in ms"
+X.2667,integer,0 – 1,,"Time window start, in ms"
+X.2633,integer,0 – 1,,"Time window start, in ms"
+X.2600,integer,0 – 1,,"Time window start, in ms"
+X.2567,integer,0 – 1,,"Time window start, in ms"
+X.2533,integer,0 – 1,,"Time window start, in ms"
+X.2500,integer,0 – 1,,"Time window start, in ms"
+X.2467,integer,0 – 1,,"Time window start, in ms"
+X.2433,integer,0 – 1,,"Time window start, in ms"
+X.2400,integer,0 – 1,,"Time window start, in ms"
+X.2367,integer,0 – 1,,"Time window start, in ms"
+X.2333,integer,0 – 1,,"Time window start, in ms"
+X.2300,integer,0 – 1,,"Time window start, in ms"
+X.2267,integer,0 – 1,,"Time window start, in ms"
+X.2233,integer,0 – 1,,"Time window start, in ms"
+X.2200,integer,0 – 1,,"Time window start, in ms"
+X.2167,integer,0 – 1,,"Time window start, in ms"
+X.2133,integer,0 – 1,,"Time window start, in ms"
+X.2100,integer,0 – 1,,"Time window start, in ms"
+X.2067,integer,0 – 1,,"Time window start, in ms"
+X.2033,integer,0 – 1,,"Time window start, in ms"
+X.2000,integer,0 – 1,,"Time window start, in ms"
+X.1967,integer,0 – 1,,"Time window start, in ms"
+X.1933,integer,0 – 1,,"Time window start, in ms"
+X.1900,integer,0 – 1,,"Time window start, in ms"
+X.1867,integer,0 – 1,,"Time window start, in ms"
+X.1833,integer,0 – 1,,"Time window start, in ms"
+X.1800,integer,0 – 1,,"Time window start, in ms"
+X.1767,integer,0 – 1,,"Time window start, in ms"
+X.1733,integer,0 – 1,,"Time window start, in ms"
+X.1700,integer,0 – 1,,"Time window start, in ms"
+X.1667,integer,0 – 1,,"Time window start, in ms"
+X.1633,integer,0 – 1,,"Time window start, in ms"
+X.1600,integer,0 – 1,,"Time window start, in ms"
+X.1567,integer,0 – 1,,"Time window start, in ms"
+X.1533,integer,0 – 1,,"Time window start, in ms"
+X.1500,integer,0 – 1,,"Time window start, in ms"
+X.1467,integer,0 – 1,,"Time window start, in ms"
+X.1433,integer,0 – 1,,"Time window start, in ms"
+X.1400,integer,0 – 1,,"Time window start, in ms"
+X.1367,integer,0 – 1,,"Time window start, in ms"
+X.1333,integer,0 – 1,,"Time window start, in ms"
+X.1300,integer,0 – 1,,"Time window start, in ms"
+X.1267,integer,0 – 1,,"Time window start, in ms"
+X.1233,integer,0 – 1,,"Time window start, in ms"
+X.1200,integer,0 – 1,,"Time window start, in ms"
+X.1167,integer,0 – 1,,"Time window start, in ms"
+X.1133,integer,0 – 1,,"Time window start, in ms"
+X.1100,integer,0 – 1,,"Time window start, in ms"
+X.1067,integer,0 – 1,,"Time window start, in ms"
+X.1033,integer,0 – 1,,"Time window start, in ms"
+X.1000,integer,0 – 1,,"Time window start, in ms"
+X.967,integer,0 – 1,,"Time window start, in ms"
+X.933,integer,0 – 1,,"Time window start, in ms"
+X.900,integer,0 – 1,,"Time window start, in ms"
+X.867,integer,0 – 1,,"Time window start, in ms"
+X.833,integer,0 – 1,,"Time window start, in ms"
+X.800,integer,0 – 1,,"Time window start, in ms"
+X.767,integer,0 – 1,,"Time window start, in ms"
+X.733,integer,0 – 1,,"Time window start, in ms"
+X.700,integer,0 – 1,,"Time window start, in ms"
+X.667,integer,0 – 1,,"Time window start, in ms"
+X.633,integer,0 – 1,,"Time window start, in ms"
+X.600,integer,0 – 1,,"Time window start, in ms"
+X.567,integer,0 – 1,,"Time window start, in ms"
+X.533,integer,0 – 1,,"Time window start, in ms"
+X.500,integer,0 – 1,,"Time window start, in ms"
+X.467,integer,0 – 1,,"Time window start, in ms"
+X.433,integer,0 – 1,,"Time window start, in ms"
+X.400,integer,0 – 1,,"Time window start, in ms"
+X.367,integer,0 – 1,,"Time window start, in ms"
+X.333,integer,0 – 1,,"Time window start, in ms"
+X.300,integer,0 – 1,,"Time window start, in ms"
+X.267,integer,0 – 1,,"Time window start, in ms"
+X.233,integer,0 – 1,,"Time window start, in ms"
+X.200,integer,0 – 1,,"Time window start, in ms"
+X.167,integer,0 – 1,,"Time window start, in ms"
+X.133,integer,0 – 1,,"Time window start, in ms"
+X.100,integer,0 – 1,,"Time window start, in ms"
+X.67,integer,0 – 1,,"Time window start, in ms"
+X.33,integer,0 – 1,,"Time window start, in ms"
+X0,integer,0 – 1,,"Time window start, in ms"
+X33,integer,0 – 1,,"Time window start, in ms"
+X67,integer,0 – 1,,"Time window start, in ms"
+X100,integer,0 – 1,,"Time window start, in ms"
+X133,integer,0 – 1,,"Time window start, in ms"
+X167,integer,0 – 1,,"Time window start, in ms"
+X200,integer,0 – 1,,"Time window start, in ms"
+X233,integer,0 – 1,,"Time window start, in ms"
+X267,integer,0 – 1,,"Time window start, in ms"
+X300,integer,0 – 1,,"Time window start, in ms"
+X333,integer,0 – 1,,"Time window start, in ms"
+X367,integer,0 – 1,,"Time window start, in ms"
+X400,integer,0 – 1,,"Time window start, in ms"
+X433,integer,0 – 1,,"Time window start, in ms"
+X467,integer,0 – 1,,"Time window start, in ms"
+X500,integer,0 – 1,,"Time window start, in ms"
+X533,integer,0 – 1,,"Time window start, in ms"
+X567,integer,0 – 1,,"Time window start, in ms"
+X600,integer,0 – 1,,"Time window start, in ms"
+X633,integer,0 – 1,,"Time window start, in ms"
+X667,integer,0 – 1,,"Time window start, in ms"
+X700,integer,0 – 1,,"Time window start, in ms"
+X733,integer,0 – 1,,"Time window start, in ms"
+X767,integer,0 – 1,,"Time window start, in ms"
+X800,integer,0 – 1,,"Time window start, in ms"
+X833,integer,0 – 1,,"Time window start, in ms"
+X867,integer,0 – 1,,"Time window start, in ms"
+X900,integer,0 – 1,,"Time window start, in ms"
+X933,integer,0 – 1,,"Time window start, in ms"
+X967,integer,0 – 1,,"Time window start, in ms"
+X1000,integer,0 – 1,,"Time window start, in ms"
+X1033,integer,0 – 1,,"Time window start, in ms"
+X1067,integer,0 – 1,,"Time window start, in ms"
+X1100,integer,0 – 1,,"Time window start, in ms"
+X1133,integer,0 – 1,,"Time window start, in ms"
+X1167,integer,0 – 1,,"Time window start, in ms"
+X1200,integer,0 – 1,,"Time window start, in ms"
+X1233,integer,0 – 1,,"Time window start, in ms"
+X1267,integer,0 – 1,,"Time window start, in ms"
+X1300,integer,0 – 1,,"Time window start, in ms"
+X1333,integer,0 – 1,,"Time window start, in ms"
+X1367,integer,0 – 1,,"Time window start, in ms"
+X1400,integer,0 – 1,,"Time window start, in ms"
+X1433,integer,0 – 1,,"Time window start, in ms"
+X1467,integer,0 – 1,,"Time window start, in ms"
+X1500,integer,0 – 1,,"Time window start, in ms"
+X1533,integer,0 – 1,,"Time window start, in ms"
+X1567,integer,0 – 1,,"Time window start, in ms"
+X1600,integer,0 – 1,,"Time window start, in ms"
+X1633,integer,0 – 1,,"Time window start, in ms"
+X1667,integer,0 – 1,,"Time window start, in ms"
+X1700,integer,0 – 1,,"Time window start, in ms"
+X1733,integer,0 – 1,,"Time window start, in ms"
+X1767,integer,0 – 1,,"Time window start, in ms"
+X1800,integer,0 – 1,,"Time window start, in ms"
+X1833,integer,0 – 1,,"Time window start, in ms"
+X1867,integer,0 – 1,,"Time window start, in ms"
+X1900,integer,0 – 1,,"Time window start, in ms"
+X1933,integer,0 – 1,,"Time window start, in ms"
+X1967,integer,0 – 1,,"Time window start, in ms"
+X2000,integer,0 – 1,,"Time window start, in ms"
+X2033,integer,0 – 1,,"Time window start, in ms"
+X2067,integer,0 – 1,,"Time window start, in ms"
+X2100,integer,0 – 1,,"Time window start, in ms"
+X2133,integer,0 – 1,,"Time window start, in ms"
+X2167,integer,0 – 1,,"Time window start, in ms"
+X2200,integer,0 – 1,,"Time window start, in ms"
+X2233,integer,0 – 1,,"Time window start, in ms"
+X2267,integer,0 – 1,,"Time window start, in ms"
+X2300,integer,0 – 1,,"Time window start, in ms"
+X2333,integer,0 – 1,,"Time window start, in ms"
+X2367,integer,0 – 1,,"Time window start, in ms"
+X2400,integer,0 – 1,,"Time window start, in ms"
+X2433,integer,0 – 1,,"Time window start, in ms"
+X2467,integer,0 – 1,,"Time window start, in ms"
+X2500,integer,0 – 1,,"Time window start, in ms"
+X2533,integer,0 – 1,,"Time window start, in ms"
+X2567,integer,0 – 1,,"Time window start, in ms"
+X2600,integer,0 – 1,,"Time window start, in ms"
+X2633,integer,0 – 1,,"Time window start, in ms"
+X2667,integer,0 – 1,,"Time window start, in ms"
+X2700,integer,0 – 1,,"Time window start, in ms"
+X2733,integer,0 – 1,,"Time window start, in ms"
+X2767,integer,0 – 1,,"Time window start, in ms"
+X2800,integer,0 – 1,,"Time window start, in ms"
+X2833,integer,0 – 1,,"Time window start, in ms"
+X2867,integer,0 – 1,,"Time window start, in ms"
+X2900,integer,0 – 1,,"Time window start, in ms"
+X2933,integer,0 – 1,,"Time window start, in ms"
+X2967,integer,0 – 1,,"Time window start, in ms"
+X3000,integer,0 – 1,,"Time window start, in ms"
+X3033,integer,0 – 1,,"Time window start, in ms"
+X3067,integer,0 – 1,,"Time window start, in ms"
+X3100,integer,0 – 1,,"Time window start, in ms"
+X3133,integer,0 – 1,,"Time window start, in ms"
+X3167,integer,0 – 1,,"Time window start, in ms"
+X3200,integer,0 – 1,,"Time window start, in ms"
+X3233,integer,0 – 1,,"Time window start, in ms"
+X3267,integer,0 – 1,,"Time window start, in ms"
+X3300,integer,0 – 1,,"Time window start, in ms"
+X3333,integer,0 – 1,,"Time window start, in ms"
+X3367,integer,0 – 1,,"Time window start, in ms"
+X3400,integer,0 – 1,,"Time window start, in ms"
+X3433,integer,0 – 1,,"Time window start, in ms"
+X3467,integer,0 – 1,,"Time window start, in ms"
+X3500,integer,0 – 1,,"Time window start, in ms"
+X3533,integer,0 – 1,,"Time window start, in ms"
+X3567,integer,0 – 1,,"Time window start, in ms"
+X3600,integer,0 – 1,,"Time window start, in ms"
+X3633,integer,0 – 1,,"Time window start, in ms"
+X3667,integer,0 – 1,,"Time window start, in ms"
+X3700,integer,0 – 1,,"Time window start, in ms"
+X3733,integer,0 – 1,,"Time window start, in ms"
+X3767,integer,0 – 1,,"Time window start, in ms"
+X3800,integer,0 – 1,,"Time window start, in ms"
+X3833,integer,0 – 1,,"Time window start, in ms"
+X3867,integer,0 – 1,,"Time window start, in ms"
+X3900,integer,0 – 1,,"Time window start, in ms"
+X3933,integer,0 – 1,,"Time window start, in ms"
+X3967,integer,0 – 1,,"Time window start, in ms"
+X4000,integer,0 – 1,,"Time window start, in ms"
+X4033,integer,0 – 1,,"Time window start, in ms"
+X4067,integer,0 – 1,,"Time window start, in ms"
+X4100,integer,0 – 1,,"Time window start, in ms"
+X4133,integer,0 – 1,,"Time window start, in ms"
+X4167,integer,0 – 1,,"Time window start, in ms"
+X4200,integer,0 – 1,,"Time window start, in ms"
+X4233,integer,0 – 1,,"Time window start, in ms"
+X4267,integer,0 – 1,,"Time window start, in ms"
+X4300,integer,0 – 1,,"Time window start, in ms"
+X4333,integer,0 – 1,,"Time window start, in ms"
+X4367,integer,0 – 1,,"Time window start, in ms"
+X4400,integer,0 – 1,,"Time window start, in ms"
+X4433,integer,0 – 1,,"Time window start, in ms"
+X4467,integer,0 – 1,,"Time window start, in ms"
+X4500,integer,0 – 1,,"Time window start, in ms"
+X4533,integer,0 – 1,,"Time window start, in ms"
+X4567,integer,0 – 1,,"Time window start, in ms"
+X4600,integer,0 – 1,,"Time window start, in ms"
+X4633,integer,0 – 1,,"Time window start, in ms"
+X4667,integer,0 – 1,,"Time window start, in ms"
+X4700,integer,0 – 1,,"Time window start, in ms"
+X4733,integer,0 – 1,,"Time window start, in ms"
+X4767,integer,0 – 1,,"Time window start, in ms"
