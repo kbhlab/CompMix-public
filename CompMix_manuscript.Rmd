@@ -47,7 +47,7 @@ mask              : no
 draft             : no
 
 
-documentclass     : "apa6"
+documentclass     : "apa7"
 classoption       : "man"
 output            : papaja::apa6_word
 ---
@@ -109,7 +109,6 @@ contrasts(gca$study_lang_dom) <- contr.helmert(2)/2
 reliability <- read_csv(here("data_frames/reliability.csv"))
 ```
 
-# Introduction
 
 Bilingual children regularly hear both of their languages within a single conversation and even within a single sentence (e.g., *C’est un* [fr. It’s a] monkey.). This phenomenon is known as code-switching. Most bilingual children hear code-switching in their daily lives [@kremin_etal2021], and there is some evidence that over time code-switching may impact a child’s vocabulary size [@bail_etal2015; @byers-heinlein2013] and overall language development [@kaushanskaya_crespo2019]. Code-switching can also reduce a child’s comprehension in the moment as they process speech [@byers-heinlein_etal2017; @morini_newman2019; @potter_etal2019]. Given the importance of early language processing to early language acquisition (Meylan & Bergelson, 2022), it is important to understand the contexts in which code-switching does or does not affect language processing, as well as underlying mechanisms. To date, research on children’s comprehension of code-switching has focused on code-switches at a noun (e.g., “*Dónde está la* [sp. where’s the] ball?”), even though everyday code-switching happens at many different parts of speech, such as verbs, prepositions, and adjectives [e.g., “*C’est* [fr. It is] yucky.”\; @macswan2012]. Here, we extend previous findings with nouns and investigate how code-switching at a mid-sentence determiner-adjective pair affects bilingual children’s language comprehension.
 
@@ -253,7 +252,7 @@ For the animate nouns on target trials, there were a total of four English preno
 #placeholder to allow for automatic table numbering
 fake_table <- data_frame()
 
-apa_table(fake_table, caption = "Adjective--noun pairs used for French--English and Spanish--English participants. The noun pairs labelled the two pictures shown on screen at the same time. Each noun was used as a target picture in different trials. In single-language trials, the  adjective and noun were in the same language. In code-switched trials, the adjective and the noun were in different languages.")
+apa_table(fake_table, caption = "Adjective--noun pairs used for French--English and Spanish--English participants. The noun pairs labeled the two pictures shown on screen at the same time. Each noun was used as a target picture in different trials. In single-language trials, the  adjective and noun were in the same language. In code-switched trials, the adjective and the noun were in different languages.")
 
 ```
 
@@ -676,9 +675,11 @@ In our sample, testing location (a proxy for language pair), SES, and vocabulary
 
 There are also other potentially relevant differences between children that we were not able to directly observe that may have affected infants’ performance on our task, which again limits our conclusions. For example, different infants have different experiences with code-switching [@bail_etal2015; @kremin_etal2021], which could in turn impact their comprehension of code-switching. The frequency account predicts that bilinguals with frequent exposure to code-switching should experience less disruption in processing compared to bilinguals without frequent exposure to code-switching [@gosselin_sabourin2021; @valdeskroff_etal2018]. In the context of the current study, experience with code-switching may have been able to build on top of children’s ability to “listen through” the uninformative adjective, supporting aspects of both the frequency and the functional account. Indeed, preliminary evidence from a direct observatoin study suggests that children’s experiences hearing code-switching may be somewhat different in the two communities from which we sampled, with Spanish-English bilinguals in New Jersey engaging in more code-switching than English-French bilinguals in Montreal [@kosie2022]. It is also possible that production of code-switching varies by SES within the the two communities we studied, although this has not yet been examined directly. Indeed, we speculate that if Spanish-English bilinguals in New Jersey, particularly those from lower-SES backgrounds, were somewhat more accustomed to hearing code-switching than the French-English bilinguals in Montreal, this could result in the observed “boost” in real-time sentence interpretation – at least in the context of sentences with mid-sentence code-switches at uninformative locations. To address this question, additional research is needed to directly investigate the relationship between the amount and type of code-switching that bilingual children hear and how they process incoming speech input in two languages.
 
+Finally, this work adds important qualifications to the idea that code-switching engenders processing costs in bilingual children. Our study found that code-switching of uninformative adjectives does not hinder children’s comprehension of a subsequent noun and indeed it may have facilitated comprehension, at least for some children. Such facilitatory effects have been reported in the adult literature, whereby a code-switch cued participants that a low-frequency word would be heard, allowing listeners to rapidly identify a labeled target [@tomic_kroff2021]. Parents of young bilinguals code-switch at a variety of syntactic locations and for a variety of reasons, and our results support the idea that certain instances of code-switching do not hinder processing but may even  support comprehension and learning [@kremin_etal2021]. It is not scientifically sound to tell parents that code-switching is ‘good’ or ‘bad’, and future experiments will need to carefully document young bilinguals’ everyday experience with code-switching and evaluate how they process instances of typical and atypical switching.
+
 # Conclusion
 
-Code-switching is common in bilingual speech, making it important to understand its effect on children’s language comprehension and language learning. Past research has generally found that code-switching leads to processing costs, but in the current study, bilingual children did not show this processing cost. They showed similar (and in some cases, better) processing of sentences with a code-switch at an uninformative adjective phrase, relative to single-language sentences. These findings demonstrate that linguistic features such as informativeness and location, together with individual-difference variables, may impact how bilingual children process code-switching in natural settings.
+Code-switching is common in bilingual speech, making it important to understand its effect on children’s language comprehension and language learning. Past research has generally found that code-switching leads to processing costs, but in the current study, bilingual children did not show this processing cost. Growth curve analyses revealed that  bilinguals showed similar (and in some cases, better) processing of sentences with a code-switch at an uninformative adjective phrase, relative to single-language sentences. These findings demonstrate that linguistic features such as informativeness and location, together with individual-difference variables, may impact how bilingual children process code-switching in natural settings.
 
 
 \newpage
