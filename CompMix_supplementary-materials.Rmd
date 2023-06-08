@@ -165,7 +165,7 @@ trial_anova <- anova(trial, base) %>%
   rownames_to_column(var = "Model") %>% 
   mutate(Model = case_when(Model == "base" ~ "Base model",
                            Model == "trial" ~ "Model 1")) %>% 
-  rename("Number of paremeters" = npar,
+  rename("Number of parameters" = npar,
          "Log-likelihood" = logLik,
          "Deviance" = deviance,
          "*X*^2" = Chisq,
@@ -211,7 +211,7 @@ trial_time_anova <- anova(trial_time, trial) %>%
   rownames_to_column(var = "Model") %>% 
   mutate(Model = case_when(Model == "trial_time" ~ "Model 2",
                            Model == "trial" ~ "Model 1")) %>% 
-  rename("Number of paremeters" = npar,
+  rename("Number of parameters" = npar,
          "Log-likelihood" = logLik,
          "Deviance" = deviance,
          "*X*^2" = Chisq,
@@ -258,7 +258,7 @@ dom_anova <- anova(gca.dom, trial) %>%
   rownames_to_column(var = "Model") %>% 
   mutate(Model = case_when(Model == "gca.dom" ~ "Model 3",
                            Model == "trial" ~ "Model 1")) %>% 
-  rename("Number of paremeters" = npar,
+  rename("Number of parameters" = npar,
          "Log-likelihood" = logLik,
          "Deviance" = deviance,
          "*X*^2" = Chisq,
@@ -305,7 +305,7 @@ loc_anova <- anova(gca.loc, trial) %>%
   rownames_to_column(var = "Model") %>% 
   mutate(Model = case_when(Model == "gca.loc" ~ "Model 4",
                            Model == "trial" ~ "Model 1")) %>% 
-  rename("Number of paremeters" = npar,
+  rename("Number of parameters" = npar,
          "Log-likelihood" = logLik,
          "Deviance" = deviance,
          "*X*^2" = Chisq,
@@ -352,7 +352,7 @@ ses_anova <- anova(gca.ses, trial) %>%
   rownames_to_column(var = "Model") %>% 
   mutate(Model = case_when(Model == "gca.ses" ~ "Model 5",
                            Model == "trial" ~ "Model 1")) %>% 
-  rename("Number of paremeters" = npar,
+  rename("Number of parameters" = npar,
          "Log-likelihood" = logLik,
          "Deviance" = deviance,
          "*X*^2" = Chisq,
@@ -420,7 +420,7 @@ vocab_anova <- anova(gca.vocab, trial_mod) %>%
   rownames_to_column(var = "Model") %>% 
   mutate(Model = case_when(Model == "gca.vocab" ~ "Model 6",
                            Model == "trial_mod" ~ "Model 1")) %>% 
-  rename("Number of paremeters" = npar,
+  rename("Number of parameters" = npar,
          "Log-likelihood" = logLik,
          "Deviance" = deviance,
          "*X*^2" = Chisq,
