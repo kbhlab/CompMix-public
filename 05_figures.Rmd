@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(here)
 library(lme4)
+library(extrafont)
 ```
 
 ```{r load-data}
@@ -58,7 +59,8 @@ ggplot(gaze_target, aes(x = trial_type, y = Prop, color = location)) +
         legend.title = element_text(size = 14),
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.title.y = element_text(margin = margin(r = 14)))
+        axis.title.y = element_text(margin = margin(r = 14)),
+        text = element_text(family = "Source Serif Pro", size = 12))
 
 
 ## no color difference for location
@@ -76,7 +78,8 @@ ggplot(gaze_target, aes(x = trial_type, y = Prop)) +
         legend.title = element_text(size = 14),
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.title.y = element_text(margin = margin(r = 14)))
+        axis.title.y = element_text(margin = margin(r = 14)),
+        text = element_text(family = "Source Serif Pro", size = 12))
 
 ggsave(here("figures/line_no-location.png"))
 
@@ -98,7 +101,8 @@ ggplot(gaze_target, aes(x = trial_type, y = Prop, color = testing_location)) +
         legend.title = element_text(size = 14),
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.title.y = element_text(margin = margin(r = 14)))
+        axis.title.y = element_text(margin = margin(r = 14)),
+        text = element_text(family = "Source Serif Pro", size = 12))
 
 ggsave(here("figures/line_anon.png"), dpi=300)
 
@@ -122,7 +126,8 @@ ggplot(gaze_target, aes(x = trial_type, y = Prop)) +
           axis.title.y = element_text(margin = margin(r = 20)),
           strip.text.x = element_text(size = 16),
           plot.background = element_rect(fill = "transparent", color = NA),
-          legend.background = element_rect(fill = "transparent", color = NA))
+          legend.background = element_rect(fill = "transparent", color = NA),
+        text = element_text(family = "Source Serif Pro", size = 12))
 
 ggsave(here("figures/line_no-location_BUCLD.png"), width = 9.5, height = 6.9, dpi = 500, bg = "transparent")
 
@@ -149,7 +154,8 @@ ggplot(aes(x = Time, y = Prop, color = trial_type)) +
                      values = c(19, 15),
                      name = "Trial Type") +
   labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
-  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Montreal", "Princeton" = "New Jersey")))  
+  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Montreal", "Princeton" = "New Jersey"))) +
+  theme(text = element_text(family = "Source Serif Pro", size = 12))
 
 ggsave(here("figures/growth_curve_analysis_abstracts.png"))
 
@@ -168,7 +174,8 @@ ggplot(aes(x = Time, y = Prop, color = trial_type)) +
                      values = c(19, 15),
                      name = "Trial Type") +
   labs(x = "Time from Noun Onset", y = "Proportion Looking to Target") +
-  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Location 1", "Princeton" = "Location 2")))  
+  facet_grid(. ~ testing_location, labeller = as_labeller(c("Montreal" = "Location 1", "Princeton" = "Location 2")))  +
+  theme(text = element_text(family = "Source Serif Pro", size = 12))
 
 ggsave(here("figures/growth_curve_analysis_anon.png"), dpi = 300)
 
@@ -188,7 +195,7 @@ gca %>%
           axis.title = element_text(size = 20, color = "white"),
           axis.title.y = element_text(margin = margin(r = 20)),
           plot.background = element_rect(fill = "transparent", color = NA),
-          legend.background = element_rect(fill = "transparent", color = NA))
+          legend.background = element_rect(fill = "transparent", color = NA)) 
 
 ggsave("figures/growth_curve_analysis_psychoshorts.png", width = 8.4, height = 6.9, dpi = 500, bg = "transparent")
 
